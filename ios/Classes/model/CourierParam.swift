@@ -10,47 +10,20 @@ import CourierCore
 import CourierMQTT
 
 
-class CourierParam : Param<CourierClient>{
+class CourierParam: Param<CourierConfigurationParam>{
     var courierConfiguration : CourierConfigurationParam?
-    
-    override func build() -> CourierClient? {
-        if(courierConfiguration != nil) {
-            return CourierClientFactory().makeMQTTClient(config: courierConfiguration!.build())
-        } else {
-            return nil
-        }
-    }
 }
 
 
-class CourierConfigurationParam: Param<MQTTClientConfig> {
-    var client : MqttClientParam
-    
-    override init(value: Dictionary<String, Any?>) {
-        client = MqttClientParam(value: [:])
-        super.init(value: value)
-    }
-    
-    override func build() -> MQTTClientConfig {
-        return client.build()
-    }
+class CourierConfigurationParam {
+    var client : MqttClientParam?
 }
 
-class MqttClientParam: Param<MQTTClientConfig>{
-    var configuration: MqttConfigurationParam
-    
-    override init(value: Dictionary<String, Any?>) {
-        self.configuration = MqttConfigurationParam(value: [:])
-        super.init(value: value)
-    }
-    
-    override func build() -> MQTTClientConfig {
-        return configuration.build()
-    }
-    
+class MqttClientParam{
+    var configuration: MqttConfigurationParam?
 }
 
-class MqttConfigurationParam: Param<MQTTClientConfig> {
+class MqttConfigurationParam{
     var connectRetryTimePolicy: ConnectRetryTimePolicyParam?
     var connectTimeoutPolicy: ConnectTimeoutPolicyParam?
     var subscriptionRetryPolicy: SubscriptionRetryPolicyParam?
@@ -59,35 +32,6 @@ class MqttConfigurationParam: Param<MQTTClientConfig> {
     var pingSender: WorkManagerPingSenderConfigParam?
     var experimentConfig: ExperimentConfigParam?
     
-    override func build() -> MQTTClientConfig {
-        return MQTTClientConfig(
-            authService: ConnectionServiceProvider(  // no auth here
-                ipAddress: "127.0.0.1",
-                port:  1883,
-                clientId: "10",
-                isCleanSession: true,
-                pingInterval:  60),
-            messageAdapters: [
-                DataMessageAdapter(),
-                JSONMessageAdapter(),
-                TextMessageAdapter()
-            ],
-            isMessagePersistenceEnabled: experimentConfig?.isPersistentSubscriptionStoreEnabled ?? false,
-            autoReconnectInterval: connectRetryTimePolicy?.reconnectTimeFixed ?? 5,
-            maxAutoReconnectInterval: connectRetryTimePolicy?.maxReconnectTime ?? 10,
-            enableAuthenticationTimeout: false, // no auth here
-            authenticationTimeoutInterval: 30, // no auth here
-            connectTimeoutPolicy: connectTimeoutPolicy?.build() ?? ConnectTimeoutPolicy(),
-            idleActivityTimeoutPolicy: IdleActivityTimeoutPolicy(
-                isEnabled: true,
-                timerInterval: experimentConfig?.adaptiveKeepAliveConfig?.activityCheckIntervalSeconds ?? 12,
-                inactivityTimeout: experimentConfig?.adaptiveKeepAliveConfig?.inactivityTimeoutSeconds ?? 10,
-                readTimeout: 40
-            ),
-            messagePersistenceTTLSeconds: experimentConfig?.adaptiveKeepAliveConfig?.incomingMessagesTTLSecs ?? 0,
-            messageCleanupInterval: experimentConfig?.adaptiveKeepAliveConfig?.incomingMessagesCleanupIntervalSecs ?? 10
-        )
-    }
 }
 
 class ExperimentConfigParam {
@@ -112,7 +56,7 @@ class WorkManagerPingSenderConfigParam {
     var timeoutSeconds: Int?
 }
 
-class SubscriptionRetryPolicyParam{
+class SubscriptionRetryPolicyParam {
     var maxRetryCount: UInt16?
 }
 
@@ -128,7 +72,7 @@ class ConnectTimeoutPolicyParam : Param<IConnectTimeoutPolicy> {
     }
 }
 
-class ConnectRetryTimePolicyParam {
+class ConnectRetryTimePolicyParam  {
     var maxRetryCount: Int?
     var reconnectTimeFixed: UInt16?
     var reconnectTimeRandom: Int?

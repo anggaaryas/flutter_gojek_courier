@@ -64,3 +64,7 @@ class GojekCourier implements GojekCourierBehaviour{
     return GojekCourierPlatform.instance.send(topic, msg, qoS);
   }
 }
+
+// Logger, ios unavailable
+// authfail, ios unavailable
+// some event is different between android and ios

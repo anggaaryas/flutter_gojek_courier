@@ -31,7 +31,7 @@ class MethodChannelGojekCourier extends GojekCourierPlatform {
   @override
   Future<String?> getPlatformVersion() async {
     final version =
-        await methodChannel.invokeMethod<String>('getPlatformVersion');
+    await methodChannel.invokeMethod<String>('getPlatformVersion');
     return version;
   }
 
@@ -93,7 +93,7 @@ class MethodChannelGojekCourier extends GojekCourierPlatform {
   }
 
   void streamEvent() {
-     _eventStreamSubscription = eventStream.listen((event) {
+    _eventStreamSubscription = eventStream.listen((event) {
       print("event...");
       print(event);
 
@@ -399,6 +399,29 @@ class MethodChannelGojekCourier extends GojekCourierPlatform {
                 ?.configuration.client.configuration?.eventHandler?.onEvent
                 ?.call(AuthenticatorErrorEvent.fromJson(data));
           }
+          break;
+
+        case "CourierDisconnect":
+          {
+            _courier
+                ?.configuration.client.configuration?.eventHandler?.onEvent
+                ?.call(CourierDisconnectEvent.fromJson(data));
+          }
+          break;
+        case "ConnectionAvailable":
+          {
+            _courier
+                ?.configuration.client.configuration?.eventHandler?.onEvent
+                ?.call(ConnectionAvailableEvent());
+          }
+          break;
+        case "ConnectionUnavailable":
+          {
+            _courier
+                ?.configuration.client.configuration?.eventHandler?.onEvent
+                ?.call(ConnectionUnavailableEvent());
+          }
+          break;
       }
     });
   }

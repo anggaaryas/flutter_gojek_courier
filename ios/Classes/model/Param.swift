@@ -21,6 +21,7 @@ class Param<T>{
     }
 }
 
+
 class EnumParam<T> {
     
     let value: String

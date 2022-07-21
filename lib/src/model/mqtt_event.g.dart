@@ -7,143 +7,157 @@ part of 'mqtt_event.dart';
 // **************************************************************************
 
 MqttConnectAttemptEvent _$MqttConnectAttemptEventFromJson(
-        Map<String, dynamic> json) =>
+    Map<String, dynamic> json) =>
     MqttConnectAttemptEvent(
-      isOptimalKeepAlive: json['isOptimalKeepAlive'] as bool,
-      activeNetInfo:
-          ActiveNetInfo.fromJson(json['activeNetInfo'] as Map<String, dynamic>),
+      isOptimalKeepAlive: json['isOptimalKeepAlive'] as bool?,
+      activeNetInfo: json['activeNetInfo'] == null
+          ? null
+          : ActiveNetInfo.fromJson(
+          json['activeNetInfo'] as Map<String, dynamic>),
       serverUri: json['serverUri'] == null
           ? null
           : ServerUri.fromJson(json['serverUri'] as Map<String, dynamic>),
       connectionInfo: json['connectionInfo'] == null
           ? null
           : ConnectionInfo.fromJson(
-              json['connectionInfo'] as Map<String, dynamic>),
+          json['connectionInfo'] as Map<String, dynamic>),
     );
 
 Map<String, dynamic> _$MqttConnectAttemptEventToJson(
-        MqttConnectAttemptEvent instance) =>
+    MqttConnectAttemptEvent instance) =>
     <String, dynamic>{
       'connectionInfo': instance.connectionInfo?.toJson(),
       'isOptimalKeepAlive': instance.isOptimalKeepAlive,
-      'activeNetInfo': instance.activeNetInfo.toJson(),
+      'activeNetInfo': instance.activeNetInfo?.toJson(),
       'serverUri': instance.serverUri?.toJson(),
     };
 
 MqttConnectDiscardedEvent _$MqttConnectDiscardedEventFromJson(
-        Map<String, dynamic> json) =>
+    Map<String, dynamic> json) =>
     MqttConnectDiscardedEvent(
-      reason: json['reason'] as String,
-      activeNetworkInfo: ActiveNetInfo.fromJson(
+      reason: json['reason'] as String?,
+      activeNetworkInfo: json['activeNetworkInfo'] == null
+          ? null
+          : ActiveNetInfo.fromJson(
           json['activeNetworkInfo'] as Map<String, dynamic>),
       connectionInfo: json['connectionInfo'] == null
           ? null
           : ConnectionInfo.fromJson(
-              json['connectionInfo'] as Map<String, dynamic>),
+          json['connectionInfo'] as Map<String, dynamic>),
     );
 
 Map<String, dynamic> _$MqttConnectDiscardedEventToJson(
-        MqttConnectDiscardedEvent instance) =>
+    MqttConnectDiscardedEvent instance) =>
     <String, dynamic>{
       'connectionInfo': instance.connectionInfo?.toJson(),
       'reason': instance.reason,
-      'activeNetworkInfo': instance.activeNetworkInfo.toJson(),
+      'activeNetworkInfo': instance.activeNetworkInfo?.toJson(),
     };
 
 MqttConnectSuccessEvent _$MqttConnectSuccessEventFromJson(
-        Map<String, dynamic> json) =>
+    Map<String, dynamic> json) =>
     MqttConnectSuccessEvent(
-      activeNetInfo:
-          ActiveNetInfo.fromJson(json['activeNetInfo'] as Map<String, dynamic>),
+      activeNetInfo: json['activeNetInfo'] == null
+          ? null
+          : ActiveNetInfo.fromJson(
+          json['activeNetInfo'] as Map<String, dynamic>),
       serverUri: json['serverUri'] == null
           ? null
           : ServerUri.fromJson(json['serverUri'] as Map<String, dynamic>),
-      timeTakenMillis: json['timeTakenMillis'] as int,
+      timeTakenMillis: json['timeTakenMillis'] as int?,
       connectionInfo: json['connectionInfo'] == null
           ? null
           : ConnectionInfo.fromJson(
-              json['connectionInfo'] as Map<String, dynamic>),
+          json['connectionInfo'] as Map<String, dynamic>),
     );
 
 Map<String, dynamic> _$MqttConnectSuccessEventToJson(
-        MqttConnectSuccessEvent instance) =>
+    MqttConnectSuccessEvent instance) =>
     <String, dynamic>{
       'connectionInfo': instance.connectionInfo?.toJson(),
-      'activeNetInfo': instance.activeNetInfo.toJson(),
+      'activeNetInfo': instance.activeNetInfo?.toJson(),
       'serverUri': instance.serverUri?.toJson(),
       'timeTakenMillis': instance.timeTakenMillis,
     };
 
 MqttConnectFailureEvent _$MqttConnectFailureEventFromJson(
-        Map<String, dynamic> json) =>
+    Map<String, dynamic> json) =>
     MqttConnectFailureEvent(
-      exception:
-          CourierException.fromJson(json['exception'] as Map<String, dynamic>),
-      activeNetInfo:
-          ActiveNetInfo.fromJson(json['activeNetInfo'] as Map<String, dynamic>),
+      exception: json['exception'] == null
+          ? null
+          : CourierException.fromJson(
+          json['exception'] as Map<String, dynamic>),
+      activeNetInfo: json['activeNetInfo'] == null
+          ? null
+          : ActiveNetInfo.fromJson(
+          json['activeNetInfo'] as Map<String, dynamic>),
       serverUri: json['serverUri'] == null
           ? null
           : ServerUri.fromJson(json['serverUri'] as Map<String, dynamic>),
-      timeTakenMillis: json['timeTakenMillis'] as int,
+      timeTakenMillis: json['timeTakenMillis'] as int?,
       connectionInfo: json['connectionInfo'] == null
           ? null
           : ConnectionInfo.fromJson(
-              json['connectionInfo'] as Map<String, dynamic>),
+          json['connectionInfo'] as Map<String, dynamic>),
     );
 
 Map<String, dynamic> _$MqttConnectFailureEventToJson(
-        MqttConnectFailureEvent instance) =>
+    MqttConnectFailureEvent instance) =>
     <String, dynamic>{
       'connectionInfo': instance.connectionInfo?.toJson(),
-      'exception': instance.exception.toJson(),
-      'activeNetInfo': instance.activeNetInfo.toJson(),
+      'exception': instance.exception?.toJson(),
+      'activeNetInfo': instance.activeNetInfo?.toJson(),
       'serverUri': instance.serverUri?.toJson(),
       'timeTakenMillis': instance.timeTakenMillis,
     };
 
 MqttConnectionLostEvent _$MqttConnectionLostEventFromJson(
-        Map<String, dynamic> json) =>
+    Map<String, dynamic> json) =>
     MqttConnectionLostEvent(
-      exception:
-          CourierException.fromJson(json['exception'] as Map<String, dynamic>),
-      activeNetInfo:
-          ActiveNetInfo.fromJson(json['activeNetInfo'] as Map<String, dynamic>),
+      exception: json['exception'] == null
+          ? null
+          : CourierException.fromJson(
+          json['exception'] as Map<String, dynamic>),
+      activeNetInfo: json['activeNetInfo'] == null
+          ? null
+          : ActiveNetInfo.fromJson(
+          json['activeNetInfo'] as Map<String, dynamic>),
       serverUri: json['serverUri'] == null
           ? null
           : ServerUri.fromJson(json['serverUri'] as Map<String, dynamic>),
-      nextRetryTimeSecs: json['nextRetryTimeSecs'] as int,
-      sessionTimeMillis: json['sessionTimeMillis'] as int,
+      nextRetryTimeSecs: json['nextRetryTimeSecs'] as int?,
+      sessionTimeMillis: json['sessionTimeMillis'] as int?,
       connectionInfo: json['connectionInfo'] == null
           ? null
           : ConnectionInfo.fromJson(
-              json['connectionInfo'] as Map<String, dynamic>),
+          json['connectionInfo'] as Map<String, dynamic>),
     );
 
 Map<String, dynamic> _$MqttConnectionLostEventToJson(
-        MqttConnectionLostEvent instance) =>
+    MqttConnectionLostEvent instance) =>
     <String, dynamic>{
       'connectionInfo': instance.connectionInfo?.toJson(),
-      'exception': instance.exception.toJson(),
-      'activeNetInfo': instance.activeNetInfo.toJson(),
+      'exception': instance.exception?.toJson(),
+      'activeNetInfo': instance.activeNetInfo?.toJson(),
       'serverUri': instance.serverUri?.toJson(),
       'nextRetryTimeSecs': instance.nextRetryTimeSecs,
       'sessionTimeMillis': instance.sessionTimeMillis,
     };
 
 SocketConnectAttemptEvent _$SocketConnectAttemptEventFromJson(
-        Map<String, dynamic> json) =>
+    Map<String, dynamic> json) =>
     SocketConnectAttemptEvent(
-      port: json['port'] as int,
+      port: json['port'] as int?,
       host: json['host'] as String?,
-      timeout: json['timeout'] as int,
+      timeout: json['timeout'] as int?,
       connectionInfo: json['connectionInfo'] == null
           ? null
           : ConnectionInfo.fromJson(
-              json['connectionInfo'] as Map<String, dynamic>),
+          json['connectionInfo'] as Map<String, dynamic>),
     );
 
 Map<String, dynamic> _$SocketConnectAttemptEventToJson(
-        SocketConnectAttemptEvent instance) =>
+    SocketConnectAttemptEvent instance) =>
     <String, dynamic>{
       'connectionInfo': instance.connectionInfo?.toJson(),
       'port': instance.port,
@@ -152,20 +166,20 @@ Map<String, dynamic> _$SocketConnectAttemptEventToJson(
     };
 
 SocketConnectSuccessEvent _$SocketConnectSuccessEventFromJson(
-        Map<String, dynamic> json) =>
+    Map<String, dynamic> json) =>
     SocketConnectSuccessEvent(
-      port: json['port'] as int,
+      port: json['port'] as int?,
       host: json['host'] as String?,
-      timeout: json['timeout'] as int,
-      timeTakenMillis: json['timeTakenMillis'] as int,
+      timeout: json['timeout'] as int?,
+      timeTakenMillis: json['timeTakenMillis'] as int?,
       connectionInfo: json['connectionInfo'] == null
           ? null
           : ConnectionInfo.fromJson(
-              json['connectionInfo'] as Map<String, dynamic>),
+          json['connectionInfo'] as Map<String, dynamic>),
     );
 
 Map<String, dynamic> _$SocketConnectSuccessEventToJson(
-        SocketConnectSuccessEvent instance) =>
+    SocketConnectSuccessEvent instance) =>
     <String, dynamic>{
       'connectionInfo': instance.connectionInfo?.toJson(),
       'port': instance.port,
@@ -175,45 +189,47 @@ Map<String, dynamic> _$SocketConnectSuccessEventToJson(
     };
 
 SocketConnectFailureEvent _$SocketConnectFailureEventFromJson(
-        Map<String, dynamic> json) =>
+    Map<String, dynamic> json) =>
     SocketConnectFailureEvent(
-      port: json['port'] as int,
+      port: json['port'] as int?,
       host: json['host'] as String?,
-      timeout: json['timeout'] as int,
-      timeTakenMillis: json['timeTakenMillis'] as int,
-      exception:
-          CourierException.fromJson(json['exception'] as Map<String, dynamic>),
+      timeout: json['timeout'] as int?,
+      timeTakenMillis: json['timeTakenMillis'] as int?,
+      exception: json['exception'] == null
+          ? null
+          : CourierException.fromJson(
+          json['exception'] as Map<String, dynamic>),
       connectionInfo: json['connectionInfo'] == null
           ? null
           : ConnectionInfo.fromJson(
-              json['connectionInfo'] as Map<String, dynamic>),
+          json['connectionInfo'] as Map<String, dynamic>),
     );
 
 Map<String, dynamic> _$SocketConnectFailureEventToJson(
-        SocketConnectFailureEvent instance) =>
+    SocketConnectFailureEvent instance) =>
     <String, dynamic>{
       'connectionInfo': instance.connectionInfo?.toJson(),
       'port': instance.port,
       'host': instance.host,
       'timeout': instance.timeout,
       'timeTakenMillis': instance.timeTakenMillis,
-      'exception': instance.exception.toJson(),
+      'exception': instance.exception?.toJson(),
     };
 
 SSLSocketAttemptEvent _$SSLSocketAttemptEventFromJson(
-        Map<String, dynamic> json) =>
+    Map<String, dynamic> json) =>
     SSLSocketAttemptEvent(
-      port: json['port'] as int,
+      port: json['port'] as int?,
       host: json['host'] as String?,
-      timeout: json['timeout'] as int,
+      timeout: json['timeout'] as int?,
       connectionInfo: json['connectionInfo'] == null
           ? null
           : ConnectionInfo.fromJson(
-              json['connectionInfo'] as Map<String, dynamic>),
+          json['connectionInfo'] as Map<String, dynamic>),
     );
 
 Map<String, dynamic> _$SSLSocketAttemptEventToJson(
-        SSLSocketAttemptEvent instance) =>
+    SSLSocketAttemptEvent instance) =>
     <String, dynamic>{
       'connectionInfo': instance.connectionInfo?.toJson(),
       'port': instance.port,
@@ -222,20 +238,20 @@ Map<String, dynamic> _$SSLSocketAttemptEventToJson(
     };
 
 SSLSocketSuccessEvent _$SSLSocketSuccessEventFromJson(
-        Map<String, dynamic> json) =>
+    Map<String, dynamic> json) =>
     SSLSocketSuccessEvent(
-      port: json['port'] as int,
+      port: json['port'] as int?,
       host: json['host'] as String?,
-      timeout: json['timeout'] as int,
-      timeTakenMillis: json['timeTakenMillis'] as int,
+      timeout: json['timeout'] as int?,
+      timeTakenMillis: json['timeTakenMillis'] as int?,
       connectionInfo: json['connectionInfo'] == null
           ? null
           : ConnectionInfo.fromJson(
-              json['connectionInfo'] as Map<String, dynamic>),
+          json['connectionInfo'] as Map<String, dynamic>),
     );
 
 Map<String, dynamic> _$SSLSocketSuccessEventToJson(
-        SSLSocketSuccessEvent instance) =>
+    SSLSocketSuccessEvent instance) =>
     <String, dynamic>{
       'connectionInfo': instance.connectionInfo?.toJson(),
       'port': instance.port,
@@ -245,46 +261,48 @@ Map<String, dynamic> _$SSLSocketSuccessEventToJson(
     };
 
 SSLSocketFailureEvent _$SSLSocketFailureEventFromJson(
-        Map<String, dynamic> json) =>
+    Map<String, dynamic> json) =>
     SSLSocketFailureEvent(
-      port: json['port'] as int,
+      port: json['port'] as int?,
       host: json['host'] as String?,
-      timeout: json['timeout'] as int,
-      exception:
-          CourierException.fromJson(json['exception'] as Map<String, dynamic>),
-      timeTakenMillis: json['timeTakenMillis'] as int,
+      timeout: json['timeout'] as int?,
+      exception: json['exception'] == null
+          ? null
+          : CourierException.fromJson(
+          json['exception'] as Map<String, dynamic>),
+      timeTakenMillis: json['timeTakenMillis'] as int?,
       connectionInfo: json['connectionInfo'] == null
           ? null
           : ConnectionInfo.fromJson(
-              json['connectionInfo'] as Map<String, dynamic>),
+          json['connectionInfo'] as Map<String, dynamic>),
     );
 
 Map<String, dynamic> _$SSLSocketFailureEventToJson(
-        SSLSocketFailureEvent instance) =>
+    SSLSocketFailureEvent instance) =>
     <String, dynamic>{
       'connectionInfo': instance.connectionInfo?.toJson(),
       'port': instance.port,
       'host': instance.host,
       'timeout': instance.timeout,
-      'exception': instance.exception.toJson(),
+      'exception': instance.exception?.toJson(),
       'timeTakenMillis': instance.timeTakenMillis,
     };
 
 SSLHandshakeSuccessEvent _$SSLHandshakeSuccessEventFromJson(
-        Map<String, dynamic> json) =>
+    Map<String, dynamic> json) =>
     SSLHandshakeSuccessEvent(
-      port: json['port'] as int,
+      port: json['port'] as int?,
       host: json['host'] as String?,
-      timeout: json['timeout'] as int,
-      timeTakenMillis: json['timeTakenMillis'] as int,
+      timeout: json['timeout'] as int?,
+      timeTakenMillis: json['timeTakenMillis'] as int?,
       connectionInfo: json['connectionInfo'] == null
           ? null
           : ConnectionInfo.fromJson(
-              json['connectionInfo'] as Map<String, dynamic>),
+          json['connectionInfo'] as Map<String, dynamic>),
     );
 
 Map<String, dynamic> _$SSLHandshakeSuccessEventToJson(
-        SSLHandshakeSuccessEvent instance) =>
+    SSLHandshakeSuccessEvent instance) =>
     <String, dynamic>{
       'connectionInfo': instance.connectionInfo?.toJson(),
       'port': instance.port,
@@ -294,122 +312,124 @@ Map<String, dynamic> _$SSLHandshakeSuccessEventToJson(
     };
 
 ConnectPacketSendEvent _$ConnectPacketSendEventFromJson(
-        Map<String, dynamic> json) =>
+    Map<String, dynamic> json) =>
     ConnectPacketSendEvent(
       connectionInfo: json['connectionInfo'] == null
           ? null
           : ConnectionInfo.fromJson(
-              json['connectionInfo'] as Map<String, dynamic>),
+          json['connectionInfo'] as Map<String, dynamic>),
     );
 
 Map<String, dynamic> _$ConnectPacketSendEventToJson(
-        ConnectPacketSendEvent instance) =>
+    ConnectPacketSendEvent instance) =>
     <String, dynamic>{
       'connectionInfo': instance.connectionInfo?.toJson(),
     };
 
 MqttSubscribeAttemptEvent _$MqttSubscribeAttemptEventFromJson(
-        Map<String, dynamic> json) =>
+    Map<String, dynamic> json) =>
     MqttSubscribeAttemptEvent(
-      topics: (json['topics'] as Map<String, dynamic>).map(
-        (k, e) => MapEntry(k, $enumDecode(qoSEnumMap, e)),
+      topics: (json['topics'] as Map<String, dynamic>?)?.map(
+            (k, e) => MapEntry(k, $enumDecode(qoSEnumMap, e)),
       ),
       connectionInfo: json['connectionInfo'] == null
           ? null
           : ConnectionInfo.fromJson(
-              json['connectionInfo'] as Map<String, dynamic>),
+          json['connectionInfo'] as Map<String, dynamic>),
     );
 
 Map<String, dynamic> _$MqttSubscribeAttemptEventToJson(
-        MqttSubscribeAttemptEvent instance) =>
+    MqttSubscribeAttemptEvent instance) =>
     <String, dynamic>{
       'connectionInfo': instance.connectionInfo?.toJson(),
-      'topics': instance.topics.map((k, e) => MapEntry(k, qoSEnumMap[e])),
+      'topics': instance.topics?.map((k, e) => MapEntry(k, qoSEnumMap[e])),
     };
 
 const qoSEnumMap = {
-  QoS.ZERO: "ZERO",
-  QoS.ONE: "ONE",
-  QoS.TWO: "TWO",
+  QoS.ZERO: 0,
+  QoS.ONE: 1,
+  QoS.TWO: 2,
 };
 
 MqttSubscribeSuccessEvent _$MqttSubscribeSuccessEventFromJson(
-        Map<String, dynamic> json) =>
+    Map<String, dynamic> json) =>
     MqttSubscribeSuccessEvent(
-      topics: (json['topics'] as Map<String, dynamic>).map(
-        (k, e) => MapEntry(k, $enumDecode(qoSEnumMap, e)),
+      topics: (json['topics'] as Map<String, dynamic>?)?.map(
+            (k, e) => MapEntry(k, $enumDecode(qoSEnumMap, e)),
       ),
-      timeTakenMillis: json['timeTakenMillis'] as int,
+      timeTakenMillis: json['timeTakenMillis'] as int?,
       connectionInfo: json['connectionInfo'] == null
           ? null
           : ConnectionInfo.fromJson(
-              json['connectionInfo'] as Map<String, dynamic>),
+          json['connectionInfo'] as Map<String, dynamic>),
     );
 
 Map<String, dynamic> _$MqttSubscribeSuccessEventToJson(
-        MqttSubscribeSuccessEvent instance) =>
+    MqttSubscribeSuccessEvent instance) =>
     <String, dynamic>{
       'connectionInfo': instance.connectionInfo?.toJson(),
-      'topics': instance.topics.map((k, e) => MapEntry(k, qoSEnumMap[e])),
+      'topics': instance.topics?.map((k, e) => MapEntry(k, qoSEnumMap[e])),
       'timeTakenMillis': instance.timeTakenMillis,
     };
 
 MqttSubscribeFailureEvent _$MqttSubscribeFailureEventFromJson(
-        Map<String, dynamic> json) =>
+    Map<String, dynamic> json) =>
     MqttSubscribeFailureEvent(
-      topics: (json['topics'] as Map<String, dynamic>).map(
-        (k, e) => MapEntry(k, $enumDecode(qoSEnumMap, e)),
+      topics: (json['topics'] as Map<String, dynamic>?)?.map(
+            (k, e) => MapEntry(k, $enumDecode(qoSEnumMap, e)),
       ),
-      exception:
-          CourierException.fromJson(json['exception'] as Map<String, dynamic>),
-      timeTakenMillis: json['timeTakenMillis'] as int,
+      exception: json['exception'] == null
+          ? null
+          : CourierException.fromJson(
+          json['exception'] as Map<String, dynamic>),
+      timeTakenMillis: json['timeTakenMillis'] as int?,
       connectionInfo: json['connectionInfo'] == null
           ? null
           : ConnectionInfo.fromJson(
-              json['connectionInfo'] as Map<String, dynamic>),
+          json['connectionInfo'] as Map<String, dynamic>),
     );
 
 Map<String, dynamic> _$MqttSubscribeFailureEventToJson(
-        MqttSubscribeFailureEvent instance) =>
+    MqttSubscribeFailureEvent instance) =>
     <String, dynamic>{
       'connectionInfo': instance.connectionInfo?.toJson(),
-      'topics': instance.topics.map((k, e) => MapEntry(k, qoSEnumMap[e])),
-      'exception': instance.exception.toJson(),
+      'topics': instance.topics?.map((k, e) => MapEntry(k, qoSEnumMap[e])),
+      'exception': instance.exception?.toJson(),
       'timeTakenMillis': instance.timeTakenMillis,
     };
 
 MqttUnsubscribeAttemptEvent _$MqttUnsubscribeAttemptEventFromJson(
-        Map<String, dynamic> json) =>
+    Map<String, dynamic> json) =>
     MqttUnsubscribeAttemptEvent(
       topics:
-          (json['topics'] as List<dynamic>).map((e) => e as String).toList(),
+      (json['topics'] as List<dynamic>?)?.map((e) => e as String).toList(),
       connectionInfo: json['connectionInfo'] == null
           ? null
           : ConnectionInfo.fromJson(
-              json['connectionInfo'] as Map<String, dynamic>),
+          json['connectionInfo'] as Map<String, dynamic>),
     );
 
 Map<String, dynamic> _$MqttUnsubscribeAttemptEventToJson(
-        MqttUnsubscribeAttemptEvent instance) =>
+    MqttUnsubscribeAttemptEvent instance) =>
     <String, dynamic>{
       'connectionInfo': instance.connectionInfo?.toJson(),
       'topics': instance.topics,
     };
 
 MqttUnsubscribeSuccessEvent _$MqttUnsubscribeSuccessEventFromJson(
-        Map<String, dynamic> json) =>
+    Map<String, dynamic> json) =>
     MqttUnsubscribeSuccessEvent(
       topics:
-          (json['topics'] as List<dynamic>).map((e) => e as String).toList(),
-      timeTakenMillis: json['timeTakenMillis'] as int,
+      (json['topics'] as List<dynamic>?)?.map((e) => e as String).toList(),
+      timeTakenMillis: json['timeTakenMillis'] as int?,
       connectionInfo: json['connectionInfo'] == null
           ? null
           : ConnectionInfo.fromJson(
-              json['connectionInfo'] as Map<String, dynamic>),
+          json['connectionInfo'] as Map<String, dynamic>),
     );
 
 Map<String, dynamic> _$MqttUnsubscribeSuccessEventToJson(
-        MqttUnsubscribeSuccessEvent instance) =>
+    MqttUnsubscribeSuccessEvent instance) =>
     <String, dynamic>{
       'connectionInfo': instance.connectionInfo?.toJson(),
       'topics': instance.topics,
@@ -417,41 +437,43 @@ Map<String, dynamic> _$MqttUnsubscribeSuccessEventToJson(
     };
 
 MqttUnsubscribeFailureEvent _$MqttUnsubscribeFailureEventFromJson(
-        Map<String, dynamic> json) =>
+    Map<String, dynamic> json) =>
     MqttUnsubscribeFailureEvent(
       topics:
-          (json['topics'] as List<dynamic>).map((e) => e as String).toList(),
-      exception:
-          CourierException.fromJson(json['exception'] as Map<String, dynamic>),
-      timeTakenMillis: json['timeTakenMillis'] as int,
+      (json['topics'] as List<dynamic>?)?.map((e) => e as String).toList(),
+      exception: json['exception'] == null
+          ? null
+          : CourierException.fromJson(
+          json['exception'] as Map<String, dynamic>),
+      timeTakenMillis: json['timeTakenMillis'] as int?,
       connectionInfo: json['connectionInfo'] == null
           ? null
           : ConnectionInfo.fromJson(
-              json['connectionInfo'] as Map<String, dynamic>),
+          json['connectionInfo'] as Map<String, dynamic>),
     );
 
 Map<String, dynamic> _$MqttUnsubscribeFailureEventToJson(
-        MqttUnsubscribeFailureEvent instance) =>
+    MqttUnsubscribeFailureEvent instance) =>
     <String, dynamic>{
       'connectionInfo': instance.connectionInfo?.toJson(),
       'topics': instance.topics,
-      'exception': instance.exception.toJson(),
+      'exception': instance.exception?.toJson(),
       'timeTakenMillis': instance.timeTakenMillis,
     };
 
 MqttMessageReceiveEvent _$MqttMessageReceiveEventFromJson(
-        Map<String, dynamic> json) =>
+    Map<String, dynamic> json) =>
     MqttMessageReceiveEvent(
-      topic: json['topic'] as String,
-      sizeBytes: json['sizeBytes'] as int,
+      topic: json['topic'] as String?,
+      sizeBytes: json['sizeBytes'] as int?,
       connectionInfo: json['connectionInfo'] == null
           ? null
           : ConnectionInfo.fromJson(
-              json['connectionInfo'] as Map<String, dynamic>),
+          json['connectionInfo'] as Map<String, dynamic>),
     );
 
 Map<String, dynamic> _$MqttMessageReceiveEventToJson(
-        MqttMessageReceiveEvent instance) =>
+    MqttMessageReceiveEvent instance) =>
     <String, dynamic>{
       'connectionInfo': instance.connectionInfo?.toJson(),
       'topic': instance.topic,
@@ -459,41 +481,43 @@ Map<String, dynamic> _$MqttMessageReceiveEventToJson(
     };
 
 MqttMessageReceiveErrorEvent _$MqttMessageReceiveErrorEventFromJson(
-        Map<String, dynamic> json) =>
+    Map<String, dynamic> json) =>
     MqttMessageReceiveErrorEvent(
-      topic: json['topic'] as String,
-      sizeBytes: json['sizeBytes'] as int,
-      exception:
-          CourierException.fromJson(json['exception'] as Map<String, dynamic>),
+      topic: json['topic'] as String?,
+      sizeBytes: json['sizeBytes'] as int?,
+      exception: json['exception'] == null
+          ? null
+          : CourierException.fromJson(
+          json['exception'] as Map<String, dynamic>),
       connectionInfo: json['connectionInfo'] == null
           ? null
           : ConnectionInfo.fromJson(
-              json['connectionInfo'] as Map<String, dynamic>),
+          json['connectionInfo'] as Map<String, dynamic>),
     );
 
 Map<String, dynamic> _$MqttMessageReceiveErrorEventToJson(
-        MqttMessageReceiveErrorEvent instance) =>
+    MqttMessageReceiveErrorEvent instance) =>
     <String, dynamic>{
       'connectionInfo': instance.connectionInfo?.toJson(),
       'topic': instance.topic,
       'sizeBytes': instance.sizeBytes,
-      'exception': instance.exception.toJson(),
+      'exception': instance.exception?.toJson(),
     };
 
 MqttMessageSendEvent _$MqttMessageSendEventFromJson(
-        Map<String, dynamic> json) =>
+    Map<String, dynamic> json) =>
     MqttMessageSendEvent(
-      topic: json['topic'] as String,
-      qos: json['qos'] as int,
-      sizeBytes: json['sizeBytes'] as int,
+      topic: json['topic'] as String?,
+      qos: json['qos'] as int?,
+      sizeBytes: json['sizeBytes'] as int?,
       connectionInfo: json['connectionInfo'] == null
           ? null
           : ConnectionInfo.fromJson(
-              json['connectionInfo'] as Map<String, dynamic>),
+          json['connectionInfo'] as Map<String, dynamic>),
     );
 
 Map<String, dynamic> _$MqttMessageSendEventToJson(
-        MqttMessageSendEvent instance) =>
+    MqttMessageSendEvent instance) =>
     <String, dynamic>{
       'connectionInfo': instance.connectionInfo?.toJson(),
       'topic': instance.topic,
@@ -502,19 +526,19 @@ Map<String, dynamic> _$MqttMessageSendEventToJson(
     };
 
 MqttMessageSendSuccessEvent _$MqttMessageSendSuccessEventFromJson(
-        Map<String, dynamic> json) =>
+    Map<String, dynamic> json) =>
     MqttMessageSendSuccessEvent(
-      topic: json['topic'] as String,
-      qos: json['qos'] as int,
-      sizeBytes: json['sizeBytes'] as int,
+      topic: json['topic'] as String?,
+      qos: json['qos'] as int?,
+      sizeBytes: json['sizeBytes'] as int?,
       connectionInfo: json['connectionInfo'] == null
           ? null
           : ConnectionInfo.fromJson(
-              json['connectionInfo'] as Map<String, dynamic>),
+          json['connectionInfo'] as Map<String, dynamic>),
     );
 
 Map<String, dynamic> _$MqttMessageSendSuccessEventToJson(
-        MqttMessageSendSuccessEvent instance) =>
+    MqttMessageSendSuccessEvent instance) =>
     <String, dynamic>{
       'connectionInfo': instance.connectionInfo?.toJson(),
       'topic': instance.topic,
@@ -523,43 +547,45 @@ Map<String, dynamic> _$MqttMessageSendSuccessEventToJson(
     };
 
 MqttMessageSendFailureEvent _$MqttMessageSendFailureEventFromJson(
-        Map<String, dynamic> json) =>
+    Map<String, dynamic> json) =>
     MqttMessageSendFailureEvent(
-      topic: json['topic'] as String,
-      qos: json['qos'] as int,
-      sizeBytes: json['sizeBytes'] as int,
-      exception:
-          CourierException.fromJson(json['exception'] as Map<String, dynamic>),
+      topic: json['topic'] as String?,
+      qos: json['qos'] as int?,
+      sizeBytes: json['sizeBytes'] as int?,
+      exception: json['exception'] == null
+          ? null
+          : CourierException.fromJson(
+          json['exception'] as Map<String, dynamic>),
       connectionInfo: json['connectionInfo'] == null
           ? null
           : ConnectionInfo.fromJson(
-              json['connectionInfo'] as Map<String, dynamic>),
+          json['connectionInfo'] as Map<String, dynamic>),
     );
 
 Map<String, dynamic> _$MqttMessageSendFailureEventToJson(
-        MqttMessageSendFailureEvent instance) =>
+    MqttMessageSendFailureEvent instance) =>
     <String, dynamic>{
       'connectionInfo': instance.connectionInfo?.toJson(),
       'topic': instance.topic,
       'qos': instance.qos,
       'sizeBytes': instance.sizeBytes,
-      'exception': instance.exception.toJson(),
+      'exception': instance.exception?.toJson(),
     };
 
 MqttPingInitiatedEvent _$MqttPingInitiatedEventFromJson(
-        Map<String, dynamic> json) =>
+    Map<String, dynamic> json) =>
     MqttPingInitiatedEvent(
-      serverUri: json['serverUri'] as String,
-      keepAliveSecs: json['keepAliveSecs'] as int,
-      isAdaptive: json['isAdaptive'] as bool,
+      serverUri: json['serverUri'] as String?,
+      keepAliveSecs: json['keepAliveSecs'] as int?,
+      isAdaptive: json['isAdaptive'] as bool?,
       connectionInfo: json['connectionInfo'] == null
           ? null
           : ConnectionInfo.fromJson(
-              json['connectionInfo'] as Map<String, dynamic>),
+          json['connectionInfo'] as Map<String, dynamic>),
     );
 
 Map<String, dynamic> _$MqttPingInitiatedEventToJson(
-        MqttPingInitiatedEvent instance) =>
+    MqttPingInitiatedEvent instance) =>
     <String, dynamic>{
       'connectionInfo': instance.connectionInfo?.toJson(),
       'serverUri': instance.serverUri,
@@ -568,19 +594,19 @@ Map<String, dynamic> _$MqttPingInitiatedEventToJson(
     };
 
 MqttPingScheduledEvent _$MqttPingScheduledEventFromJson(
-        Map<String, dynamic> json) =>
+    Map<String, dynamic> json) =>
     MqttPingScheduledEvent(
-      nextPingTimeSecs: json['nextPingTimeSecs'] as int,
-      keepAliveSecs: json['keepAliveSecs'] as int,
-      isAdaptive: json['isAdaptive'] as bool,
+      nextPingTimeSecs: json['nextPingTimeSecs'] as int?,
+      keepAliveSecs: json['keepAliveSecs'] as int?,
+      isAdaptive: json['isAdaptive'] as bool?,
       connectionInfo: json['connectionInfo'] == null
           ? null
           : ConnectionInfo.fromJson(
-              json['connectionInfo'] as Map<String, dynamic>),
+          json['connectionInfo'] as Map<String, dynamic>),
     );
 
 Map<String, dynamic> _$MqttPingScheduledEventToJson(
-        MqttPingScheduledEvent instance) =>
+    MqttPingScheduledEvent instance) =>
     <String, dynamic>{
       'connectionInfo': instance.connectionInfo?.toJson(),
       'nextPingTimeSecs': instance.nextPingTimeSecs,
@@ -589,19 +615,19 @@ Map<String, dynamic> _$MqttPingScheduledEventToJson(
     };
 
 MqttPingCancelledEvent _$MqttPingCancelledEventFromJson(
-        Map<String, dynamic> json) =>
+    Map<String, dynamic> json) =>
     MqttPingCancelledEvent(
-      serverUri: json['serverUri'] as String,
-      keepAliveSecs: json['keepAliveSecs'] as int,
-      isAdaptive: json['isAdaptive'] as bool,
+      serverUri: json['serverUri'] as String?,
+      keepAliveSecs: json['keepAliveSecs'] as int?,
+      isAdaptive: json['isAdaptive'] as bool?,
       connectionInfo: json['connectionInfo'] == null
           ? null
           : ConnectionInfo.fromJson(
-              json['connectionInfo'] as Map<String, dynamic>),
+          json['connectionInfo'] as Map<String, dynamic>),
     );
 
 Map<String, dynamic> _$MqttPingCancelledEventToJson(
-        MqttPingCancelledEvent instance) =>
+    MqttPingCancelledEvent instance) =>
     <String, dynamic>{
       'connectionInfo': instance.connectionInfo?.toJson(),
       'serverUri': instance.serverUri,
@@ -610,20 +636,20 @@ Map<String, dynamic> _$MqttPingCancelledEventToJson(
     };
 
 MqttPingSuccessEvent _$MqttPingSuccessEventFromJson(
-        Map<String, dynamic> json) =>
+    Map<String, dynamic> json) =>
     MqttPingSuccessEvent(
-      serverUri: json['serverUri'] as String,
-      timeTakenMillis: json['timeTakenMillis'] as int,
-      keepAliveSecs: json['keepAliveSecs'] as int,
-      isAdaptive: json['isAdaptive'] as bool,
+      serverUri: json['serverUri'] as String?,
+      timeTakenMillis: json['timeTakenMillis'] as int?,
+      keepAliveSecs: json['keepAliveSecs'] as int?,
+      isAdaptive: json['isAdaptive'] as bool?,
       connectionInfo: json['connectionInfo'] == null
           ? null
           : ConnectionInfo.fromJson(
-              json['connectionInfo'] as Map<String, dynamic>),
+          json['connectionInfo'] as Map<String, dynamic>),
     );
 
 Map<String, dynamic> _$MqttPingSuccessEventToJson(
-        MqttPingSuccessEvent instance) =>
+    MqttPingSuccessEvent instance) =>
     <String, dynamic>{
       'connectionInfo': instance.connectionInfo?.toJson(),
       'serverUri': instance.serverUri,
@@ -633,82 +659,86 @@ Map<String, dynamic> _$MqttPingSuccessEventToJson(
     };
 
 MqttPingFailureEvent _$MqttPingFailureEventFromJson(
-        Map<String, dynamic> json) =>
+    Map<String, dynamic> json) =>
     MqttPingFailureEvent(
-      serverUri: json['serverUri'] as String,
-      timeTakenMillis: json['timeTakenMillis'] as int,
-      keepAliveSecs: json['keepAliveSecs'] as int,
-      exception:
-          CourierException.fromJson(json['exception'] as Map<String, dynamic>),
-      isAdaptive: json['isAdaptive'] as bool,
+      serverUri: json['serverUri'] as String?,
+      timeTakenMillis: json['timeTakenMillis'] as int?,
+      keepAliveSecs: json['keepAliveSecs'] as int?,
+      exception: json['exception'] == null
+          ? null
+          : CourierException.fromJson(
+          json['exception'] as Map<String, dynamic>),
+      isAdaptive: json['isAdaptive'] as bool?,
       connectionInfo: json['connectionInfo'] == null
           ? null
           : ConnectionInfo.fromJson(
-              json['connectionInfo'] as Map<String, dynamic>),
+          json['connectionInfo'] as Map<String, dynamic>),
     );
 
 Map<String, dynamic> _$MqttPingFailureEventToJson(
-        MqttPingFailureEvent instance) =>
+    MqttPingFailureEvent instance) =>
     <String, dynamic>{
       'connectionInfo': instance.connectionInfo?.toJson(),
       'serverUri': instance.serverUri,
       'timeTakenMillis': instance.timeTakenMillis,
       'keepAliveSecs': instance.keepAliveSecs,
-      'exception': instance.exception.toJson(),
+      'exception': instance.exception?.toJson(),
       'isAdaptive': instance.isAdaptive,
     };
 
 MqttPingExceptionEvent _$MqttPingExceptionEventFromJson(
-        Map<String, dynamic> json) =>
+    Map<String, dynamic> json) =>
     MqttPingExceptionEvent(
-      exception:
-          CourierException.fromJson(json['exception'] as Map<String, dynamic>),
-      isAdaptive: json['isAdaptive'] as bool,
+      exception: json['exception'] == null
+          ? null
+          : CourierException.fromJson(
+          json['exception'] as Map<String, dynamic>),
+      isAdaptive: json['isAdaptive'] as bool?,
       connectionInfo: json['connectionInfo'] == null
           ? null
           : ConnectionInfo.fromJson(
-              json['connectionInfo'] as Map<String, dynamic>),
+          json['connectionInfo'] as Map<String, dynamic>),
     );
 
 Map<String, dynamic> _$MqttPingExceptionEventToJson(
-        MqttPingExceptionEvent instance) =>
+    MqttPingExceptionEvent instance) =>
     <String, dynamic>{
       'connectionInfo': instance.connectionInfo?.toJson(),
-      'exception': instance.exception.toJson(),
+      'exception': instance.exception?.toJson(),
       'isAdaptive': instance.isAdaptive,
     };
 
 BackgroundAlarmPingLimitReached _$BackgroundAlarmPingLimitReachedFromJson(
-        Map<String, dynamic> json) =>
+    Map<String, dynamic> json) =>
     BackgroundAlarmPingLimitReached(
-      isAdaptive: json['isAdaptive'] as bool,
+      isAdaptive: json['isAdaptive'] as bool?,
       connectionInfo: json['connectionInfo'] == null
           ? null
           : ConnectionInfo.fromJson(
-              json['connectionInfo'] as Map<String, dynamic>),
+          json['connectionInfo'] as Map<String, dynamic>),
     );
 
 Map<String, dynamic> _$BackgroundAlarmPingLimitReachedToJson(
-        BackgroundAlarmPingLimitReached instance) =>
+    BackgroundAlarmPingLimitReached instance) =>
     <String, dynamic>{
       'connectionInfo': instance.connectionInfo?.toJson(),
       'isAdaptive': instance.isAdaptive,
     };
 
 OptimalKeepAliveFoundEvent _$OptimalKeepAliveFoundEventFromJson(
-        Map<String, dynamic> json) =>
+    Map<String, dynamic> json) =>
     OptimalKeepAliveFoundEvent(
-      timeMinutes: json['timeMinutes'] as int,
-      probeCount: json['probeCount'] as int,
-      convergenceTime: json['convergenceTime'] as int,
+      timeMinutes: json['timeMinutes'] as int?,
+      probeCount: json['probeCount'] as int?,
+      convergenceTime: json['convergenceTime'] as int?,
       connectionInfo: json['connectionInfo'] == null
           ? null
           : ConnectionInfo.fromJson(
-              json['connectionInfo'] as Map<String, dynamic>),
+          json['connectionInfo'] as Map<String, dynamic>),
     );
 
 Map<String, dynamic> _$OptimalKeepAliveFoundEventToJson(
-        OptimalKeepAliveFoundEvent instance) =>
+    OptimalKeepAliveFoundEvent instance) =>
     <String, dynamic>{
       'connectionInfo': instance.connectionInfo?.toJson(),
       'timeMinutes': instance.timeMinutes,
@@ -721,7 +751,7 @@ MqttReconnectEvent _$MqttReconnectEventFromJson(Map<String, dynamic> json) =>
       connectionInfo: json['connectionInfo'] == null
           ? null
           : ConnectionInfo.fromJson(
-              json['connectionInfo'] as Map<String, dynamic>),
+          json['connectionInfo'] as Map<String, dynamic>),
     );
 
 Map<String, dynamic> _$MqttReconnectEventToJson(MqttReconnectEvent instance) =>
@@ -734,90 +764,90 @@ MqttDisconnectEvent _$MqttDisconnectEventFromJson(Map<String, dynamic> json) =>
       connectionInfo: json['connectionInfo'] == null
           ? null
           : ConnectionInfo.fromJson(
-              json['connectionInfo'] as Map<String, dynamic>),
+          json['connectionInfo'] as Map<String, dynamic>),
     );
 
 Map<String, dynamic> _$MqttDisconnectEventToJson(
-        MqttDisconnectEvent instance) =>
+    MqttDisconnectEvent instance) =>
     <String, dynamic>{
       'connectionInfo': instance.connectionInfo?.toJson(),
     };
 
 MqttDisconnectStartEvent _$MqttDisconnectStartEventFromJson(
-        Map<String, dynamic> json) =>
+    Map<String, dynamic> json) =>
     MqttDisconnectStartEvent(
       connectionInfo: json['connectionInfo'] == null
           ? null
           : ConnectionInfo.fromJson(
-              json['connectionInfo'] as Map<String, dynamic>),
+          json['connectionInfo'] as Map<String, dynamic>),
     );
 
 Map<String, dynamic> _$MqttDisconnectStartEventToJson(
-        MqttDisconnectStartEvent instance) =>
+    MqttDisconnectStartEvent instance) =>
     <String, dynamic>{
       'connectionInfo': instance.connectionInfo?.toJson(),
     };
 
 MqttDisconnectCompleteEvent _$MqttDisconnectCompleteEventFromJson(
-        Map<String, dynamic> json) =>
+    Map<String, dynamic> json) =>
     MqttDisconnectCompleteEvent(
       connectionInfo: json['connectionInfo'] == null
           ? null
           : ConnectionInfo.fromJson(
-              json['connectionInfo'] as Map<String, dynamic>),
+          json['connectionInfo'] as Map<String, dynamic>),
     );
 
 Map<String, dynamic> _$MqttDisconnectCompleteEventToJson(
-        MqttDisconnectCompleteEvent instance) =>
+    MqttDisconnectCompleteEvent instance) =>
     <String, dynamic>{
       'connectionInfo': instance.connectionInfo?.toJson(),
     };
 
 OfflineMessageDiscardedEvent _$OfflineMessageDiscardedEventFromJson(
-        Map<String, dynamic> json) =>
+    Map<String, dynamic> json) =>
     OfflineMessageDiscardedEvent(
-      messageId: json['messageId'] as int,
+      messageId: json['messageId'] as int?,
       connectionInfo: json['connectionInfo'] == null
           ? null
           : ConnectionInfo.fromJson(
-              json['connectionInfo'] as Map<String, dynamic>),
+          json['connectionInfo'] as Map<String, dynamic>),
     );
 
 Map<String, dynamic> _$OfflineMessageDiscardedEventToJson(
-        OfflineMessageDiscardedEvent instance) =>
+    OfflineMessageDiscardedEvent instance) =>
     <String, dynamic>{
       'connectionInfo': instance.connectionInfo?.toJson(),
       'messageId': instance.messageId,
     };
 
 InboundInactivityEvent _$InboundInactivityEventFromJson(
-        Map<String, dynamic> json) =>
+    Map<String, dynamic> json) =>
     InboundInactivityEvent(
       connectionInfo: json['connectionInfo'] == null
           ? null
           : ConnectionInfo.fromJson(
-              json['connectionInfo'] as Map<String, dynamic>),
+          json['connectionInfo'] as Map<String, dynamic>),
     );
 
 Map<String, dynamic> _$InboundInactivityEventToJson(
-        InboundInactivityEvent instance) =>
+    InboundInactivityEvent instance) =>
     <String, dynamic>{
       'connectionInfo': instance.connectionInfo?.toJson(),
     };
 
 HandlerThreadNotAliveEvent _$HandlerThreadNotAliveEventFromJson(
-        Map<String, dynamic> json) =>
+    Map<String, dynamic> json) =>
     HandlerThreadNotAliveEvent(
-      isInterrupted: json['isInterrupted'] as bool,
-      state: $enumDecode(_$ThreadStateEnumMap, json['state']),
+      isInterrupted: json['isInterrupted'] as bool?,
+      state: $enumDecodeNullable(_$ThreadStateEnumMap, json['state']),
       connectionInfo: json['connectionInfo'] == null
           ? null
           : ConnectionInfo.fromJson(
-              json['connectionInfo'] as Map<String, dynamic>),
+          json['connectionInfo'] as Map<String, dynamic>),
     );
 
 Map<String, dynamic> _$HandlerThreadNotAliveEventToJson(
-        HandlerThreadNotAliveEvent instance) =>
+    HandlerThreadNotAliveEvent instance) =>
     <String, dynamic>{
       'connectionInfo': instance.connectionInfo?.toJson(),
       'isInterrupted': instance.isInterrupted,
@@ -834,68 +864,88 @@ const _$ThreadStateEnumMap = {
 };
 
 AuthenticatorAttemptEvent _$AuthenticatorAttemptEventFromJson(
-        Map<String, dynamic> json) =>
+    Map<String, dynamic> json) =>
     AuthenticatorAttemptEvent(
-      forceRefresh: json['forceRefresh'] as bool,
-      connectOptions: MqttConnectOption.fromJson(
+      forceRefresh: json['forceRefresh'] as bool?,
+      connectOptions: json['connectOptions'] == null
+          ? null
+          : MqttConnectOption.fromJson(
           json['connectOptions'] as Map<String, dynamic>),
       connectionInfo: json['connectionInfo'] == null
           ? null
           : ConnectionInfo.fromJson(
-              json['connectionInfo'] as Map<String, dynamic>),
+          json['connectionInfo'] as Map<String, dynamic>),
     );
 
 Map<String, dynamic> _$AuthenticatorAttemptEventToJson(
-        AuthenticatorAttemptEvent instance) =>
+    AuthenticatorAttemptEvent instance) =>
     <String, dynamic>{
       'connectionInfo': instance.connectionInfo?.toJson(),
       'forceRefresh': instance.forceRefresh,
-      'connectOptions': instance.connectOptions.toJson(),
+      'connectOptions': instance.connectOptions?.toJson(),
     };
 
 AuthenticatorSuccessEvent _$AuthenticatorSuccessEventFromJson(
-        Map<String, dynamic> json) =>
+    Map<String, dynamic> json) =>
     AuthenticatorSuccessEvent(
-      forceRefresh: json['forceRefresh'] as bool,
-      connectOptions: MqttConnectOption.fromJson(
+      forceRefresh: json['forceRefresh'] as bool?,
+      connectOptions: json['connectOptions'] == null
+          ? null
+          : MqttConnectOption.fromJson(
           json['connectOptions'] as Map<String, dynamic>),
-      timeTakenMillis: json['timeTakenMillis'] as int,
+      timeTakenMillis: json['timeTakenMillis'] as int?,
       connectionInfo: json['connectionInfo'] == null
           ? null
           : ConnectionInfo.fromJson(
-              json['connectionInfo'] as Map<String, dynamic>),
+          json['connectionInfo'] as Map<String, dynamic>),
     );
 
 Map<String, dynamic> _$AuthenticatorSuccessEventToJson(
-        AuthenticatorSuccessEvent instance) =>
+    AuthenticatorSuccessEvent instance) =>
     <String, dynamic>{
       'connectionInfo': instance.connectionInfo?.toJson(),
       'forceRefresh': instance.forceRefresh,
-      'connectOptions': instance.connectOptions.toJson(),
+      'connectOptions': instance.connectOptions?.toJson(),
       'timeTakenMillis': instance.timeTakenMillis,
     };
 
 AuthenticatorErrorEvent _$AuthenticatorErrorEventFromJson(
-        Map<String, dynamic> json) =>
+    Map<String, dynamic> json) =>
     AuthenticatorErrorEvent(
-      exception:
-          CourierException.fromJson(json['exception'] as Map<String, dynamic>),
-      nextRetryTimeSecs: json['nextRetryTimeSecs'] as int,
-      activeNetworkInfo: ActiveNetInfo.fromJson(
+      exception: json['exception'] == null
+          ? null
+          : CourierException.fromJson(
+          json['exception'] as Map<String, dynamic>),
+      nextRetryTimeSecs: json['nextRetryTimeSecs'] as int?,
+      activeNetworkInfo: json['activeNetworkInfo'] == null
+          ? null
+          : ActiveNetInfo.fromJson(
           json['activeNetworkInfo'] as Map<String, dynamic>),
-      timeTakenMillis: json['timeTakenMillis'] as int,
+      timeTakenMillis: json['timeTakenMillis'] as int?,
       connectionInfo: json['connectionInfo'] == null
           ? null
           : ConnectionInfo.fromJson(
-              json['connectionInfo'] as Map<String, dynamic>),
+          json['connectionInfo'] as Map<String, dynamic>),
     );
 
 Map<String, dynamic> _$AuthenticatorErrorEventToJson(
-        AuthenticatorErrorEvent instance) =>
+    AuthenticatorErrorEvent instance) =>
     <String, dynamic>{
       'connectionInfo': instance.connectionInfo?.toJson(),
-      'exception': instance.exception.toJson(),
+      'exception': instance.exception?.toJson(),
       'nextRetryTimeSecs': instance.nextRetryTimeSecs,
-      'activeNetworkInfo': instance.activeNetworkInfo.toJson(),
+      'activeNetworkInfo': instance.activeNetworkInfo?.toJson(),
       'timeTakenMillis': instance.timeTakenMillis,
+    };
+
+CourierDisconnectEvent _$CourierDisconnectEventFromJson(
+    Map<String, dynamic> json) =>
+    CourierDisconnectEvent(
+      clearState: json['clearState'] as bool?,
+    );
+
+Map<String, dynamic> _$CourierDisconnectEventToJson(
+    CourierDisconnectEvent instance) =>
+    <String, dynamic>{
+      'clearState': instance.clearState,
     };
