@@ -7,7 +7,7 @@ part 'mqtt_connect_option.g.dart';
 
 @JsonSerializable()
 class MqttConnectOption{
-  final List<ServerUri> serverUris;
+  final ServerUri serverUri;
   final KeepAlive keepAlive;
   final String clientId;
   final String username;
@@ -18,7 +18,7 @@ class MqttConnectOption{
   final Map<String, String> userPropertiesMap;
 
   MqttConnectOption({
-      required this.serverUris,
+      required this.serverUri,
       required this.keepAlive,
       required this.clientId,
       required this.username,

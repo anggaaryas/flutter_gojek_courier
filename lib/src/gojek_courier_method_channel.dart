@@ -443,7 +443,7 @@ class MethodChannelGojekCourier extends GojekCourierPlatform {
   }
 
   @override
-  Future<void> send(String topic, Map<String, Object> msg,
+  Future<void> send(String topic, String msg,
       [QoS qoS = QoS.ZERO]) async {
     await methodChannel.invokeMethod<String>(
         'send', {'topic': topic, 'msg': msg, 'qos': '${qoSEnumMap[qoS]}'});

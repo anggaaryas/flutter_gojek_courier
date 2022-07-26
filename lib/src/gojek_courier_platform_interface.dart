@@ -42,6 +42,6 @@ abstract class GojekCourierBehaviour{
   Future<void> subscribe(String topic, [QoS qoS =  QoS.ZERO]);
   Future<void> unsubscribe(String topic);
   Future<void> disconnect();
-  Future<void> send(String topic, Map<String, Object> msg, [QoS qoS =  QoS.ZERO]);
+  Future<void> send(String topic, String msg, [QoS qoS =  QoS.ZERO]);
 
 }

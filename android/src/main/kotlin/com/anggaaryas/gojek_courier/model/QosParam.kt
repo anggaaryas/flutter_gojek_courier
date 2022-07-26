@@ -6,6 +6,7 @@ class QosParam(value:String) : EnumParam<QoS>(value) {
     lateinit var qoS: QoS
 
     init {
+        println(value)
         when(value){
             "ZERO" -> qoS = QoS.ZERO
             "ONE" -> qoS = QoS.ONE

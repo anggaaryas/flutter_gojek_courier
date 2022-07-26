@@ -12,6 +12,7 @@ class EventHandler: ICourierEventHandler {
     
     let eventSink: FlutterEventSink
     
+    
     init(eventSink : @escaping FlutterEventSink){
         self.eventSink = eventSink
     }

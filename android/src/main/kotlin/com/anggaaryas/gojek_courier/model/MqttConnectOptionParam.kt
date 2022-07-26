@@ -10,7 +10,7 @@ import java.util.*
 
 
 class MqttConnectOptionParam(value: Map<String, Any?>): Param<MqttConnectOptions>(value) {
-    var serverUris: MutableList<ServerUriParam>? = null
+    var serverUri: ServerUriParam? = null
     var keepAlive: KeepAliveParam? = null
     var clientId: String? = null
     var username: String? = null
@@ -21,12 +21,8 @@ class MqttConnectOptionParam(value: Map<String, Any?>): Param<MqttConnectOptions
     var userPropertiesMap: Map<String, String>? = null
 
     init {
-        value.getValue("serverUris")?.let {
-            var list = it as List<Map<String, Any>>
-            serverUris = mutableListOf()
-            for(item in list){
-                serverUris?.add(ServerUriParam(item))
-            }
+        value.getValue("serverUri")?.let {
+            serverUri = ServerUriParam(it as Map<String, Any?>)
         }
         value.getValue("keepAlive")?.let {
             keepAlive = KeepAliveParam(it as Map<String, Any?>)
@@ -56,9 +52,11 @@ class MqttConnectOptionParam(value: Map<String, Any?>): Param<MqttConnectOptions
 
     override fun build(context: Context, logger: Listener): MqttConnectOptions? {
         val temp = mutableListOf<ServerUri>()
-        for(item in serverUris ?: mutableListOf()){
-            temp.add(item.build(context, logger))
+        if(serverUri != null){
+            val build = serverUri!!.build(context, logger)
+            temp.add(build)
         }
+
         return keepAlive?.build(context, logger)?.let {
             MqttConnectOptions(
                 serverUris = Collections.unmodifiableList(temp),

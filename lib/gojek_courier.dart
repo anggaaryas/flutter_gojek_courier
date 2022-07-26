@@ -60,7 +60,7 @@ class GojekCourier implements GojekCourierBehaviour{
   }
 
   @override
-  Future<void> send(String topic, Map<String, Object> msg, [QoS qoS =  QoS.ZERO]) {
+  Future<void> send(String topic, String msg, [QoS qoS =  QoS.ZERO]) {
     return GojekCourierPlatform.instance.send(topic, msg, qoS);
   }
 }

@@ -1,18 +1,23 @@
 import Flutter
 import UIKit
 
+@available(iOS 13.0, *)
 public class SwiftGojekCourierPlugin: NSObject, FlutterPlugin {
     
     let eventChannelName = "event_channel"
-    let receiveDataChannel = "receive_data_channel"
+    let receiveDataChannelName = "receive_data_channel"
     
-    let eventStreamHandler = EventStreamHandler()
+    var eventStreamHandler : EventStreamHandler?
+    var receiveDataHandler: ReceiveDataHandler?
     
     let eventChannel : FlutterEventChannel?
+    let receiveDataChannel : FlutterEventChannel?
+    
+    var core = GojekCourierCore()
     
     init(registrar : FlutterPluginRegistrar) {
         eventChannel =  FlutterEventChannel(name: eventChannelName, binaryMessenger: registrar.messenger())
-        eventChannel!.setStreamHandler(eventStreamHandler)
+        receiveDataChannel =  FlutterEventChannel(name: receiveDataChannelName, binaryMessenger: registrar.messenger())
     }
     
     public static func register(with registrar: FlutterPluginRegistrar) {
@@ -22,6 +27,55 @@ public class SwiftGojekCourierPlugin: NSObject, FlutterPlugin {
     }
 
     public func handle(_ call: FlutterMethodCall, result: @escaping FlutterResult) {
-        result("iOS " + UIDevice.current.systemVersion)
+        switch call.method{
+        case "initialise" :
+            let param = call.arguments as? Dictionary<String, Any>
+            let courierParam = CourierParam(value: param ?? [:])
+            core.initCourier(courierParam: courierParam)
+            result("")
+            
+        case "connect":
+            let param = call.arguments as? Dictionary<String, Any>
+            let connectParam = MqttConnectOptionParam(value: param ?? [:])
+            core.connect(param: connectParam)
+            eventStreamHandler = EventStreamHandler(courierClient: core.courierClient!)
+            eventChannel!.setStreamHandler(eventStreamHandler)
+            receiveDataHandler = ReceiveDataHandler(incomingMessage: core.incomingMessage)
+            receiveDataChannel?.setStreamHandler(receiveDataHandler)
+            result("")
+            
+        case "disconnect":
+            core.disconnect()
+            result("")
+            
+        case "subscribe":
+            let param = call.arguments as? Dictionary<String, Any>
+            let qos = QosParam(value: param!["qos"] as! String).build()
+            let topic = param!["topic"] as! String
+            core.subscribe(topic: topic, qos: qos)
+            core.listen(topic: topic)
+            result("")
+            
+        case "unsubscribe":
+            let param = call.arguments as? Dictionary<String, Any>
+            let topic = param!["topic"] as! String
+            core.unsubscribe(topic: topic)
+            result("")
+            
+        case "send":
+            let param = call.arguments as? Dictionary<String, Any>
+            let topic = param!["topic"] as! String
+            let msg = param!["msg"] as! String
+            let qos = QosParam(value: param!["qos"] as! String).build()
+            do{
+                try core.send(topic: topic, message: msg, qos: qos)
+            } catch {
+                print(error)
+            }
+            result("")
+            
+        default:
+            print(call.method)
+        }
     }
 }

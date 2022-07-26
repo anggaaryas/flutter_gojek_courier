@@ -346,9 +346,9 @@ Map<String, dynamic> _$MqttSubscribeAttemptEventToJson(
     };
 
 const qoSEnumMap = {
-  QoS.ZERO: 0,
-  QoS.ONE: 1,
-  QoS.TWO: 2,
+  QoS.ZERO: "ZERO",
+  QoS.ONE: "ONE",
+  QoS.TWO: "TWO",
 };
 
 MqttSubscribeSuccessEvent _$MqttSubscribeSuccessEventFromJson(

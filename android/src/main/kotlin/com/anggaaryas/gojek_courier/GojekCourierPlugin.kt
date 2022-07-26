@@ -101,8 +101,7 @@ class GojekCourierPlugin : FlutterPlugin, MethodCallHandler, ActivityAware {
             }
             "send" -> {
                 val topic: String = call.argument("topic")!!
-                val param : Map<String, Objects> = call.argument("msg")!!
-                val message = JSONObject(param).toString()
+                val message : String = call.argument("msg")!!
                 val qos : QoS = QosParam(call.argument("qos")!!).build()
                 library.send(topic, message, qos)
                 result.success("")

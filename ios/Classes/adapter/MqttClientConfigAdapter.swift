@@ -20,8 +20,8 @@ class MqttClientConfigAdapter{
     func build() -> MQTTClientConfig{
         return MQTTClientConfig(
             authService: ConnectionServiceProvider(
-                ipAddress: connectOption.serverUris!.host!,
-                port: connectOption.serverUris!.port!,
+                ipAddress: connectOption.serverUri!.host!,
+                port: connectOption.serverUri!.port!,
                 clientId: connectOption.clientId!,
                 username: connectOption.username,
                 password: connectOption.password,
@@ -38,7 +38,11 @@ class MqttClientConfigAdapter{
             maxAutoReconnectInterval: mqttConfig.connectRetryTimePolicy?.maxReconnectTime ?? 10,
             enableAuthenticationTimeout: false, 
             authenticationTimeoutInterval: 30,
-            connectTimeoutPolicy: mqttConfig.connectTimeoutPolicy?.build() ?? ConnectTimeoutPolicy(),
+            connectTimeoutPolicy: ConnectTimeoutPolicy(
+                isEnabled: mqttConfig.connectTimeoutPolicy != nil,
+                timerInterval: 16,
+                timeout: mqttConfig.connectTimeoutPolicy?.sslUpperBoundConnTimeOut ?? 10
+            ),
             idleActivityTimeoutPolicy: IdleActivityTimeoutPolicy(
                 isEnabled: true,
                 timerInterval: mqttConfig.experimentConfig?.adaptiveKeepAliveConfig?.activityCheckIntervalSeconds ?? 12,

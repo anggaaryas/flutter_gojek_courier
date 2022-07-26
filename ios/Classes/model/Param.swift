@@ -8,7 +8,7 @@
 import Foundation
 
 
-class Param<T>{
+class Param{
     
     let value: Dictionary<String, Any?>
     
@@ -16,8 +16,17 @@ class Param<T>{
         self.value = value
     }
     
-    func build() -> T? {
-        fatalError("build has not been implemented")
+
+    func setClassParam(value: Any? , onNotNull: (Dictionary<String, Any?>) -> Void){
+        if let param = value as? Dictionary<String, Any?> {
+            onNotNull(param)
+        }
+    }
+    
+    func setBasicParam<T>(value: Any? , onNotNull: (T) -> Void){
+        if let param = value as? T {
+            onNotNull(param)
+        }
     }
 }
 

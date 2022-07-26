@@ -48,7 +48,7 @@ class _SimpleChatScreenState extends State<SimpleChatScreen> {
       ),
 
       password: "",
-      serverUris: [ServerUri(host: "broker.mqttdashboard.com", port: 1883,scheme: "tcp")],
+      serverUri: ServerUri(host: "broker.mqttdashboard.com", port: 1883,scheme: "tcp"),
       username: username,
     ));
   }
@@ -59,11 +59,10 @@ class _SimpleChatScreenState extends State<SimpleChatScreen> {
 
   Future<void> send(String topic, String msg) async {
     message.clear();
-    await gojekCourierPlugin.send("chat/testroom/$topic", {
+    await gojekCourierPlugin.send("chat/testroom/$topic", jsonEncode({
       "from" : username,
       "msg" : msg,
-
-    });
+    }).toString());
   }
 
   Future<void> initCourier() async {
@@ -118,6 +117,11 @@ class _SimpleChatScreenState extends State<SimpleChatScreen> {
                         ),
                       eventHandler: EventHandler(
                         onEvent: (event){
+                          if(event is MqttConnectSuccessEvent){
+                            setState((){
+                              isConnect = true;
+                            });
+                          }
                           ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(event.toString())));
                         }
                       ),
