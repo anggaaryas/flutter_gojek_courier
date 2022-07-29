@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
@@ -72,6 +73,11 @@ class MethodChannelGojekCourier extends GojekCourierPlatform {
   }
 
   void streamLogger() {
+
+    if(Platform.isIOS){
+      _courier?.configuration.logger?.i("Library", "Logger is not supported in Ios");
+    }
+
     _loggerStreamSubscription = loggerStream.listen((event) {
       var decode = jsonDecode(event);
       var type = decode["type"];
@@ -94,9 +100,9 @@ class MethodChannelGojekCourier extends GojekCourierPlatform {
 
   void streamEvent() {
     _eventStreamSubscription = eventStream.listen((event) {
-      print("event...");
-      print(event);
-
+      // print("event...");
+      // print(event);
+      event = (event as String).replaceAll('\\', '\\\\');
       var json = jsonDecode(event);
       final topic = (json["topic"] as String).split("\$")[1];
       final data = json["data"];

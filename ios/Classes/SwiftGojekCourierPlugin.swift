@@ -18,6 +18,11 @@ public class SwiftGojekCourierPlugin: NSObject, FlutterPlugin {
     init(registrar : FlutterPluginRegistrar) {
         eventChannel =  FlutterEventChannel(name: eventChannelName, binaryMessenger: registrar.messenger())
         receiveDataChannel =  FlutterEventChannel(name: receiveDataChannelName, binaryMessenger: registrar.messenger())
+        
+        eventStreamHandler = EventStreamHandler(library: core)
+        eventChannel!.setStreamHandler(eventStreamHandler)
+        receiveDataHandler = ReceiveDataHandler(library: core)
+        receiveDataChannel?.setStreamHandler(receiveDataHandler)
     }
     
     public static func register(with registrar: FlutterPluginRegistrar) {
@@ -31,17 +36,17 @@ public class SwiftGojekCourierPlugin: NSObject, FlutterPlugin {
         case "initialise" :
             let param = call.arguments as? Dictionary<String, Any>
             let courierParam = CourierParam(value: param ?? [:])
-            core.initCourier(courierParam: courierParam)
+            core.initCourierParam(courierParam: courierParam)
             result("")
             
         case "connect":
             let param = call.arguments as? Dictionary<String, Any>
             let connectParam = MqttConnectOptionParam(value: param ?? [:])
-            core.connect(param: connectParam)
-            eventStreamHandler = EventStreamHandler(courierClient: core.courierClient!)
-            eventChannel!.setStreamHandler(eventStreamHandler)
-            receiveDataHandler = ReceiveDataHandler(incomingMessage: core.incomingMessage)
-            receiveDataChannel?.setStreamHandler(receiveDataHandler)
+            core.initCourier(param: connectParam)
+            eventStreamHandler!.addEventaListener()
+            core.connect()
+            
+            
             result("")
             
         case "disconnect":
@@ -53,6 +58,9 @@ public class SwiftGojekCourierPlugin: NSObject, FlutterPlugin {
             let qos = QosParam(value: param!["qos"] as! String).build()
             let topic = param!["topic"] as! String
             core.subscribe(topic: topic, qos: qos)
+            if core.messageSink == nil {
+                receiveDataHandler?.setReceiveDataSink()
+            }
             core.listen(topic: topic)
             result("")
             

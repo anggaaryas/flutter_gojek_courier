@@ -10,23 +10,31 @@ import CourierCore
 import Combine
 
 
+@available(iOS 13.0, *)
 class EventStreamHandler : NSObject, FlutterStreamHandler {
 
     
-    private let courierClient: CourierClient
+    private let library: GojekCourierCore
+    private var sink: FlutterEventSink?
     
-    init(courierClient: CourierClient) {
-        self.courierClient = courierClient
+    init(library: GojekCourierCore) {
+        print("coba assign library event...")
+        self.library  = library
+    }
+    
+    func addEventaListener(){
+        print("coba listen...")
+        library.addEventListener(eventSink: sink!)
     }
  
     
     func onListen(withArguments arguments: Any?, eventSink events: @escaping FlutterEventSink) -> FlutterError? {
-        courierClient.addEventHandler(EventHandler(eventSink: events))
+        sink = events
         return nil
     }
     
     func onCancel(withArguments arguments: Any?) -> FlutterError? {
-        
+        sink = nil
         return nil
     }
   
@@ -35,25 +43,30 @@ class EventStreamHandler : NSObject, FlutterStreamHandler {
 
 @available(iOS 13.0, *)
 class ReceiveDataHandler : NSObject, FlutterStreamHandler{
-    typealias cAnyCancelable = Combine.AnyCancellable
+
+    private let library: GojekCourierCore
+    private var sink: FlutterEventSink?
     
-    private let incomeingMessage: IncomingDataMessage
-    private var cancelable: cAnyCancelable?
+    init(library: GojekCourierCore) {
+        self.library = library
+    }
     
-    init(incomingMessage: IncomingDataMessage) {
-        self.incomeingMessage = incomingMessage
+    func setReceiveDataSink(){
+        if let sink = sink {
+            library.setMessageSink(sink: sink)
+        } else {
+            print("Sink null")
+            // Handle error...
+        }
     }
     
     func onListen(withArguments arguments: Any?, eventSink events: @escaping FlutterEventSink) -> FlutterError? {
-        cancelable = incomeingMessage.objectWillChange.sink{ [self] _ in
-            print(incomeingMessage.message)
-            events("{\"topic\" : \"\(incomeingMessage.topic)\", \"data\": \(incomeingMessage.message)}")
-        }
+        sink = events
         return nil
     }
     
     func onCancel(withArguments arguments: Any?) -> FlutterError? {
-        cancelable?.cancel()
+        sink = nil
         return nil
     }
 }

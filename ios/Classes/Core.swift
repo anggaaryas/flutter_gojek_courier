@@ -15,9 +15,10 @@ class GojekCourierCore{
     var courierClient: CourierClient?
     private var cancellables = Set<AnyCancellable>()
     private var courierParam : CourierParam?
-    let incomingMessage = IncomingDataMessage()
+    var eventSink : FlutterEventSink?
+    var messageSink : FlutterEventSink?
     
-    func initCourier(courierParam: CourierParam){
+    func initCourierParam(courierParam: CourierParam){
         
         // simpan courier param nya dahulu. init nya pas mau connect karena
         // butuh auth (Connect Option)
@@ -25,7 +26,7 @@ class GojekCourierCore{
         
     }
     
-    func connect(param: MqttConnectOptionParam){
+    func initCourier(param: MqttConnectOptionParam){
         
         // setelah dapat connectOption nya, baru di init dahulu
         // dan coba connec
@@ -34,9 +35,15 @@ class GojekCourierCore{
         let mqttConfig = configAdapter.build()
         
         courierClient = clientFactory.makeMQTTClient(config: mqttConfig)
+    }
+    
+    func connect(){
         courierClient?.connect()
-        
-        
+    }
+    
+    func addEventListener(eventSink : @escaping FlutterEventSink){
+        self.eventSink = eventSink
+        courierClient!.addEventHandler(self)
     }
     
     func disconnect(){
@@ -65,22 +72,32 @@ class GojekCourierCore{
         }
     }
     
+    func setMessageSink(sink: @escaping FlutterEventSink){
+        messageSink = sink
+    }
+    
     func listen(topic:String){
         print("listen \(topic)")
-        courierClient?.messagePublisher(topic: topic)
+        courierClient!.messagePublisher(topic: topic)
             .sink { [weak self] in
+                
                 self?.handleMessageReceiveEvent(.success($0), topic: topic)
             }.store(in: &cancellables)
     }
     
     private func handleMessageReceiveEvent(_ message: Result<Data, NSError>, topic: String) {
+        print("\(message)")
         switch message {
         case let .success(message):
             let msg = String(data: message, encoding: .utf8) ?? "Failed to decode message to string"
-            incomingMessage.newMessage(message: msg, topic: topic)
+        
             // kirim ke flutter
+            messageSink!("{\"topic\" : \"\(topic)\", \"data\": \(msg)}")
         case let .failure(error):
             print(error.localizedDescription)
         }
     }
 }
+
+
+

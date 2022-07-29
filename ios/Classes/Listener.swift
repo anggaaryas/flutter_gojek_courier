@@ -8,20 +8,15 @@
 import Foundation
 import CourierCore
 
-class EventHandler: ICourierEventHandler {
-    
-    let eventSink: FlutterEventSink
-    
-    
-    init(eventSink : @escaping FlutterEventSink){
-        self.eventSink = eventSink
-    }
-    
-    func onEvent(_ event: CourierEvent) {
-        let result = event.associatedValue()
-        eventSink(result)
-    }
-    
+@available(iOS 13.0, *)
+extension GojekCourierCore : ICourierEventHandler{
+        func onEvent(_ event: CourierEvent) {
+            print(event)
+            print("oooppppp")
+            let result = event.associatedValue()
+            print(result)
+            eventSink!(result)
+        }
 }
 
 
@@ -54,7 +49,7 @@ func sendToFlutter(type: ResponseType, tag: String, msg: String, sink: FlutterEv
 extension CourierEvent{
     
     private func toString(topic: String, data: String) -> String {
-        return "\"type\" : \"event\" , \"topic\": \(topic), \"data\": \(data)"
+        return "{\"type\" : \"event\" , \"topic\": \"\(topic)\", \"data\": \(data)}"
     }
     
     private func errorToString(error: Error?) -> String{
@@ -93,33 +88,33 @@ extension CourierEvent{
       case .connectDiscarded(reason: let reason):
           return toString(topic: "Event$MqttConnectDiscardedEvent", data: "{\"reason\" : \"\(reason)\"}")
       case .subscribeAttempt(topic: let topic):
-          return toString(topic: "Event$MqttSubscribeAttemptEvent", data: "{\"topics\" : {\"\(topic)\" : 0}}")  // ! Hardcode QoS 0
+          return toString(topic: "Event$MqttSubscribeAttemptEvent", data: "{\"topics\" : {\"\(topic)\" : \"ZERO\"}}")  // ! Hardcode QoS 0
       case .unsubscribeAttempt(topic: let topic):
-          return toString(topic: "Event$MqttUnsubscribeAttemptEvent", data: "{\"topics\" : {\"\(topic)\" : 0}}")
+          return toString(topic: "Event$MqttUnsubscribeAttemptEvent", data: "{\"topics\" : {\"\(topic)\" : \"ZERO\"}}")
       case .subscribeSuccess(topic: let topic):
-          return toString(topic: "Event$MqttSubscribeSuccessEvent", data: "{\"topics\" : {\"\(topic)\" : 0}}") // ! Hardcode QoS 0
+          return toString(topic: "Event$MqttSubscribeSuccessEvent", data: "{\"topics\" : {\"\(topic)\" : \"ZERO\"}}") // ! Hardcode QoS 0
       case .unsubscribeSuccess(topic: let topic):
-          return toString(topic: "Event$MqttUnsubscribeSuccessEvent", data: "{\"topics\" : {\"\(topic)\" : 0}}")
+          return toString(topic: "Event$MqttUnsubscribeSuccessEvent", data: "{\"topics\" : {\"\(topic)\" : \"ZERO\"}}")
       case .subscribeFailure(topic: let topic, error: let error):
-          return toString(topic: "Event$MqttSubscribeFailureEvent", data: "{\"exception\" : \(errorToString(error: error)), \"topics\" : {\"\(topic)\" : 0}}")
+          return toString(topic: "Event$MqttSubscribeFailureEvent", data: "{\"exception\" : \(errorToString(error: error)), \"topics\" : {\"\(topic)\" : \"ZERO\"}}")
       case .unsubscribeFailure(topic: let topic, error: let error):
-          return toString(topic: "Event$MqttUnsubscribeFailureEvent", data: "{\"exception\" : \(errorToString(error: error)), \"topics\" : {\"\(topic)\" : 0}}")
+          return toString(topic: "Event$MqttUnsubscribeFailureEvent", data: "{\"exception\" : \(errorToString(error: error)), \"topics\" : {\"\(topic)\" : \"ZERO\"}}")
       case .ping(url: let url):
-          return toString(topic: "Event$MqttPingInitiatedEvent", data: "{\"serverUri\" : \(url)}")
+          return toString(topic: "Event$MqttPingInitiatedEvent", data: "{\"serverUri\" : \"\(url)\"}")
       case .pongReceived(timeTaken: let timeTaken):
           return toString(topic: "Event$MqttPingSuccessEvent", data: "{\"timeTakenMillis\" : \(timeTaken)}")
       case .pingFailure(timeTaken: let timeTaken, error: let error):
           return toString(topic: "Event$MqttPingFailureEvent", data: "{\"timeTakenMillis\" : \(timeTaken) , \"exception\" : \(errorToString(error: error))}")
       case .messageReceive(topic: let topic, sizeBytes: let sizeBytes):
-          return toString(topic: "Event$MqttMessageReceiveEvent", data: "{\"topic\" : \(topic), \"sizeBytes\" : \(sizeBytes)}")
+          return toString(topic: "Event$MqttMessageReceiveEvent", data: "{\"topic\" : \"\(topic)\", \"sizeBytes\" : \(sizeBytes)}")
       case .messageReceiveFailure(topic: let topic, error: let error, sizeBytes: let sizeBytes):
-          return toString(topic: "Event$MqttMessageReceiveErrorEvent", data: "{\"topic\" : \(topic), \"sizeBytes\" : \(sizeBytes), \"exception\" : \(errorToString(error: error))}")
+          return toString(topic: "Event$MqttMessageReceiveErrorEvent", data: "{\"topic\" : \"\(topic)\", \"sizeBytes\" : \(sizeBytes), \"exception\" : \(errorToString(error: error))}")
       case .messageSend(topic: let topic, qos: let qos, sizeBytes: let sizeBytes):
-          return toString(topic: "Event$MqttMessageSendEvent", data: "{\"topic\" : \(topic), \"qos\" : \(qos), \"sizeBytes\" : \(sizeBytes)}")
+          return toString(topic: "Event$MqttMessageSendEvent", data: "{\"topic\" : \"\(topic)\", \"qos\" : \"\(qos)\", \"sizeBytes\" : \(sizeBytes)}")
       case .messageSendSuccess(topic: let topic, qos: let qos, sizeBytes: let sizeBytes):
-          return toString(topic: "Event$MqttMessageSendSuccessEvent", data: "{\"topic\" : \(topic), \"qos\" : \(qos), \"sizeBytes\" : \(sizeBytes)}")
+          return toString(topic: "Event$MqttMessageSendSuccessEvent", data: "{\"topic\" : \"\(topic)\", \"qos\" : \"\(qos)\", \"sizeBytes\" : \(sizeBytes)}")
       case .messageSendFailure(topic: let topic, qos: let qos, error: let error, sizeBytes: let sizeBytes):
-          return toString(topic: "Event$MqttMessageSendFailureEvent", data: "{\"topic\" : \(topic), \"qos\" : \(qos), \"sizeBytes\" : \(sizeBytes), \"exception\" : \(errorToString(error: error))}")
+          return toString(topic: "Event$MqttMessageSendFailureEvent", data: "{\"topic\" : \"\(topic)\", \"qos\" : \"\(qos)\", \"sizeBytes\" : \(sizeBytes), \"exception\" : \(errorToString(error: error))}")
       case .appForeground:
           return toString(topic: "Event$AppForegroundEvent", data: "{}")
       case .appBackground:

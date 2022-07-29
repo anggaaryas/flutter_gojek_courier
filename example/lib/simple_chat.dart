@@ -20,6 +20,7 @@ class _SimpleChatScreenState extends State<SimpleChatScreen> {
   String username = "";
   TextEditingController message = TextEditingController();
   bool isConnect = false;
+  bool isTopicSubscribed = false;
 
   @override
   void initState() {
@@ -121,6 +122,15 @@ class _SimpleChatScreenState extends State<SimpleChatScreen> {
                             setState((){
                               isConnect = true;
                             });
+                          } else if(event is MqttSubscribeSuccessEvent){
+                            setState(() {
+                              isTopicSubscribed = true;
+                            });
+                          } else if(event is MqttDisconnectCompleteEvent){
+                            setState(() {
+                              isConnect = false;
+                              isTopicSubscribed = false;
+                            });
                           }
                           ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(event.toString())));
                         }
@@ -145,7 +155,7 @@ class _SimpleChatScreenState extends State<SimpleChatScreen> {
         body: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            isConnect? Container(): Padding(
+            isConnect && !isTopicSubscribed? Padding(
               padding: const EdgeInsets.all(8.0),
               child: TextField(
                 onChanged: (value){
@@ -157,7 +167,7 @@ class _SimpleChatScreenState extends State<SimpleChatScreen> {
                     hintText: "topic"
                 ),
               ),
-            ),
+            ): Container(),
             isConnect? Container(): Padding(
               padding: const EdgeInsets.all(8.0),
               child: TextField(
@@ -171,7 +181,7 @@ class _SimpleChatScreenState extends State<SimpleChatScreen> {
                 ),
               ),
             ),
-            isConnect? Padding(
+            isTopicSubscribed && isConnect? Padding(
               padding: const EdgeInsets.all(8.0),
               child: TextField(
                 controller: message,
@@ -187,23 +197,24 @@ class _SimpleChatScreenState extends State<SimpleChatScreen> {
                 scrollDirection: Axis.horizontal ,
                 children: [
                   isConnect? Container() : ElevatedButton(onPressed: () async {
-                    if(username.isNotEmpty && topic.isNotEmpty){
-                      await connect(username);
-                      await subscribeTopic(topic);
-                      setState((){
-                        isConnect = true;
-                      });
+                    if(username.isNotEmpty){
+                      connect(username);
                     }
                   }, child: const Text("Connect")),
+                  isConnect && !isTopicSubscribed? ElevatedButton(onPressed: (){
+                    if(topic.isNotEmpty){
+                      subscribeTopic(topic);
+                    }
+                  }, child: const Text("Subscribe")) : Container(),
                   isConnect? ElevatedButton(onPressed: (){
                     gojekCourierPlugin.disconnect();
                     setState((){
                       isConnect = false;
                     });
                   }, child: const Text("Disconnect")) : Container(),
-                  ElevatedButton(onPressed: (){
+                  isTopicSubscribed? ElevatedButton(onPressed: (){
                     send(topic, message.text);
-                  }, child: const Text("Send")),
+                  }, child: const Text("Send")) : Container(),
                 ],
               ),
             ),

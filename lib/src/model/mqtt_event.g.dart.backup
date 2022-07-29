@@ -1,3 +1,14 @@
+// Setelah di generate, ada beberapa yang di edit
+// enum qos
+// qos (Android -> int  : ios -> String)
+
+
+
+
+
+
+
+==================================================================================
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
 part of 'mqtt_event.dart';
