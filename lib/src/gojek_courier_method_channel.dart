@@ -29,6 +29,14 @@ class MethodChannelGojekCourier extends GojekCourierPlatform {
 
   final authFailChannel = const EventChannel('auth_fail_channel');
 
+  MethodChannelGojekCourier(){
+    streamLogger();
+
+    streamEvent();
+
+    streamAuthFail();
+  }
+
   @override
   Future<String?> getPlatformVersion() async {
     final version =
@@ -51,11 +59,9 @@ class MethodChannelGojekCourier extends GojekCourierPlatform {
     if (_courier == null) {
       _courier = courier;
 
-      streamLogger();
-
-      streamEvent();
-
-      streamAuthFail();
+      if(Platform.isIOS){
+        _courier?.configuration.logger?.i("Library", "Logger is not supported in Ios");
+      }
 
       await methodChannel.invokeMethod<String>('initialise', courier.toJson());
     } else {
@@ -73,10 +79,6 @@ class MethodChannelGojekCourier extends GojekCourierPlatform {
   }
 
   void streamLogger() {
-
-    if(Platform.isIOS){
-      _courier?.configuration.logger?.i("Library", "Logger is not supported in Ios");
-    }
 
     _loggerStreamSubscription = loggerStream.listen((event) {
       var decode = jsonDecode(event);
@@ -102,7 +104,9 @@ class MethodChannelGojekCourier extends GojekCourierPlatform {
     _eventStreamSubscription = eventStream.listen((event) {
       // print("event...");
       // print(event);
-      event = (event as String).replaceAll('\\', '\\\\');
+      if(Platform.isIOS){
+        event = (event as String).replaceAll('\\', '\\\\');
+      }
       var json = jsonDecode(event);
       final topic = (json["topic"] as String).split("\$")[1];
       final data = json["data"];
@@ -110,6 +114,8 @@ class MethodChannelGojekCourier extends GojekCourierPlatform {
       if(data["connectionInfo"] is String){
         data["connectionInfo"] = null;
       }
+
+      print("=== $topic  ===");
 
       switch (topic) {
         case "MqttConnectAttemptEvent":
