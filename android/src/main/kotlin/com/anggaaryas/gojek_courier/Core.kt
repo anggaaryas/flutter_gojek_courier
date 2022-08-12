@@ -80,10 +80,10 @@ class GojekCourierCore(val receiveSink: EventChannel.EventSink, val logger: List
         Timber.tag("Courier-Log").d("coba listen $topic...")
         disposable.add(courierService.receive(topic).subscribe{
             uiThreadHandler.post{
-                receiveSink.success("{\"topic\" : \"$topic\", \"data\": $it}")
+                receiveSink.success("{\"topic\" : \"$topic\", \"data\": ${it.contentToString()}}")
             }
 
-            Timber.tag("Courier-Log").d("$it")
+            Timber.tag("Courier-Log").d("${it.contentToString()}")
         })
     }
 }

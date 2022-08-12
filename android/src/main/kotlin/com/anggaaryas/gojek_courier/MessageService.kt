@@ -7,7 +7,7 @@ import io.reactivex.Observable
 
 interface MessageService {
     @Receive(topic = "{topic}")
-    fun receive(@Path("topic") topic: String): Observable<String>
+    fun receive(@Path("topic") topic: String): Observable<ByteArray>
 
     @Send(topic = "{topic}", qos = QoS.ZERO)
     fun sendQosZero(@Path("topic") topic: String, @Data message: String)
