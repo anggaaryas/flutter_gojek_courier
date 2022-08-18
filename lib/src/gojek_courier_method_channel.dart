@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
+import 'dart:typed_data';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
@@ -471,5 +472,11 @@ class MethodChannelGojekCourier extends GojekCourierPlatform {
 
   Stream get authFailStream {
     return authFailChannel.receiveBroadcastStream();
+  }
+
+  @override
+  Future<void> sendUint8List(String topic, Uint8List msg, [QoS qoS = QoS.ZERO]) async {
+    final stringMsg = String.fromCharCodes(msg);
+    send(topic, stringMsg, qoS);
   }
 }

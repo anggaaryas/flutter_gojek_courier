@@ -89,8 +89,8 @@ class GojekCourierCore{
         print("\(message)")
         switch message {
         case let .success(message):
-            let msg = String(data: message, encoding: .utf8) ?? "Failed to decode message to string"
-        
+            let msg = [UInt8] (message)
+                
             // kirim ke flutter
             messageSink!("{\"topic\" : \"\(topic)\", \"data\": \(msg)}")
         case let .failure(error):
