@@ -80,7 +80,8 @@ extension CourierEvent{
       case .connectionFailure(error: let error):
           return toString(topic: "Event$MqttConnectFailureEvent", data: "{\"exception\" : \(errorToString(error: error))}")
       case .connectionLost(error: let error, diffLastInbound: let diffLastInbound, diffLastOutbound: let diffLastOutbound):
-          return toString(topic: "Event$MqttConnectionLostEvent", data: "{\"exception\" : \(errorToString(error: error)), \"sessionTimeMillis\" : \(diffLastOutbound! - diffLastInbound!)}")
+          let sessionMillis = (diffLastOutbound ?? 0) - (diffLastInbound ?? 0)
+          return toString(topic: "Event$MqttConnectionLostEvent", data: "{\"exception\" : \(errorToString(error: error)), \"sessionTimeMillis\" : \(sessionMillis)}")
       case .connectionDisconnect:
           return toString(topic: "Event$MqttDisconnectCompleteEvent", data: "{}")
       case .reconnect:
@@ -88,17 +89,17 @@ extension CourierEvent{
       case .connectDiscarded(reason: let reason):
           return toString(topic: "Event$MqttConnectDiscardedEvent", data: "{\"reason\" : \"\(reason)\"}")
       case .subscribeAttempt(topic: let topic):
-          return toString(topic: "Event$MqttSubscribeAttemptEvent", data: "{\"topics\" : {\"\(topic)\" : \"ZERO\"}}")  // ! Hardcode QoS 0
+          return toString(topic: "Event$MqttSubscribeAttemptEvent", data: "{\"topics\" : {\"\(topic)\" : \"\"}}")
       case .unsubscribeAttempt(topic: let topic):
-          return toString(topic: "Event$MqttUnsubscribeAttemptEvent", data: "{\"topics\" : {\"\(topic)\" : \"ZERO\"}}")
+          return toString(topic: "Event$MqttUnsubscribeAttemptEvent", data: "{\"topics\" : {\"\(topic)\" : \"\"}}")
       case .subscribeSuccess(topic: let topic):
-          return toString(topic: "Event$MqttSubscribeSuccessEvent", data: "{\"topics\" : {\"\(topic)\" : \"ZERO\"}}") // ! Hardcode QoS 0
+          return toString(topic: "Event$MqttSubscribeSuccessEvent", data: "{\"topics\" : {\"\(topic)\" : \"\"}}")
       case .unsubscribeSuccess(topic: let topic):
-          return toString(topic: "Event$MqttUnsubscribeSuccessEvent", data: "{\"topics\" : {\"\(topic)\" : \"ZERO\"}}")
+          return toString(topic: "Event$MqttUnsubscribeSuccessEvent", data: "{\"topics\" : {\"\(topic)\" : \"\"}}")
       case .subscribeFailure(topic: let topic, error: let error):
-          return toString(topic: "Event$MqttSubscribeFailureEvent", data: "{\"exception\" : \(errorToString(error: error)), \"topics\" : {\"\(topic)\" : \"ZERO\"}}")
+          return toString(topic: "Event$MqttSubscribeFailureEvent", data: "{\"exception\" : \(errorToString(error: error)), \"topics\" : {\"\(topic)\" : \"\"}}")
       case .unsubscribeFailure(topic: let topic, error: let error):
-          return toString(topic: "Event$MqttUnsubscribeFailureEvent", data: "{\"exception\" : \(errorToString(error: error)), \"topics\" : {\"\(topic)\" : \"ZERO\"}}")
+          return toString(topic: "Event$MqttUnsubscribeFailureEvent", data: "{\"exception\" : \(errorToString(error: error)), \"topics\" : {\"\(topic)\" : \"\"}}")
       case .ping(url: let url):
           return toString(topic: "Event$MqttPingInitiatedEvent", data: "{\"serverUri\" : \"\(url)\"}")
       case .pongReceived(timeTaken: let timeTaken):

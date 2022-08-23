@@ -258,7 +258,7 @@ enum QoS {
 
 @JsonSerializable()
 class MqttSubscribeAttemptEvent extends MqttEvent {
-  final Map<String, QoS>? topics;
+  final Map<String, QoS?>? topics;
 
   MqttSubscribeAttemptEvent({this.topics, super.connectionInfo});
 
@@ -269,7 +269,7 @@ class MqttSubscribeAttemptEvent extends MqttEvent {
 
 @JsonSerializable()
 class MqttSubscribeSuccessEvent extends MqttEvent {
-  final Map<String, QoS>? topics;
+  final Map<String, QoS?>? topics;
   final int? timeTakenMillis;
 
   MqttSubscribeSuccessEvent(
@@ -284,7 +284,7 @@ class MqttSubscribeSuccessEvent extends MqttEvent {
 
 @JsonSerializable()
 class MqttSubscribeFailureEvent extends MqttEvent {
-  final Map<String, QoS>? topics;
+  final Map<String, QoS?>? topics;
   final CourierException? exception;
   final int? timeTakenMillis;
 

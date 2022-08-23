@@ -8,7 +8,7 @@ part of 'mqtt_connect_option.dart';
 
 MqttConnectOption _$MqttConnectOptionFromJson(Map<String, dynamic> json) =>
     MqttConnectOption(
-      serverUri:  ServerUri.fromJson(json['serverUri']),
+      serverUri: ServerUri.fromJson(json['serverUri'] as Map<String, dynamic>),
       keepAlive: KeepAlive.fromJson(json['keepAlive'] as Map<String, dynamic>),
       clientId: json['clientId'] as String,
       username: json['username'] as String,
@@ -33,7 +33,7 @@ Map<String, dynamic> _$MqttConnectOptionToJson(MqttConnectOption instance) =>
       'password': instance.password,
       'isCleanSession': instance.isCleanSession,
       'readTimeoutSecs': instance.readTimeoutSecs,
-      'version': _$MqttVersionEnumMap[instance.version],
+      'version': _$MqttVersionEnumMap[instance.version]!,
       'userPropertiesMap': instance.userPropertiesMap,
     };
 
