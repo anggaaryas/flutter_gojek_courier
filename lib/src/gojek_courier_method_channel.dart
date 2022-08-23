@@ -476,7 +476,7 @@ class MethodChannelGojekCourier extends GojekCourierPlatform {
 
   @override
   Future<void> sendUint8List(String topic, Uint8List msg, [QoS qoS = QoS.ZERO]) async {
-    final stringMsg = String.fromCharCodes(msg);
-    send(topic, stringMsg, qoS);
+    await methodChannel.invokeMethod<String>(
+        'sendByte', {'topic': topic, 'msg': msg, 'qos': '${qoSEnumMap[qoS]}'});
   }
 }

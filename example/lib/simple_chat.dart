@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:math';
+import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 import 'package:gojek_courier/gojek_courier.dart';
@@ -84,6 +85,16 @@ class _SimpleChatScreenState extends State<SimpleChatScreen> {
           "from": _clientIdController.text,
           "msg": msg,
         }).toString());
+  }
+
+  Future<void> sendByte(String topic, String msg) async {
+    message.clear();
+    await gojekCourierPlugin.sendUint8List(
+        "chat/testroom/$topic",
+        Uint8List.fromList(utf8.encode(jsonEncode({
+          "from": _clientIdController.text,
+          "msg": msg,
+        }).toString())));
   }
 
   Future<void> initCourier() async {
@@ -221,7 +232,7 @@ class _SimpleChatScreenState extends State<SimpleChatScreen> {
                   isTopicSubscribed
                       ? ElevatedButton(
                       onPressed: () {
-                        send(topic, message.text);
+                        sendByte(topic, message.text);
                       },
                       child: const Text("Send"))
                       : Container(),

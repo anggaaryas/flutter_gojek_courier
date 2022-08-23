@@ -72,6 +72,15 @@ class GojekCourierCore{
         }
     }
     
+    func sendByte(topic:String, message:Data, qos:QoS) throws{
+        do {
+            try courierClient?.publishMessage(message, topic: topic, qos: qos)
+           
+        } catch {
+            throw error
+        }
+    }
+    
     func setMessageSink(sink: @escaping FlutterEventSink){
         messageSink = sink
     }

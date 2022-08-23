@@ -82,6 +82,18 @@ public class SwiftGojekCourierPlugin: NSObject, FlutterPlugin {
             }
             result("")
             
+        case "sendByte":
+            let param = call.arguments as? Dictionary<String, Any>
+            let topic = param!["topic"] as! String
+            let msg = param!["msg"] as! FlutterStandardTypedData
+            let qos = QosParam(value: param!["qos"] as! String).build()
+            do{
+                try core.sendByte(topic: topic, message: msg.data, qos: qos)
+            } catch {
+                print(error)
+            }
+            result("")
+            
         default:
             print(call.method)
         }

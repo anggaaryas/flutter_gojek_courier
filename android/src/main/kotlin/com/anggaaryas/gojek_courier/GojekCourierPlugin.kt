@@ -106,6 +106,13 @@ class GojekCourierPlugin : FlutterPlugin, MethodCallHandler, ActivityAware {
                 library.send(topic, message, qos)
                 result.success("")
             }
+            "sendByte" -> {
+                val topic: String = call.argument("topic")!!
+                val message : ByteArray = call.argument("msg")!!
+                val qos : QoS = QosParam(call.argument("qos")!!).build()
+                library.sendByte(topic, message, qos)
+                result.success("")
+            }
             else -> {
                 result.notImplemented()
             }
