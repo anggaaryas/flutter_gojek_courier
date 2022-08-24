@@ -72,7 +72,7 @@ extension CourierEvent{
       case .connectedPacketSent:
           return toString(topic: "Event$ConnectPacketSendEvent", data: "{}")
       case .courierDisconnect(clearState: let clearState):
-          return toString(topic: "Event$CourierDisconnect", data: "{\"clearState\" ; \(clearState)}")
+          return toString(topic: "Event$CourierDisconnect", data: "{\"clearState\" : \(clearState)}")
       case .connectionAttempt:
           return toString(topic: "Event$MqttConnectAttemptEvent", data: "{}")
       case .connectionSuccess:
