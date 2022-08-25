@@ -89,17 +89,17 @@ extension CourierEvent{
       case .connectDiscarded(reason: let reason):
           return toString(topic: "Event$MqttConnectDiscardedEvent", data: "{\"reason\" : \"\(reason)\"}")
       case .subscribeAttempt(topic: let topic):
-          return toString(topic: "Event$MqttSubscribeAttemptEvent", data: "{\"topics\" : {\"\(topic)\" : \"\"}}")
+          return toString(topic: "Event$MqttSubscribeAttemptEvent", data: "{\"topics\" : {\"\(topic)\" : null}}")
       case .unsubscribeAttempt(topic: let topic):
-          return toString(topic: "Event$MqttUnsubscribeAttemptEvent", data: "{\"topics\" : {\"\(topic)\" : \"\"}}")
+          return toString(topic: "Event$MqttUnsubscribeAttemptEvent", data: "{\"topics\" : {\"\(topic)\" : null}}")
       case .subscribeSuccess(topic: let topic):
-          return toString(topic: "Event$MqttSubscribeSuccessEvent", data: "{\"topics\" : {\"\(topic)\" : \"\"}}")
+          return toString(topic: "Event$MqttSubscribeSuccessEvent", data: "{\"topics\" : {\"\(topic)\" : null}}")
       case .unsubscribeSuccess(topic: let topic):
-          return toString(topic: "Event$MqttUnsubscribeSuccessEvent", data: "{\"topics\" : {\"\(topic)\" : \"\"}}")
+          return toString(topic: "Event$MqttUnsubscribeSuccessEvent", data: "{\"topics\" : {\"\(topic)\" : null}}")
       case .subscribeFailure(topic: let topic, error: let error):
-          return toString(topic: "Event$MqttSubscribeFailureEvent", data: "{\"exception\" : \(errorToString(error: error)), \"topics\" : {\"\(topic)\" : \"\"}}")
+          return toString(topic: "Event$MqttSubscribeFailureEvent", data: "{\"exception\" : \(errorToString(error: error)), \"topics\" : {\"\(topic)\" : null}}")
       case .unsubscribeFailure(topic: let topic, error: let error):
-          return toString(topic: "Event$MqttUnsubscribeFailureEvent", data: "{\"exception\" : \(errorToString(error: error)), \"topics\" : {\"\(topic)\" : \"\"}}")
+          return toString(topic: "Event$MqttUnsubscribeFailureEvent", data: "{\"exception\" : \(errorToString(error: error)), \"topics\" : {\"\(topic)\" : null}}")
       case .ping(url: let url):
           return toString(topic: "Event$MqttPingInitiatedEvent", data: "{\"serverUri\" : \"\(url)\"}")
       case .pongReceived(timeTaken: let timeTaken):

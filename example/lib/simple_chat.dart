@@ -43,18 +43,11 @@ class _SimpleChatScreenState extends State<SimpleChatScreen> {
   }
 
   Future<void> initPlatformState() async {
-    gojekCourierPlugin.receiveDataStream.listen((event) {
-      var decode = (jsonDecode(event)["data"] as List<dynamic>).map((e) {
-        return e as int;
-      }).toList();
-      var msgString =  Utf8Decoder().convert(decode);
-      var msg = jsonDecode(msgString);
-      chatList.add("${msg["from"]}   :   ${msg['msg']}");
-      setState(() {});
-      print('=-=-=-=-=');
-    });
+
 
     await initCourier();
+
+
   }
 
   Future<void> connect(String username) async {
@@ -75,6 +68,21 @@ class _SimpleChatScreenState extends State<SimpleChatScreen> {
 
   Future<void> subscribeTopic(String topic) async {
     await gojekCourierPlugin.subscribe("chat/testroom/$topic", QoS.TWO);
+
+    listen();
+  }
+
+  void listen() {
+    gojekCourierPlugin.receiveDataStream.listen((event) {
+      var decode = (jsonDecode(event)["data"] as List<dynamic>).map((e) {
+        return e as int;
+      }).toList();
+      var msgString =  Utf8Decoder().convert(decode);
+      var msg = jsonDecode(msgString);
+      chatList.add("${msg["from"]}   :   ${msg['msg']}");
+      setState(() {});
+      print('=-=-=-=-=');
+    });
   }
 
   Future<void> send(String topic, String msg) async {

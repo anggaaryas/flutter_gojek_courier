@@ -15,6 +15,9 @@ class MethodChannelGojekCourier extends GojekCourierPlatform {
   StreamSubscription? _loggerStreamSubscription;
   StreamSubscription? _eventStreamSubscription;
   StreamSubscription? _authFailStreamSubscription;
+  StreamSubscription? _dataSubscription;
+
+  late Stream dataStream;
 
   Courier? _courier;
   MqttConnectOption? _mqttConnectOption;
@@ -36,6 +39,8 @@ class MethodChannelGojekCourier extends GojekCourierPlatform {
     streamEvent();
 
     streamAuthFail();
+
+    streamData();
   }
 
   @override
@@ -45,9 +50,14 @@ class MethodChannelGojekCourier extends GojekCourierPlatform {
     return version;
   }
 
+  void streamData(){
+    dataStream = receiveDataChannel.receiveBroadcastStream();
+    _dataSubscription = dataStream.listen((event) { });
+  }
+
   @override
   Stream get receiveDataStream {
-    return receiveDataChannel.receiveBroadcastStream();
+    return dataStream;
   }
 
   @override
