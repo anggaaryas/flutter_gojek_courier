@@ -72,6 +72,9 @@ class MethodChannelGojekCourier extends GojekCourierPlatform {
 
       if(Platform.isIOS){
         _courier?.configuration.logger?.i("Library", "Logger is not supported in Ios");
+        if(courier.configuration.client.configuration?.useInterceptor ?? false){
+          _courier?.configuration.logger?.i("Library", "interceptor is not supported in Ios");
+        }
       }
 
       await methodChannel.invokeMethod<String>('initialise', courier.toJson());
