@@ -3,7 +3,7 @@ version '1.0-SNAPSHOT'
 
 buildscript {
     ext.kotlin_version = '1.6.10'
-    ext.courier_version = "0.0.4"
+    ext.courier_version = "0.0.9"
     repositories {
         google()
         mavenCentral()

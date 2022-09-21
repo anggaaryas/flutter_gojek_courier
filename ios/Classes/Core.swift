@@ -92,6 +92,7 @@ class GojekCourierCore{
                 
                 self?.handleMessageReceiveEvent(.success($0), topic: topic)
             }.store(in: &cancellables)
+        
     }
     
     private func handleMessageReceiveEvent(_ message: Result<Data, NSError>, topic: String) {

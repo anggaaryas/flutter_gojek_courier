@@ -85,7 +85,6 @@ class MethodChannelGojekCourier extends GojekCourierPlatform {
 
   void streamAuthFail() {
     _authFailStreamSubscription = authFailStream.listen((event) {
-      print(event);
       _courier?.configuration.client.configuration?.authFailureHandler
           ?.handleAuthFailure
           ?.call();

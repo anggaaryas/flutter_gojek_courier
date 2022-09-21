@@ -61,11 +61,11 @@ extension CourierEvent{
     }
     
     func associatedValue() -> String {
-      switch self {
+        switch self.type {
 
       case .connectionServiceAuthStart(source: let source):
           return toString(topic: "Event$AuthenticatorAttemptEvent", data: "{}")  // ! different data from android
-      case .connectionServiceAuthSuccess(host: let host, port: let port, isCache: let isCache):
+      case .connectionServiceAuthSuccess(host: let host, port: let port):
           return toString(topic: "Event$AuthenticatorSuccessEvent", data: "{}")
       case .connectionServiceAuthFailure(error: let error):
           return toString(topic: "Event$AuthenticatorErrorEvent", data: "\"exception\" : \(errorToString(error: error))")

@@ -13,6 +13,7 @@ import com.gojek.mqtt.client.MqttClient
 import com.gojek.mqtt.client.MqttInterceptor
 import com.gojek.mqtt.client.config.ExperimentConfigs
 import com.gojek.mqtt.client.config.PersistenceOptions
+import com.gojek.mqtt.client.config.SubscriptionStore
 import com.gojek.mqtt.client.config.v3.MqttV3Configuration
 import com.gojek.mqtt.client.factory.MqttClientFactory
 import com.gojek.mqtt.model.AdaptiveKeepAliveConfig
@@ -171,7 +172,7 @@ class ExperimentConfigParam(value: Map<String, Any?>): Param<ExperimentConfigs>(
 
     override fun build(context: Context, logger: Listener): ExperimentConfigs? {
         return ExperimentConfigs(
-            isPersistentSubscriptionStoreEnabled = isPersistentSubscriptionStoreEnabled ?: true
+            subscriptionStore = if(isPersistentSubscriptionStoreEnabled == true)  SubscriptionStore.PERSISTABLE else SubscriptionStore.IN_MEMORY
         )
     }
 }
