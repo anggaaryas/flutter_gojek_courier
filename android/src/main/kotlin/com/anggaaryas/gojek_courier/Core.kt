@@ -13,6 +13,7 @@ import com.gojek.mqtt.client.MqttClient
 import timber.log.Timber
 import io.flutter.plugin.common.EventChannel
 import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.disposables.Disposable
 import java.util.*
 
 class GojekCourierCore(val receiveSink: EventChannel.EventSink, val logger: Listener, val context: Context) {
@@ -20,6 +21,7 @@ class GojekCourierCore(val receiveSink: EventChannel.EventSink, val logger: List
     private lateinit var mqttClient: MqttClient
     private lateinit var courierService: MessageService
     private var disposable = CompositeDisposable()
+    private var streamList = mutableMapOf<String, Disposable>();
 
     private val uiThreadHandler: Handler = Handler(Looper.getMainLooper())
 
@@ -44,6 +46,9 @@ class GojekCourierCore(val receiveSink: EventChannel.EventSink, val logger: List
 
     fun disconnect(){
         mqttClient.disconnect()
+        for ((key, value) in streamList) {
+            value.dispose()
+        }
     }
 
     fun subscribe(topic: String, qos: QoS){
@@ -57,6 +62,8 @@ class GojekCourierCore(val receiveSink: EventChannel.EventSink, val logger: List
 
     fun unsubscribe(topic: String){
         courierService.unsubscribe(topic = topic)
+        streamList[topic]?.dispose()
+        streamList.remove(topic)
     }
 
     fun send(topic: String, message: String, qos: QoS){
@@ -95,12 +102,23 @@ class GojekCourierCore(val receiveSink: EventChannel.EventSink, val logger: List
 
     fun listen(topic:String){
         Timber.tag("Courier-Log").d("coba listen $topic...")
-        disposable.add(courierService.receive(topic).subscribe{
+        if(!streamList.containsKey(topic)){
+            streamList.put(
+                topic, courierService.receive(topic).subscribe{
+                    uiThreadHandler.post{
+                        receiveSink.success("{\"topic\" : \"$topic\", \"data\": ${it.contentToString()}}")
+                    }
+
+                    Timber.tag("Courier-Log").d("${it.contentToString()}")
+                }
+            )
+        }
+        /*disposable.add(courierService.receive(topic).subscribe{
             uiThreadHandler.post{
                 receiveSink.success("{\"topic\" : \"$topic\", \"data\": ${it.contentToString()}}")
             }
 
             Timber.tag("Courier-Log").d("${it.contentToString()}")
-        })
+        })*/
     }
 }
