@@ -49,6 +49,8 @@ class GojekCourierCore(val receiveSink: EventChannel.EventSink, val logger: List
         for ((key, value) in streamList) {
             value.dispose()
         }
+
+        streamList.clear()
     }
 
     fun subscribe(topic: String, qos: QoS){
