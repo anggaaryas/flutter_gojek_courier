@@ -18,16 +18,15 @@ import java.util.*
 
 class GojekCourierCore(val receiveSink: EventChannel.EventSink, val logger: Listener, val context: Context) {
 
-    private lateinit var mqttClient: MqttClient
-    private lateinit var courierService: MessageService
-    private var disposable = CompositeDisposable()
-    private var streamList = mutableMapOf<String, Disposable>();
+    private var streamList = mutableMapOf<String, MutableMap<String, Disposable>>()
+    private var clientList = mutableMapOf<String, MqttClient>()
+    private var serviceList = mutableMapOf<String, MessageService>()
 
     private val uiThreadHandler: Handler = Handler(Looper.getMainLooper())
 
-    fun init(param : CourierParam){
+    fun init(id : String , param : CourierParam){
         param.courierConfiguration?.client?.build(context, logger)?.let {
-            mqttClient = it
+            clientList.put(id, it)
 
             val courier = Courier(
                 configuration = Courier.Configuration(
@@ -35,92 +34,90 @@ class GojekCourierCore(val receiveSink: EventChannel.EventSink, val logger: List
                     streamAdapterFactories = listOf(RxJava2StreamAdapterFactory()),
                 )
             )
-            courierService = courier.create()
+
+            serviceList.put(id, courier.create())
 
         }
     }
 
-    fun connect(param: MqttConnectOptionParam){
-        param.build(context, logger)?.let { mqttClient.connect(it) }
+    fun connect(id : String, param: MqttConnectOptionParam){
+        param.build(context, logger)?.let { clientList[id]!!.connect(it) }
     }
 
-    fun disconnect(){
-        mqttClient.disconnect()
-        for ((key, value) in streamList) {
+    fun disconnect(id: String){
+        clientList[id]!!.disconnect()
+        for ((key, value) in streamList[id]!!) {
             value.dispose()
         }
 
-        streamList.clear()
+        streamList.remove(id)
+        clientList.remove(id)
     }
 
-    fun subscribe(topic: String, qos: QoS){
+    fun subscribe(id: String, topic: String, qos: QoS){
         when(qos){
-            QoS.ZERO -> courierService.subscribeQosZero(topic = topic)
-            QoS.ONE -> courierService.subscribeQosOne(topic = topic)
-            QoS.TWO -> courierService.subscribeQosTwo(topic = topic)
+            QoS.ZERO -> serviceList[id]!!.subscribeQosZero(topic = topic)
+            QoS.ONE -> serviceList[id]!!.subscribeQosOne(topic = topic)
+            QoS.TWO -> serviceList[id]!!.subscribeQosTwo(topic = topic)
         }
 
     }
 
-    fun unsubscribe(topic: String){
-        courierService.unsubscribe(topic = topic)
-        streamList[topic]?.dispose()
-        streamList.remove(topic)
+    fun unsubscribe(id: String, topic: String){
+        serviceList[id]!!.unsubscribe(topic = topic)
+        streamList[id]!![topic]?.dispose()
+        streamList[id]!!.remove(topic)
     }
 
-    fun send(topic: String, message: String, qos: QoS){
+    fun send(id: String, topic: String, message: String, qos: QoS){
         when(qos){
-            QoS.ZERO -> courierService.sendQosZero(
+            QoS.ZERO -> serviceList[id]!!.sendQosZero(
                 topic = topic,
                 message = message
             )
-            QoS.ONE -> courierService.sendQosOne(
+            QoS.ONE -> serviceList[id]!!.sendQosOne(
                 topic = topic,
                 message = message
             )
-            QoS.TWO -> courierService.sendQosTwo(
-                topic = topic,
-                message = message
-            )
-        }
-    }
-
-    fun sendByte(topic: String, message: ByteArray, qos: QoS){
-        when(qos){
-            QoS.ZERO -> courierService.sendByteQosZero(
-                topic = topic,
-                message = message
-            )
-            QoS.ONE -> courierService.sendByteQosOne(
-                topic = topic,
-                message = message
-            )
-            QoS.TWO -> courierService.sendByteQosTwo(
+            QoS.TWO -> serviceList[id]!!.sendQosTwo(
                 topic = topic,
                 message = message
             )
         }
     }
 
-    fun listen(topic:String){
-        Timber.tag("Courier-Log").d("coba listen $topic...")
-        if(!streamList.containsKey(topic)){
-            streamList.put(
-                topic, courierService.receive(topic).subscribe{
+    fun sendByte(id : String, topic: String, message: ByteArray, qos: QoS){
+        when(qos){
+            QoS.ZERO -> serviceList[id]!!.sendByteQosZero(
+                topic = topic,
+                message = message
+            )
+            QoS.ONE -> serviceList[id]!!.sendByteQosOne(
+                topic = topic,
+                message = message
+            )
+            QoS.TWO -> serviceList[id]!!.sendByteQosTwo(
+                topic = topic,
+                message = message
+            )
+        }
+    }
+
+    fun listen(id: String, topic:String){
+        Timber.tag("Courier-Log $id").d("coba listen $topic...")
+        if(!streamList.containsKey(id)){
+            streamList.put(id, mutableMapOf())
+        }
+        if(!streamList[id]!!.containsKey(topic)){
+            streamList[id]!!.put(
+                topic, serviceList[id]!!.receive(topic).subscribe{
                     uiThreadHandler.post{
                         receiveSink.success("{\"topic\" : \"$topic\", \"data\": ${it.contentToString()}}")
                     }
 
-                    Timber.tag("Courier-Log").d("${it.contentToString()}")
+                    Timber.tag("Courier-Log $id").d("${it.contentToString()}")
                 }
             )
         }
-        /*disposable.add(courierService.receive(topic).subscribe{
-            uiThreadHandler.post{
-                receiveSink.success("{\"topic\" : \"$topic\", \"data\": ${it.contentToString()}}")
-            }
-
-            Timber.tag("Courier-Log").d("${it.contentToString()}")
-        })*/
     }
 }

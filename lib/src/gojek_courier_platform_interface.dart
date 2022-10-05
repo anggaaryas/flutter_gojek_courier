@@ -39,12 +39,12 @@ abstract class GojekCourierBehaviour{
   Future<String?> getPlatformVersion();
   Stream get receiveDataStream;
 
-  Future<void> initialise({required Courier courier});
-  Future<void> connect({required MqttConnectOption option});
-  Future<void> subscribe(String topic, [QoS qoS =  QoS.ZERO]);
-  Future<void> unsubscribe(String topic);
-  Future<void> disconnect();
-  Future<void> send(String topic, String msg, [QoS qoS =  QoS.ZERO]);
-  Future<void> sendUint8List(String topic, Uint8List msg, [QoS qoS =  QoS.ZERO]);
+  Future<void> initialise({required Courier courier, required String id});
+  Future<void> connect({required MqttConnectOption option, required String id});
+  Future<void> subscribe( String id, String topic, [QoS qoS =  QoS.ZERO]);
+  Future<void> unsubscribe(String id, String topic);
+  Future<void> disconnect(String id);
+  Future<void> send(String id, String topic, String msg, [QoS qoS =  QoS.ZERO]);
+  Future<void> sendUint8List(String id, String topic, Uint8List msg, [QoS qoS =  QoS.ZERO]);
 
 }

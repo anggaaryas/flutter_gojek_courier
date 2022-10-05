@@ -33,6 +33,8 @@ class _SimpleChatScreenState extends State<SimpleChatScreen> {
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _pingInterval = TextEditingController(text: "60");
 
+  final String ID = 'chat';
+
   @override
   void initState() {
     super.initState();
@@ -52,6 +54,7 @@ class _SimpleChatScreenState extends State<SimpleChatScreen> {
 
   Future<void> connect(String username) async {
     await gojekCourierPlugin.connect(
+        id: ID,
         option: MqttConnectOption(
           isCleanSession: isCleanSession,
           clientId: _clientIdController.text,
@@ -67,7 +70,7 @@ class _SimpleChatScreenState extends State<SimpleChatScreen> {
   }
 
   Future<void> subscribeTopic(String topic) async {
-    await gojekCourierPlugin.subscribe("chat/testroom/$topic", QoS.TWO);
+    await gojekCourierPlugin.subscribe(ID, "chat/testroom/$topic", QoS.TWO);
 
     listen();
   }
@@ -87,7 +90,7 @@ class _SimpleChatScreenState extends State<SimpleChatScreen> {
 
   Future<void> send(String topic, String msg) async {
     message.clear();
-    await gojekCourierPlugin.send(
+    await gojekCourierPlugin.send(ID,
         "chat/testroom/$topic",
         jsonEncode({
           "from": _clientIdController.text,
@@ -97,7 +100,7 @@ class _SimpleChatScreenState extends State<SimpleChatScreen> {
 
   Future<void> sendByte(String topic, String msg) async {
     message.clear();
-    await gojekCourierPlugin.sendUint8List(
+    await gojekCourierPlugin.sendUint8List(ID,
         "chat/testroom/$topic",
         Uint8List.fromList(utf8.encode(jsonEncode({
           "from": _clientIdController.text,
@@ -107,6 +110,7 @@ class _SimpleChatScreenState extends State<SimpleChatScreen> {
 
   Future<void> initCourier() async {
     await gojekCourierPlugin.initialise(
+      id: ID,
         courier: Courier(
             configuration: CourierConfiguration(
                 logger: courier.Logger(
@@ -229,7 +233,7 @@ class _SimpleChatScreenState extends State<SimpleChatScreen> {
                   isConnect
                       ? ElevatedButton(
                       onPressed: () {
-                        gojekCourierPlugin.disconnect();
+                        gojekCourierPlugin.disconnect(ID);
                         setState(() {
                           isConnect = false;
                           isTopicSubscribed = false;

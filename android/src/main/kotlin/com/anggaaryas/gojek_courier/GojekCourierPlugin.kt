@@ -44,6 +44,8 @@ class GojekCourierPlugin : FlutterPlugin, MethodCallHandler, ActivityAware {
     private  val eventStreamHandler = EventStreamHandler()
     private  val authFailStreamHandler = AuthFailStreamHandler()
 
+    private var isFirstInit = false
+
     override fun onAttachedToEngine(@NonNull flutterPluginBinding: FlutterPlugin.FlutterPluginBinding) {
         context = flutterPluginBinding.applicationContext
         channel = MethodChannel(flutterPluginBinding.binaryMessenger, "gojek_courier")
@@ -71,21 +73,27 @@ class GojekCourierPlugin : FlutterPlugin, MethodCallHandler, ActivityAware {
                 result.success("Android ${android.os.Build.VERSION.RELEASE}")
             }
             "initialise" -> {
-                logger = Listener(loggerStreamHandler.sink!!, eventStreamHandler.sink!!, authFailStreamHandler.sink!!)
-                library = GojekCourierCore(receiveDataStreamHandler.sink!!, logger, context)
+                if(!isFirstInit){
+                    logger = Listener(loggerStreamHandler.sink!!, eventStreamHandler.sink!!, authFailStreamHandler.sink!!)
+                    library = GojekCourierCore(receiveDataStreamHandler.sink!!, logger, context)
+                    isFirstInit = true
+                }
                 val param : Map<String, Any> = call.arguments()!!
-                val courierParam = CourierParam(param)
-                library.init(courierParam)
+                val courierParam = CourierParam(param["payload"] as Map<String, Any?>)
+                val id : String = param["id"] as String
+                library.init(id, courierParam)
                 result.success("")
             }
             "connect" -> {
                 val param : Map<String, Any> = call.arguments()!!
-                val connectParam = MqttConnectOptionParam(param)
-                library.connect(connectParam)
+                val connectParam = MqttConnectOptionParam(param["payload"] as Map<String, Any?>)
+                val id : String = param["id"] as String
+                library.connect(id,connectParam)
                 result.success("")
             }
             "disconnect" -> {
-                library.disconnect()
+                val id : String = call.argument("id")!!
+                library.disconnect(id)
                 result.success("")
             }
             "subscribe" -> {
@@ -93,26 +101,30 @@ class GojekCourierPlugin : FlutterPlugin, MethodCallHandler, ActivityAware {
                     Timber.tag("Courier-stream").d("method call events null...")
                 }
                 val qos : QoS = QosParam(call.argument("qos")!!).build()
-                library.subscribe(call.argument("topic")!!, qos)
-                library.listen(call.argument("topic")!!)
+                val id : String = call.argument("id")!!
+                library.subscribe(id, call.argument("topic")!!, qos)
+                library.listen(id, call.argument("topic")!!)
                 result.success("")
             }
             "unsubscribe" -> {
-                library.unsubscribe(call.argument("topic")!!)
+                val id : String = call.argument("id")!!
+                library.unsubscribe(id, call.argument("topic")!!)
                 result.success("")
             }
             "send" -> {
+                val id : String = call.argument("id")!!
                 val topic: String = call.argument("topic")!!
                 val message : String = call.argument("msg")!!
                 val qos : QoS = QosParam(call.argument("qos")!!).build()
-                library.send(topic, message, qos)
+                library.send(id, topic, message, qos)
                 result.success("")
             }
             "sendByte" -> {
+                val id : String = call.argument("id")!!
                 val topic: String = call.argument("topic")!!
                 val message : ByteArray = call.argument("msg")!!
                 val qos : QoS = QosParam(call.argument("qos")!!).build()
-                library.sendByte(topic, message, qos)
+                library.sendByte(id, topic, message, qos)
                 result.success("")
             }
             else -> {

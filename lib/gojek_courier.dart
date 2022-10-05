@@ -33,41 +33,41 @@ class GojekCourier implements GojekCourierBehaviour{
   }
 
   @override
-  Future<void> connect({required MqttConnectOption option}) {
-    return GojekCourierPlatform.instance.connect(option: option);
+  Future<void> connect({required MqttConnectOption option, required String id}) {
+    return GojekCourierPlatform.instance.connect(option: option, id: id);
   }
 
   @override
-  Future<void> initialise({required Courier courier}) {
-    return GojekCourierPlatform.instance.initialise(courier: courier);
+  Future<void> initialise({required Courier courier, required String id}) {
+    return GojekCourierPlatform.instance.initialise(courier: courier, id: id);
   }
 
   @override
   Stream get receiveDataStream => GojekCourierPlatform.instance.receiveDataStream;
 
   @override
-  Future<void> subscribe(String topic, [QoS qoS =  QoS.ZERO]) {
-    return GojekCourierPlatform.instance.subscribe(topic, qoS);
+  Future<void> subscribe(String id, String topic, [QoS qoS =  QoS.ZERO]) {
+    return GojekCourierPlatform.instance.subscribe(id, topic, qoS);
   }
 
   @override
-  Future<void> unsubscribe(String topic) {
-    return GojekCourierPlatform.instance.unsubscribe(topic);
+  Future<void> unsubscribe(String id, String topic) {
+    return GojekCourierPlatform.instance.unsubscribe(id, topic);
   }
 
   @override
-  Future<void> disconnect() {
-    return GojekCourierPlatform.instance.disconnect();
+  Future<void> disconnect(String id) {
+    return GojekCourierPlatform.instance.disconnect(id);
   }
 
   @override
-  Future<void> send(String topic, String msg, [QoS qoS =  QoS.ZERO]) {
-    return GojekCourierPlatform.instance.send(topic, msg, qoS);
+  Future<void> send(String id, String topic, String msg, [QoS qoS =  QoS.ZERO]) {
+    return GojekCourierPlatform.instance.send(id, topic, msg, qoS);
   }
 
   @override
-  Future<void> sendUint8List(String topic, Uint8List msg, [QoS qoS = QoS.ZERO]) {
-    return GojekCourierPlatform.instance.sendUint8List(topic, msg, qoS);
+  Future<void> sendUint8List(String id, String topic, Uint8List msg, [QoS qoS = QoS.ZERO]) {
+    return GojekCourierPlatform.instance.sendUint8List(id, topic, msg, qoS);
   }
 }
 
