@@ -13,7 +13,7 @@ import CourierMQTT
 class GojekCourierCore{
     
     var courierClient: CourierClient?
-    private var cancellables = Set<AnyCancellable>()
+    private var streamList = Dictionary<String, AnyCancellable>()
     private var courierParam : CourierParam?
     var eventSink : FlutterEventSink?
     var messageSink : FlutterEventSink?
@@ -48,15 +48,22 @@ class GojekCourierCore{
     
     func disconnect(){
         courierClient?.disconnect()
+        streamList.forEach { (key: String, value: AnyCancellable) in
+            value.cancel()
+        }
+        streamList.removeAll()
+        
     }
     
     func subscribe(topic: String, qos: QoS){
-        print("subscribe \(topic)")
+    
         courierClient?.subscribe((topic, qos))
     }
     
     func unsubscribe(topic: String){
         courierClient?.unsubscribe(topic)
+        streamList[topic]?.cancel()
+        streamList.removeValue(forKey: topic)
     }
     
     func send(topic:String, message:String, qos:QoS) throws{
@@ -86,17 +93,20 @@ class GojekCourierCore{
     }
     
     func listen(topic:String){
-        print("listen \(topic)")
-        courierClient!.messagePublisher(topic: topic)
-            .sink { [weak self] in
+    
+        let keyExists = streamList[topic] != nil
+        if(!keyExists){
+            streamList[topic] = courierClient!.messagePublisher(topic: topic)
+                .sink { [weak self] in
+                    
+                    self?.handleMessageReceiveEvent(.success($0), topic: topic)
+                }
+        }
                 
-                self?.handleMessageReceiveEvent(.success($0), topic: topic)
-            }.store(in: &cancellables)
-        
     }
     
     private func handleMessageReceiveEvent(_ message: Result<Data, NSError>, topic: String) {
-        print("\(message)")
+//        print("-=-=-=-=  \(message)")
         switch message {
         case let .success(message):
             let msg = [UInt8] (message)

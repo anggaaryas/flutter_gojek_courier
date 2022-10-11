@@ -401,8 +401,9 @@ Map<String, dynamic> _$MqttSubscribeFailureEventToJson(
 MqttUnsubscribeAttemptEvent _$MqttUnsubscribeAttemptEventFromJson(
         Map<String, dynamic> json) =>
     MqttUnsubscribeAttemptEvent(
-      topics:
-          (json['topics'] as List<dynamic>?)?.map((e) => e as String).toList(),
+      topics: (json['topics'] as Map<String, dynamic>?)?.map(
+            (k, e) => MapEntry(k, $enumDecodeNullable(qoSEnumMap, e)),
+      ),
       connectionInfo: json['connectionInfo'] == null
           ? null
           : ConnectionInfo.fromJson(
@@ -419,8 +420,9 @@ Map<String, dynamic> _$MqttUnsubscribeAttemptEventToJson(
 MqttUnsubscribeSuccessEvent _$MqttUnsubscribeSuccessEventFromJson(
         Map<String, dynamic> json) =>
     MqttUnsubscribeSuccessEvent(
-      topics:
-          (json['topics'] as List<dynamic>?)?.map((e) => e as String).toList(),
+      topics: (json['topics'] as Map<String, dynamic>?)?.map(
+            (k, e) => MapEntry(k, $enumDecodeNullable(qoSEnumMap, e)),
+      ),
       timeTakenMillis: json['timeTakenMillis'] as int?,
       connectionInfo: json['connectionInfo'] == null
           ? null
@@ -439,8 +441,9 @@ Map<String, dynamic> _$MqttUnsubscribeSuccessEventToJson(
 MqttUnsubscribeFailureEvent _$MqttUnsubscribeFailureEventFromJson(
         Map<String, dynamic> json) =>
     MqttUnsubscribeFailureEvent(
-      topics:
-          (json['topics'] as List<dynamic>?)?.map((e) => e as String).toList(),
+      topics: (json['topics'] as Map<String, dynamic>?)?.map(
+            (k, e) => MapEntry(k, $enumDecodeNullable(qoSEnumMap, e)),
+      ),
       exception: json['exception'] == null
           ? null
           : CourierException.fromJson(

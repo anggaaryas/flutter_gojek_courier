@@ -301,7 +301,7 @@ class MqttSubscribeFailureEvent extends MqttEvent {
 
 @JsonSerializable()
 class MqttUnsubscribeAttemptEvent extends MqttEvent {
-  final List<String>? topics;
+  final Map<String, QoS?>? topics;
 
   MqttUnsubscribeAttemptEvent({this.topics, super.connectionInfo});
 
@@ -312,7 +312,7 @@ class MqttUnsubscribeAttemptEvent extends MqttEvent {
 
 @JsonSerializable()
 class MqttUnsubscribeSuccessEvent extends MqttEvent {
-  final List<String>? topics;
+  final Map<String, QoS?>? topics;
   final int? timeTakenMillis;
 
   MqttUnsubscribeSuccessEvent(
@@ -327,7 +327,7 @@ class MqttUnsubscribeSuccessEvent extends MqttEvent {
 
 @JsonSerializable()
 class MqttUnsubscribeFailureEvent extends MqttEvent {
-  final List<String>? topics;
+  final Map<String, QoS?>? topics;
   final CourierException? exception;
   final int? timeTakenMillis;
 

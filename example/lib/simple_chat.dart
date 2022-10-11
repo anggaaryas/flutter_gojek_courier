@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 import 'dart:math';
 import 'dart:typed_data';
@@ -72,8 +73,14 @@ class _SimpleChatScreenState extends State<SimpleChatScreen> {
     listen();
   }
 
+  StreamSubscription? msgSubscription;
+  @override
+  void dispose() {
+    msgSubscription?.cancel();
+    super.dispose();
+  }
   void listen() {
-    gojekCourierPlugin.receiveDataStream.listen((event) {
+    msgSubscription = gojekCourierPlugin.receiveDataStream.listen((event) {
       var decode = (jsonDecode(event)["data"] as List<dynamic>).map((e) {
         return e as int;
       }).toList();
@@ -81,7 +88,7 @@ class _SimpleChatScreenState extends State<SimpleChatScreen> {
       var msg = jsonDecode(msgString);
       chatList.add("${msg["from"]}   :   ${msg['msg']}");
       setState(() {});
-      print('=-=-=-=-=');
+
     });
   }
 
@@ -165,6 +172,13 @@ class _SimpleChatScreenState extends State<SimpleChatScreen> {
                               isConnect = false;
                               isTopicSubscribed = false;
                             });
+                          } else if(event is courier.MqttUnsubscribeSuccessEvent){
+                            gojekCourierPlugin.disconnect();
+                            msgSubscription?.cancel();
+                            setState(() {
+                              isConnect = false;
+                              isTopicSubscribed = false;
+                            });
                           }
                           ScaffoldMessenger.of(context).showSnackBar(
                               SnackBar(content: Text(event.toString())));
@@ -228,16 +242,13 @@ class _SimpleChatScreenState extends State<SimpleChatScreen> {
                       : Container(),
                   isConnect
                       ? ElevatedButton(
-                      onPressed: () {
-                        gojekCourierPlugin.disconnect();
-                        setState(() {
-                          isConnect = false;
-                          isTopicSubscribed = false;
-                        });
+                      onPressed: () async {
+                        await gojekCourierPlugin.unsubscribe("chat/testroom/$topic");
+
                       },
                       child: const Text("Disconnect"))
                       : Container(),
-                  isTopicSubscribed
+                  true
                       ? ElevatedButton(
                       onPressed: () {
                         sendByte(topic, message.text);
