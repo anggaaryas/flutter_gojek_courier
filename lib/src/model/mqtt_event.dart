@@ -314,7 +314,7 @@ class MqttUnsubscribeAttemptEvent extends MqttEvent {
 
 @JsonSerializable()
 class MqttUnsubscribeSuccessEvent extends MqttEvent {
-  final Map<String, QoS?>? topics;
+  final Map<String, QoS?>? topics;  // TODO MAC -> MAP, ANdroid -> List
   final int? timeTakenMillis;
 
   MqttUnsubscribeSuccessEvent(
