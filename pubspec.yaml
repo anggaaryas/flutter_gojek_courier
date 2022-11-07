@@ -1,6 +1,6 @@
 name: gojek_courier
 description: Gojek Courier Implementation for Flutter
-version: 0.0.1-beta.01
+version: 0.1.0-beta
 homepage: https://github.com/anggaaryas/flutter_gojek_courier
 
 environment:
