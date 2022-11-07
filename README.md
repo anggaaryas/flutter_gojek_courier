@@ -7,10 +7,15 @@ Gojek Courier Implementation for Flutter
 Courier version: 0.0.9
 
 Some incompatible feature between android & ios
+
 | Feature | Android | IOS |
+
 | -------| ------ | ---- |
+
 | Interceptor | ✔ | ❌ |
+
 | Logger | ✔ | ❌ |
+
 
 ## Why Gojek Courier
 
