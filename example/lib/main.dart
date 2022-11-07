@@ -5,7 +5,7 @@ void main() {
   runApp(const MyApp());
 }
 
-class MyApp extends StatelessWidget{
+class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
 
   @override
@@ -16,7 +16,7 @@ class MyApp extends StatelessWidget{
   }
 }
 
-class MenuScreen extends StatelessWidget{
+class MenuScreen extends StatelessWidget {
   const MenuScreen({Key? key}) : super(key: key);
 
   @override
@@ -34,7 +34,6 @@ class MenuScreen extends StatelessWidget{
                     builder: (context) => const SimpleChatScreen()),
               );
             }),
-
           ],
         ));
   }
@@ -45,7 +44,4 @@ class MenuScreen extends StatelessWidget{
       onTap: onTap,
     );
   }
-
 }
-
-

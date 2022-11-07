@@ -21,12 +21,14 @@ export 'package:gojek_courier/src/model/keep_alive.dart';
 
 
 import 'dart:async';
+import 'dart:typed_data';
 
 import 'gojek_courier.dart';
 import 'src/gojek_courier_platform_interface.dart';
 
 class GojekCourier implements GojekCourierBehaviour{
 
+  @override
   Future<String?> getPlatformVersion() {
     return GojekCourierPlatform.instance.getPlatformVersion();
   }
@@ -60,7 +62,16 @@ class GojekCourier implements GojekCourierBehaviour{
   }
 
   @override
-  Future<void> send(String topic, Map<String, Object> msg, [QoS qoS =  QoS.ZERO]) {
+  Future<void> send(String topic, String msg, [QoS qoS =  QoS.ZERO]) {
     return GojekCourierPlatform.instance.send(topic, msg, qoS);
   }
+
+  @override
+  Future<void> sendUint8List(String topic, Uint8List msg, [QoS qoS = QoS.ZERO]) {
+    return GojekCourierPlatform.instance.sendUint8List(topic, msg, qoS);
+  }
 }
+
+// Logger, ios unavailable
+// authfail, ios unavailable
+// some event is different between android and ios

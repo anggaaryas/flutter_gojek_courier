@@ -25,8 +25,7 @@ class MqttConfiguration{
   final ILogger? logger;
   @JsonKey(ignore: true)
   final EventHandler? eventHandler;
-  @JsonKey(ignore: true)
-  final MqttInterceptor? mqttInterceptor;
+  final bool useInterceptor;
   final ExperimentConfig? experimentConfig;
 
   MqttConfiguration({
@@ -39,7 +38,7 @@ class MqttConfiguration{
       this.authFailureHandler,
       this.logger,
       this.eventHandler,
-      this.mqttInterceptor,
+      this.useInterceptor = false,
       this.experimentConfig});
 
   factory MqttConfiguration.fromJson(Map<String, dynamic> json) => _$MqttConfigurationFromJson(json);

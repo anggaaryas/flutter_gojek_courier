@@ -1,5 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
+import 'dart:io';
+import 'dart:typed_data';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
@@ -13,6 +15,9 @@ class MethodChannelGojekCourier extends GojekCourierPlatform {
   StreamSubscription? _loggerStreamSubscription;
   StreamSubscription? _eventStreamSubscription;
   StreamSubscription? _authFailStreamSubscription;
+  StreamSubscription? _dataSubscription;
+
+  late Stream dataStream;
 
   Courier? _courier;
   MqttConnectOption? _mqttConnectOption;
@@ -28,16 +33,31 @@ class MethodChannelGojekCourier extends GojekCourierPlatform {
 
   final authFailChannel = const EventChannel('auth_fail_channel');
 
+  MethodChannelGojekCourier(){
+    if(Platform.isAndroid) streamLogger();
+
+    streamEvent();
+
+    if(Platform.isAndroid) streamAuthFail();
+
+    streamData();
+  }
+
   @override
   Future<String?> getPlatformVersion() async {
     final version =
-        await methodChannel.invokeMethod<String>('getPlatformVersion');
+    await methodChannel.invokeMethod<String>('getPlatformVersion');
     return version;
+  }
+
+  void streamData(){
+    dataStream = receiveDataChannel.receiveBroadcastStream();
+    _dataSubscription = dataStream.listen((event) { });
   }
 
   @override
   Stream get receiveDataStream {
-    return receiveDataChannel.receiveBroadcastStream();
+    return dataStream;
   }
 
   @override
@@ -50,11 +70,12 @@ class MethodChannelGojekCourier extends GojekCourierPlatform {
     if (_courier == null) {
       _courier = courier;
 
-      streamLogger();
-
-      streamEvent();
-
-      streamAuthFail();
+      if(Platform.isIOS){
+        _courier?.configuration.logger?.i("Library", "Logger is not supported in Ios");
+        if(courier.configuration.client.configuration?.useInterceptor ?? false){
+          _courier?.configuration.logger?.i("Library", "interceptor is not supported in Ios");
+        }
+      }
 
       await methodChannel.invokeMethod<String>('initialise', courier.toJson());
     } else {
@@ -64,7 +85,6 @@ class MethodChannelGojekCourier extends GojekCourierPlatform {
 
   void streamAuthFail() {
     _authFailStreamSubscription = authFailStream.listen((event) {
-      print(event);
       _courier?.configuration.client.configuration?.authFailureHandler
           ?.handleAuthFailure
           ?.call();
@@ -72,6 +92,7 @@ class MethodChannelGojekCourier extends GojekCourierPlatform {
   }
 
   void streamLogger() {
+
     _loggerStreamSubscription = loggerStream.listen((event) {
       var decode = jsonDecode(event);
       var type = decode["type"];
@@ -93,10 +114,12 @@ class MethodChannelGojekCourier extends GojekCourierPlatform {
   }
 
   void streamEvent() {
-     _eventStreamSubscription = eventStream.listen((event) {
-      print("event...");
-      print(event);
-
+    _eventStreamSubscription = eventStream.listen((event) {
+      // print("event...");
+      // print(event);
+      if(Platform.isIOS){
+        event = (event as String).replaceAll('\\', '\\\\');
+      }
       var json = jsonDecode(event);
       final topic = (json["topic"] as String).split("\$")[1];
       final data = json["data"];
@@ -104,6 +127,9 @@ class MethodChannelGojekCourier extends GojekCourierPlatform {
       if(data["connectionInfo"] is String){
         data["connectionInfo"] = null;
       }
+
+      print("=== $topic  ===");
+      print(data);
 
       switch (topic) {
         case "MqttConnectAttemptEvent":
@@ -399,6 +425,29 @@ class MethodChannelGojekCourier extends GojekCourierPlatform {
                 ?.configuration.client.configuration?.eventHandler?.onEvent
                 ?.call(AuthenticatorErrorEvent.fromJson(data));
           }
+          break;
+
+        case "CourierDisconnect":
+          {
+            _courier
+                ?.configuration.client.configuration?.eventHandler?.onEvent
+                ?.call(CourierDisconnectEvent.fromJson(data));
+          }
+          break;
+        case "ConnectionAvailable":
+          {
+            _courier
+                ?.configuration.client.configuration?.eventHandler?.onEvent
+                ?.call(ConnectionAvailableEvent());
+          }
+          break;
+        case "ConnectionUnavailable":
+          {
+            _courier
+                ?.configuration.client.configuration?.eventHandler?.onEvent
+                ?.call(ConnectionUnavailableEvent());
+          }
+          break;
       }
     });
   }
@@ -420,7 +469,7 @@ class MethodChannelGojekCourier extends GojekCourierPlatform {
   }
 
   @override
-  Future<void> send(String topic, Map<String, Object> msg,
+  Future<void> send(String topic, String msg,
       [QoS qoS = QoS.ZERO]) async {
     await methodChannel.invokeMethod<String>(
         'send', {'topic': topic, 'msg': msg, 'qos': '${qoSEnumMap[qoS]}'});
@@ -436,5 +485,11 @@ class MethodChannelGojekCourier extends GojekCourierPlatform {
 
   Stream get authFailStream {
     return authFailChannel.receiveBroadcastStream();
+  }
+
+  @override
+  Future<void> sendUint8List(String topic, Uint8List msg, [QoS qoS = QoS.ZERO]) async {
+    await methodChannel.invokeMethod<String>(
+        'sendByte', {'topic': topic, 'msg': msg, 'qos': '${qoSEnumMap[qoS]}'});
   }
 }

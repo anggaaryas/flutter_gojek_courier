@@ -1,3 +1,5 @@
+import 'dart:typed_data';
+
 import 'package:gojek_courier/src/model/courier.dart';
 import 'package:gojek_courier/src/model/mqtt_connect_option.dart';
 import 'package:gojek_courier/src/model/mqtt_event.dart';
@@ -42,6 +44,7 @@ abstract class GojekCourierBehaviour{
   Future<void> subscribe(String topic, [QoS qoS =  QoS.ZERO]);
   Future<void> unsubscribe(String topic);
   Future<void> disconnect();
-  Future<void> send(String topic, Map<String, Object> msg, [QoS qoS =  QoS.ZERO]);
+  Future<void> send(String topic, String msg, [QoS qoS =  QoS.ZERO]);
+  Future<void> sendUint8List(String topic, Uint8List msg, [QoS qoS =  QoS.ZERO]);
 
 }

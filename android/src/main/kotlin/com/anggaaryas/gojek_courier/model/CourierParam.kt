@@ -10,8 +10,10 @@ import com.gojek.courier.Courier
 import com.gojek.courier.streamadapter.rxjava2.RxJava2StreamAdapterFactory
 import com.gojek.mqtt.auth.Authenticator
 import com.gojek.mqtt.client.MqttClient
+import com.gojek.mqtt.client.MqttInterceptor
 import com.gojek.mqtt.client.config.ExperimentConfigs
 import com.gojek.mqtt.client.config.PersistenceOptions
+import com.gojek.mqtt.client.config.SubscriptionStore
 import com.gojek.mqtt.client.config.v3.MqttV3Configuration
 import com.gojek.mqtt.client.factory.MqttClientFactory
 import com.gojek.mqtt.model.AdaptiveKeepAliveConfig
@@ -88,6 +90,7 @@ class MqttConfigurationParam(value: Map<String, Any?>): Param<MqttV3Configuratio
     var wakeLockTimeout: Int? = null
     var pingSender: WorkManagerPingSenderConfigParam? = null
     var experimentConfig: ExperimentConfigParam? = null
+    var useInterceptor: Boolean = false
 
 
     init {
@@ -112,13 +115,16 @@ class MqttConfigurationParam(value: Map<String, Any?>): Param<MqttV3Configuratio
         value.getValue("experimentConfig")?.let {
             experimentConfig = ExperimentConfigParam(it as Map<String, Any?>)
         }
+        value.getValue("useInterceptor")?.let {
+            useInterceptor = it as Boolean
+        }
     }
 
     override fun build(context: Context, logger: Listener): MqttV3Configuration {
         return MqttV3Configuration(
             logger = logger.getLogger("Courier"),
             eventHandler = logger.eventHandler,
-            authFailureHandler = logger.authFailureHandler,
+            authFailureHandler = logger.authFailureHandler, // redundant di on event?
             connectTimeoutPolicy = connectTimeoutPolicy?.build(context, logger) ?: ConnectTimeoutPolicy(ConnectTimeoutConfig()),
             authenticator = object : Authenticator {
                 override fun authenticate(
@@ -128,12 +134,12 @@ class MqttConfigurationParam(value: Map<String, Any?>): Param<MqttV3Configuratio
                     return connectOptions
                 }
             },
-            mqttInterceptorList = listOf(
+            mqttInterceptorList = if (useInterceptor) listOf(
                 MqttChuckInterceptor(
                     context,
                     MqttChuckConfig(retentionPeriod = Period.ONE_HOUR)
                 )
-            ),
+            ) else emptyList(),
             persistenceOptions = PersistenceOptions.PahoPersistenceOptions(100, false),
             experimentConfigs = experimentConfig?.build(context, logger) ?: ExperimentConfigs(),
             unsubscriptionRetryPolicy = unsubscriptionRetryPolicy?.build(context, logger) ?: SubscriptionRetryPolicy(SubscriptionRetryConfig()),
@@ -166,7 +172,7 @@ class ExperimentConfigParam(value: Map<String, Any?>): Param<ExperimentConfigs>(
 
     override fun build(context: Context, logger: Listener): ExperimentConfigs? {
         return ExperimentConfigs(
-            isPersistentSubscriptionStoreEnabled = isPersistentSubscriptionStoreEnabled ?: true
+            subscriptionStore = if(isPersistentSubscriptionStoreEnabled == true)  SubscriptionStore.PERSISTABLE else SubscriptionStore.IN_MEMORY
         )
     }
 }

@@ -64,6 +64,8 @@ class GojekCourierPlugin : FlutterPlugin, MethodCallHandler, ActivityAware {
 
     override fun onMethodCall(@NonNull call: MethodCall, @NonNull result: MethodChannel.Result) {
         Timber.tag("Courier-stream").d("call ${call.method}...")
+
+
         when (call.method) {
             "getPlatformVersion" -> {
                 result.success("Android ${android.os.Build.VERSION.RELEASE}")
@@ -101,10 +103,16 @@ class GojekCourierPlugin : FlutterPlugin, MethodCallHandler, ActivityAware {
             }
             "send" -> {
                 val topic: String = call.argument("topic")!!
-                val param : Map<String, Objects> = call.argument("msg")!!
-                val message = JSONObject(param).toString()
+                val message : String = call.argument("msg")!!
                 val qos : QoS = QosParam(call.argument("qos")!!).build()
                 library.send(topic, message, qos)
+                result.success("")
+            }
+            "sendByte" -> {
+                val topic: String = call.argument("topic")!!
+                val message : ByteArray = call.argument("msg")!!
+                val qos : QoS = QosParam(call.argument("qos")!!).build()
+                library.sendByte(topic, message, qos)
                 result.success("")
             }
             else -> {
@@ -118,11 +126,11 @@ class GojekCourierPlugin : FlutterPlugin, MethodCallHandler, ActivityAware {
     }
 
     override fun onDetachedFromActivity() {
-        TODO("Not yet implemented")
+        library.disconnect()
     }
 
     override fun onReattachedToActivityForConfigChanges(binding: ActivityPluginBinding) {
-        TODO("Not yet implemented")
+
     }
 
     override fun onAttachedToActivity(binding: ActivityPluginBinding) {
@@ -131,6 +139,6 @@ class GojekCourierPlugin : FlutterPlugin, MethodCallHandler, ActivityAware {
     }
 
     override fun onDetachedFromActivityForConfigChanges() {
-        TODO("Not yet implemented")
+
     }
 }
