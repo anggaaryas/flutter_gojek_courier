@@ -11,10 +11,7 @@ import CourierCore
 @available(iOS 13.0, *)
 extension GojekCourierCore : ICourierEventHandler{
         func onEvent(_ event: CourierEvent) {
-            print(event)
-            print("oooppppp")
             let result = event.associatedValue()
-            print(result)
             eventSink!(result)
         }
 }
