@@ -95,7 +95,7 @@ extension CourierEvent{
       case .subscribeSuccess(topic: let topic):
           return toString(topic: "Event$MqttSubscribeSuccessEvent", data: "{\"topics\" : {\"\(topic)\" : null}}")
       case .unsubscribeSuccess(topic: let topic):
-          return toString(topic: "Event$MqttUnsubscribeSuccessEvent", data: "{\"topics\" : {\"\(topic)\" : null}}")
+          return toString(topic: "Event$MqttUnsubscribeSuccessEvent", data: "{\"topics\" : [\"\(topic)\"]}")
       case .subscribeFailure(topic: let topic, error: let error):
           return toString(topic: "Event$MqttSubscribeFailureEvent", data: "{\"exception\" : \(errorToString(error: error)), \"topics\" : {\"\(topic)\" : null}}")
       case .unsubscribeFailure(topic: let topic, error: let error):

@@ -34,11 +34,11 @@ class MethodChannelGojekCourier extends GojekCourierPlatform {
   final authFailChannel = const EventChannel('auth_fail_channel');
 
   MethodChannelGojekCourier(){
-    streamLogger();
+    if(Platform.isAndroid) streamLogger();
 
     streamEvent();
 
-    streamAuthFail();
+    if(Platform.isAndroid) streamAuthFail();
 
     streamData();
   }
@@ -129,6 +129,7 @@ class MethodChannelGojekCourier extends GojekCourierPlatform {
       }
 
       print("=== $topic  ===");
+      print(data);
 
       switch (topic) {
         case "MqttConnectAttemptEvent":

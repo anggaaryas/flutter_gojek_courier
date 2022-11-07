@@ -18,12 +18,10 @@ class EventStreamHandler : NSObject, FlutterStreamHandler {
     private var sink: FlutterEventSink?
     
     init(library: GojekCourierCore) {
-        print("coba assign library event...")
         self.library  = library
     }
     
     func addEventaListener(){
-        print("coba listen...")
         library.addEventListener(eventSink: sink!)
     }
  
