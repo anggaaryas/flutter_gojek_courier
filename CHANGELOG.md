@@ -1,8 +1,9 @@
-## 0.1.1-beta
+## 0.1.2-beta
 
 **2022-07-11**
 
 - fix readme
+- remove print
 
 ## 0.1.0-beta
 

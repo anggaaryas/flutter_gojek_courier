@@ -128,8 +128,8 @@ class MethodChannelGojekCourier extends GojekCourierPlatform {
         data["connectionInfo"] = null;
       }
 
-      print("=== $topic  ===");
-      print(data);
+      // print("=== $topic  ===");
+      // print(data);
 
       switch (topic) {
         case "MqttConnectAttemptEvent":

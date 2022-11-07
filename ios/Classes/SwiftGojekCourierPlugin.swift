@@ -78,7 +78,7 @@ public class SwiftGojekCourierPlugin: NSObject, FlutterPlugin {
             do{
                 try core.send(topic: topic, message: msg, qos: qos)
             } catch {
-                print(error)
+//                 print(error)
             }
             result("")
             
@@ -90,12 +90,12 @@ public class SwiftGojekCourierPlugin: NSObject, FlutterPlugin {
             do{
                 try core.sendByte(topic: topic, message: msg.data, qos: qos)
             } catch {
-                print(error)
+//                 print(error)
             }
             result("")
             
-        default:
-            print(call.method)
+         default:
+             print(call.method)
         }
     }
 }
