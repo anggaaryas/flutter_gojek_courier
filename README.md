@@ -4,8 +4,13 @@ Gojek Courier Implementation for Flutter
 
 ## Progress
 
-Android => On progress
-Ios => OTW
+Courier version: 0.0.9
+
+Some incompatible feature between android & ios
+| Feature | Android | IOS |
+| -------| ------ | ---- |
+| Interceptor | ✔ | ❌ |
+| Logger | ✔ | ❌ |
 
 ## Why Gojek Courier
 

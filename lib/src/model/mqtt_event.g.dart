@@ -329,9 +329,9 @@ Map<String, dynamic> _$ConnectPacketSendEventToJson(
 MqttSubscribeAttemptEvent _$MqttSubscribeAttemptEventFromJson(
         Map<String, dynamic> json) =>
     MqttSubscribeAttemptEvent(
-      topics: (json['topics'] as Map<String, dynamic>?)?.map(
+      topics: Platform.isIOS?  (json['topics'] as Map<String, dynamic>?)?.map(
         (k, e) => MapEntry(k, $enumDecodeNullable(qoSEnumMap, e)),
-      ),
+      ) : Map.fromIterable((json['topics'] as List<dynamic>?)!.map((e) => e as String), key: (topic) => topic, value: null),
       connectionInfo: json['connectionInfo'] == null
           ? null
           : ConnectionInfo.fromJson(
@@ -354,9 +354,9 @@ const qoSEnumMap = {
 MqttSubscribeSuccessEvent _$MqttSubscribeSuccessEventFromJson(
         Map<String, dynamic> json) =>
     MqttSubscribeSuccessEvent(
-      topics: (json['topics'] as Map<String, dynamic>?)?.map(
-        (k, e) => MapEntry(k, $enumDecodeNullable(qoSEnumMap, e)),
-      ),
+        topics: Platform.isIOS?  (json['topics'] as Map<String, dynamic>?)?.map(
+              (k, e) => MapEntry(k, $enumDecodeNullable(qoSEnumMap, e)),
+        ) : Map.fromIterable((json['topics'] as List<dynamic>?)!.map((e) => e as String), key: (topic) => topic, value: null),
       timeTakenMillis: json['timeTakenMillis'] as int?,
       connectionInfo: json['connectionInfo'] == null
           ? null
@@ -375,9 +375,9 @@ Map<String, dynamic> _$MqttSubscribeSuccessEventToJson(
 MqttSubscribeFailureEvent _$MqttSubscribeFailureEventFromJson(
         Map<String, dynamic> json) =>
     MqttSubscribeFailureEvent(
-      topics: (json['topics'] as Map<String, dynamic>?)?.map(
-        (k, e) => MapEntry(k, $enumDecodeNullable(qoSEnumMap, e)),
-      ),
+      topics: Platform.isIOS?  (json['topics'] as Map<String, dynamic>?)?.map(
+            (k, e) => MapEntry(k, $enumDecodeNullable(qoSEnumMap, e)),
+      ) : Map.fromIterable((json['topics'] as List<dynamic>?)!.map((e) => e as String), key: (topic) => topic, value: null),
       exception: json['exception'] == null
           ? null
           : CourierException.fromJson(
@@ -401,9 +401,9 @@ Map<String, dynamic> _$MqttSubscribeFailureEventToJson(
 MqttUnsubscribeAttemptEvent _$MqttUnsubscribeAttemptEventFromJson(
         Map<String, dynamic> json) =>
     MqttUnsubscribeAttemptEvent(
-      topics: (json['topics'] as Map<String, dynamic>?)?.map(
+      topics: Platform.isIOS?  (json['topics'] as Map<String, dynamic>?)?.map(
             (k, e) => MapEntry(k, $enumDecodeNullable(qoSEnumMap, e)),
-      ),
+      ) : Map.fromIterable((json['topics'] as List<dynamic>?)!.map((e) => e as String), key: (topic) => topic, value: null),
       connectionInfo: json['connectionInfo'] == null
           ? null
           : ConnectionInfo.fromJson(
@@ -420,9 +420,9 @@ Map<String, dynamic> _$MqttUnsubscribeAttemptEventToJson(
 MqttUnsubscribeSuccessEvent _$MqttUnsubscribeSuccessEventFromJson(
         Map<String, dynamic> json) =>
     MqttUnsubscribeSuccessEvent(
-      topics: (json['topics'] as Map<String, dynamic>?)?.map(
+      topics: Platform.isIOS?  (json['topics'] as Map<String, dynamic>?)?.map(
             (k, e) => MapEntry(k, $enumDecodeNullable(qoSEnumMap, e)),
-      ),
+      ) : Map.fromIterable((json['topics'] as List<dynamic>?)!.map((e) => e as String), key: (topic) => topic, value: null),
       timeTakenMillis: json['timeTakenMillis'] as int?,
       connectionInfo: json['connectionInfo'] == null
           ? null
@@ -441,9 +441,9 @@ Map<String, dynamic> _$MqttUnsubscribeSuccessEventToJson(
 MqttUnsubscribeFailureEvent _$MqttUnsubscribeFailureEventFromJson(
         Map<String, dynamic> json) =>
     MqttUnsubscribeFailureEvent(
-      topics: (json['topics'] as Map<String, dynamic>?)?.map(
+      topics: Platform.isIOS?  (json['topics'] as Map<String, dynamic>?)?.map(
             (k, e) => MapEntry(k, $enumDecodeNullable(qoSEnumMap, e)),
-      ),
+      ) : Map.fromIterable((json['topics'] as List<dynamic>?)!.map((e) => e as String), key: (topic) => topic, value: null),
       exception: json['exception'] == null
           ? null
           : CourierException.fromJson(

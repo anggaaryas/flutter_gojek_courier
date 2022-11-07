@@ -24,6 +24,7 @@ class _SimpleChatScreenState extends State<SimpleChatScreen> {
   bool isConnect = false;
   bool isTopicSubscribed = false;
   bool isCleanSession = true;
+  StreamSubscription? msgSubscription;
 
   final TextEditingController _ipAddressController =
   TextEditingController(text: "broker.mqttdashboard.com");
@@ -37,18 +38,10 @@ class _SimpleChatScreenState extends State<SimpleChatScreen> {
   @override
   void initState() {
     super.initState();
-    initPlatformState();
+    initCourier();
+
     _usernameController.text = "user";
-    _clientIdController.text =
-    "${_usernameController.text}-${Random().nextInt(10000)}";
-  }
-
-  Future<void> initPlatformState() async {
-
-
-    await initCourier();
-
-
+    _clientIdController.text =  "${_usernameController.text}-${Random().nextInt(10000)}";
   }
 
   Future<void> connect(String username) async {
@@ -73,7 +66,7 @@ class _SimpleChatScreenState extends State<SimpleChatScreen> {
     listen();
   }
 
-  StreamSubscription? msgSubscription;
+
   @override
   void dispose() {
     msgSubscription?.cancel();

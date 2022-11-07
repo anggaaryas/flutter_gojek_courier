@@ -28,6 +28,7 @@ import 'src/gojek_courier_platform_interface.dart';
 
 class GojekCourier implements GojekCourierBehaviour{
 
+  @override
   Future<String?> getPlatformVersion() {
     return GojekCourierPlatform.instance.getPlatformVersion();
   }
