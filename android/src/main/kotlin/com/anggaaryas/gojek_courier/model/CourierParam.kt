@@ -144,7 +144,6 @@ class MqttConfigurationParam(value: Map<String, Any?>): Param<MqttV3Configuratio
             experimentConfigs = experimentConfig?.build(context, logger) ?: ExperimentConfigs(),
             unsubscriptionRetryPolicy = unsubscriptionRetryPolicy?.build(context, logger) ?: SubscriptionRetryPolicy(SubscriptionRetryConfig()),
             wakeLockTimeout = wakeLockTimeout ?: DefaultConstants.DEFAULT_WAKELOCK_TIMEOUT,
-            socketFactory = null,
             pingSender = WorkPingSenderFactory.createMqttPingSender(
                 context,
                 pingSender?.build(context, logger) ?: WorkManagerPingSenderConfig(

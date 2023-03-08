@@ -25,7 +25,7 @@ class MqttConnectOption{
       required this.password,
       this.version =  MqttVersion.VERSION_3_1_1,
       required this.isCleanSession,
-      this.readTimeoutSecs = -1,
+      this.readTimeoutSecs = 30,
       this.userPropertiesMap = const {}});
 
   factory MqttConnectOption.fromJson(Map<String, dynamic> json) => _$MqttConnectOptionFromJson(json);

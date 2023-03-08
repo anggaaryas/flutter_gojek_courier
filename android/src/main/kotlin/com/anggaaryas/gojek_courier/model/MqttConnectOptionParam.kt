@@ -9,7 +9,7 @@ import com.gojek.mqtt.model.ServerUri
 import java.util.*
 
 
-class MqttConnectOptionParam(value: Map<String, Any?>): Param<MqttConnectOptions>(value) {
+class MqttConnectOptionParam(value: Map<String, Any?>) : Param<MqttConnectOptions>(value) {
     var serverUri: ServerUriParam? = null
     var keepAlive: KeepAliveParam? = null
     var clientId: String? = null
@@ -52,32 +52,33 @@ class MqttConnectOptionParam(value: Map<String, Any?>): Param<MqttConnectOptions
 
     override fun build(context: Context, logger: Listener): MqttConnectOptions? {
         val temp = mutableListOf<ServerUri>()
-        if(serverUri != null){
+        if (serverUri != null) {
             val build = serverUri!!.build(context, logger)
             temp.add(build)
         }
 
         return keepAlive?.build(context, logger)?.let {
-            MqttConnectOptions(
-                serverUris = Collections.unmodifiableList(temp),
-                clientId = clientId ?: "",
-                isCleanSession = isCleanSession ?: false,
-                keepAlive = it,
-                password = password ?: "",
-                username = username ?: "",
-                readTimeoutSecs = readTimeoutSecs ?: -1,
-                userPropertiesMap = userPropertiesMap ?: emptyMap(),
-                version = version?.build() ?: MqttVersion.VERSION_3_1_1,
-            )
+            MqttConnectOptions.Builder()
+                .serverUris(Collections.unmodifiableList(temp))
+                .clientId(clientId ?: "")
+                .cleanSession(isCleanSession ?: false)
+                .keepAlive(it)
+                .password(password ?: "")
+                .userName(username ?: "")
+                .readTimeoutSecs(readTimeoutSecs ?: 30)
+                .userProperties(userPropertiesMap ?: emptyMap())
+                .mqttVersion(version?.build() ?: MqttVersion.VERSION_3_1_1)
+                .build()
+
         }
     }
 }
 
-class MqttVersionParam(value: String): EnumParam<MqttVersion>(value){
+class MqttVersionParam(value: String) : EnumParam<MqttVersion>(value) {
     var version: MqttVersion? = null
 
     init {
-        when(value){
+        when (value) {
             "MQTT" -> {
                 version = MqttVersion.VERSION_3_1_1
             }
@@ -95,7 +96,7 @@ class MqttVersionParam(value: String): EnumParam<MqttVersion>(value){
     }
 }
 
-class KeepAliveParam(value: Map<String, Any?>): Param<KeepAlive>(value) {
+class KeepAliveParam(value: Map<String, Any?>) : Param<KeepAlive>(value) {
     var timeSeconds: Int? = null
     var isOptimal: Boolean? = null
 
@@ -111,12 +112,12 @@ class KeepAliveParam(value: Map<String, Any?>): Param<KeepAlive>(value) {
     override fun build(context: Context, logger: Listener): KeepAlive {
         return KeepAlive(
             timeSeconds = timeSeconds ?: 0,
-            isOptimal = isOptimal?: false
+            isOptimal = isOptimal ?: false
         )
     }
 }
 
-class ServerUriParam(value: Map<String, Any?>): Param<ServerUri>(value) {
+class ServerUriParam(value: Map<String, Any?>) : Param<ServerUri>(value) {
     var host: String? = null
     var port: Int? = null
     var scheme: String? = null

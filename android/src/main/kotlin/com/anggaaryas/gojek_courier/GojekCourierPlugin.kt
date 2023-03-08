@@ -94,7 +94,7 @@ class GojekCourierPlugin : FlutterPlugin, MethodCallHandler, ActivityAware {
                 }
                 val qos : QoS = QosParam(call.argument("qos")!!).build()
                 library.subscribe(call.argument("topic")!!, qos)
-                library.listen(call.argument("topic")!!)
+//                library.listen(call.argument("topic")!!)
                 result.success("")
             }
             "unsubscribe" -> {
@@ -105,7 +105,7 @@ class GojekCourierPlugin : FlutterPlugin, MethodCallHandler, ActivityAware {
                 val topic: String = call.argument("topic")!!
                 val message : String = call.argument("msg")!!
                 val qos : QoS = QosParam(call.argument("qos")!!).build()
-                library.send(topic, message, qos)
+                library.sendByte(topic, message.toByteArray(), qos)
                 result.success("")
             }
             "sendByte" -> {

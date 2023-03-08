@@ -4,12 +4,18 @@ package com.anggaaryas.gojek_courier
 import android.content.Context
 import android.os.Handler
 import android.os.Looper
+import com.anggaaryas.gojek_courier.model.ByteMessageAdapter
+import com.anggaaryas.gojek_courier.model.ByteMessageAdapterFactory
 import com.anggaaryas.gojek_courier.model.CourierParam
 import com.anggaaryas.gojek_courier.model.MqttConnectOptionParam
 import com.gojek.courier.Courier
+import com.gojek.courier.Message
 import com.gojek.courier.QoS
+import com.gojek.courier.messageadapter.gson.GsonMessageAdapterFactory
 import com.gojek.courier.streamadapter.rxjava2.RxJava2StreamAdapterFactory
 import com.gojek.mqtt.client.MqttClient
+import com.gojek.mqtt.client.listener.MessageListener
+import com.gojek.mqtt.client.model.MqttMessage
 import timber.log.Timber
 import io.flutter.plugin.common.EventChannel
 import io.reactivex.disposables.CompositeDisposable
@@ -33,10 +39,11 @@ class GojekCourierCore(val receiveSink: EventChannel.EventSink, val logger: List
                 configuration = Courier.Configuration(
                     client = it,
                     streamAdapterFactories = listOf(RxJava2StreamAdapterFactory()),
+                    messageAdapterFactories = listOf(ByteMessageAdapterFactory())
                 )
             )
             courierService = courier.create()
-
+            globalListen()
         }
     }
 
@@ -68,6 +75,7 @@ class GojekCourierCore(val receiveSink: EventChannel.EventSink, val logger: List
         streamList.remove(topic)
     }
 
+    @Deprecated("Use ByteArray")
     fun send(topic: String, message: String, qos: QoS){
         when(qos){
             QoS.ZERO -> courierService.sendQosZero(
@@ -102,6 +110,20 @@ class GojekCourierCore(val receiveSink: EventChannel.EventSink, val logger: List
         }
     }
 
+    fun globalListen(){
+        mqttClient.addGlobalMessageListener( object : MessageListener {
+            override fun onMessageReceived(mqttMessage: MqttMessage) {
+                uiThreadHandler.post{
+                    receiveSink.success("{\"topic\" : \"${mqttMessage.topic}\", \"data\": ${(mqttMessage.message as Message.Bytes).value.contentToString()}}")
+                }
+
+                Timber.tag("Courier-Log").d((mqttMessage.message as Message.Bytes).value.contentToString())
+
+            }
+        })
+    }
+
+    @Deprecated("Use Global Listen")
     fun listen(topic:String){
         Timber.tag("Courier-Log").d("coba listen $topic...")
         if(!streamList.containsKey(topic)){
@@ -115,12 +137,5 @@ class GojekCourierCore(val receiveSink: EventChannel.EventSink, val logger: List
                 }
             )
         }
-        /*disposable.add(courierService.receive(topic).subscribe{
-            uiThreadHandler.post{
-                receiveSink.success("{\"topic\" : \"$topic\", \"data\": ${it.contentToString()}}")
-            }
-
-            Timber.tag("Courier-Log").d("${it.contentToString()}")
-        })*/
     }
 }
