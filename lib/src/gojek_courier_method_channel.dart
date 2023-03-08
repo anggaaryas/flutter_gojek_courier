@@ -115,8 +115,7 @@ class MethodChannelGojekCourier extends GojekCourierPlatform {
 
   void streamEvent() {
     _eventStreamSubscription = eventStream.listen((event) {
-      // print("event...");
-      // print(event);
+
       if(Platform.isIOS){
         event = (event as String).replaceAll('\\', '\\\\');
       }
@@ -127,9 +126,6 @@ class MethodChannelGojekCourier extends GojekCourierPlatform {
       if(data["connectionInfo"] is String){
         data["connectionInfo"] = null;
       }
-
-      // print("=== $topic  ===");
-      // print(data);
 
       switch (topic) {
         case "MqttConnectAttemptEvent":

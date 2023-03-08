@@ -61,7 +61,6 @@ public class SwiftGojekCourierPlugin: NSObject, FlutterPlugin {
             if core.messageSink == nil {
                 receiveDataHandler?.setReceiveDataSink()
             }
-            core.listen(topic: topic)
             result("")
             
         case "unsubscribe":

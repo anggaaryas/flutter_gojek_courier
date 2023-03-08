@@ -14,6 +14,7 @@ class GojekCourierCore{
     
     var courierClient: CourierClient?
     private var streamList = Dictionary<String, AnyCancellable>()
+    private var globalListenSubscription : AnyCancellable?
     private var courierParam : CourierParam?
     var eventSink : FlutterEventSink?
     var messageSink : FlutterEventSink?
@@ -35,6 +36,7 @@ class GojekCourierCore{
         let mqttConfig = configAdapter.build()
         
         courierClient = clientFactory.makeMQTTClient(config: mqttConfig)
+        globalListen()
     }
     
     func connect(){
@@ -92,6 +94,13 @@ class GojekCourierCore{
         messageSink = sink
     }
     
+    
+    func globalListen(){
+        globalListenSubscription = courierClient!.messagePublisher().sink{ [weak self] in
+            self?.handleMessageReceiveEvent(.success($0.data), topic: $0.topic)}
+    }
+    
+    @available(*, deprecated,  message: "use global listen")
     func listen(topic:String){
     
         let keyExists = streamList[topic] != nil
@@ -106,12 +115,11 @@ class GojekCourierCore{
     }
     
     private func handleMessageReceiveEvent(_ message: Result<Data, NSError>, topic: String) {
-//        print("-=-=-=-=  \(message)")
+
         switch message {
         case let .success(message):
             let msg = [UInt8] (message)
-                
-            // kirim ke flutter
+            
             messageSink!("{\"topic\" : \"\(topic)\", \"data\": \(msg)}")
         case let .failure(error):
             print(error.localizedDescription)

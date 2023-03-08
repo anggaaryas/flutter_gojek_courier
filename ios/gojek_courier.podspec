@@ -4,7 +4,7 @@
 #
 Pod::Spec.new do |s|
   s.name             = 'gojek_courier'
-  s.version          = '0.0.1'
+  s.version          = '0.0.2'
   s.summary          = 'A new Flutter plugin project.'
   s.description      = <<-DESC
 A new Flutter plugin project.
@@ -21,9 +21,9 @@ A new Flutter plugin project.
   s.pod_target_xcconfig = { 'DEFINES_MODULE' => 'YES', 'EXCLUDED_ARCHS[sdk=iphonesimulator*]' => 'i386' }
   s.swift_version = '5.0'
   
-  s.dependency 'CourierCore', '0.0.9'
-  s.dependency 'CourierMQTT', '0.0.9'
-  s.dependency 'CourierProtobuf', '0.0.9'
+  s.dependency 'CourierCore', '0.0.16'
+  s.dependency 'CourierMQTT', '0.0.16'
+  s.dependency 'CourierProtobuf', '0.0.16'
   s.dependency 'ReachabilitySwift', '5.0.0'
   s.dependency 'SwiftProtobuf'
   

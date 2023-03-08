@@ -51,7 +51,7 @@ extension CourierEvent{
     
     private func errorToString(error: Error?) -> String{
         if let error = error {
-            return "{\"reasonCode\" : \((error as! NSError).code), \"message\" : \"\((error as! NSError).description)\"}"
+            return "{\"reasonCode\" : \((error as NSError).code), \"message\" : \"\((error as NSError).description)\"}"
         } else {
             return "{\"reasonCode\" : -1, \"message\" : \"\\-\"}"
         }
@@ -60,11 +60,11 @@ extension CourierEvent{
     func associatedValue() -> String {
         switch self.type {
 
-      case .connectionServiceAuthStart(source: let source):
+      case .connectionServiceAuthStart:
           return toString(topic: "Event$AuthenticatorAttemptEvent", data: "{}")  // ! different data from android
-      case .connectionServiceAuthSuccess(host: let host, port: let port):
+        case .connectionServiceAuthSuccess(timeTaken: _):
           return toString(topic: "Event$AuthenticatorSuccessEvent", data: "{}")
-      case .connectionServiceAuthFailure(error: let error):
+        case .connectionServiceAuthFailure(timeTaken: _, error: let error):
           return toString(topic: "Event$AuthenticatorErrorEvent", data: "\"exception\" : \(errorToString(error: error))")
       case .connectedPacketSent:
           return toString(topic: "Event$ConnectPacketSendEvent", data: "{}")
@@ -74,9 +74,9 @@ extension CourierEvent{
           return toString(topic: "Event$MqttConnectAttemptEvent", data: "{}")
       case .connectionSuccess:
           return toString(topic: "Event$MqttConnectSuccessEvent", data: "{}")
-      case .connectionFailure(error: let error):
+        case .connectionFailure(timeTaken: _, error: let error):
           return toString(topic: "Event$MqttConnectFailureEvent", data: "{\"exception\" : \(errorToString(error: error))}")
-      case .connectionLost(error: let error, diffLastInbound: let diffLastInbound, diffLastOutbound: let diffLastOutbound):
+        case .connectionLost(timeTaken: _, error: let error, diffLastInbound: let diffLastInbound, diffLastOutbound: let diffLastOutbound):
           let sessionMillis = (diffLastOutbound ?? 0) - (diffLastInbound ?? 0)
           return toString(topic: "Event$MqttConnectionLostEvent", data: "{\"exception\" : \(errorToString(error: error)), \"sessionTimeMillis\" : \(sessionMillis)}")
       case .connectionDisconnect:
@@ -85,18 +85,18 @@ extension CourierEvent{
           return toString(topic: "Event$MqttReconnectEvent", data: "{}")
       case .connectDiscarded(reason: let reason):
           return toString(topic: "Event$MqttConnectDiscardedEvent", data: "{\"reason\" : \"\(reason)\"}")
-      case .subscribeAttempt(topic: let topic):
-          return toString(topic: "Event$MqttSubscribeAttemptEvent", data: "{\"topics\" : {\"\(topic)\" : null}}")
-      case .unsubscribeAttempt(topic: let topic):
-          return toString(topic: "Event$MqttUnsubscribeAttemptEvent", data: "{\"topics\" : {\"\(topic)\" : null}}")
-      case .subscribeSuccess(topic: let topic):
-          return toString(topic: "Event$MqttSubscribeSuccessEvent", data: "{\"topics\" : {\"\(topic)\" : null}}")
-      case .unsubscribeSuccess(topic: let topic):
-          return toString(topic: "Event$MqttUnsubscribeSuccessEvent", data: "{\"topics\" : [\"\(topic)\"]}")
-      case .subscribeFailure(topic: let topic, error: let error):
-          return toString(topic: "Event$MqttSubscribeFailureEvent", data: "{\"exception\" : \(errorToString(error: error)), \"topics\" : {\"\(topic)\" : null}}")
-      case .unsubscribeFailure(topic: let topic, error: let error):
-          return toString(topic: "Event$MqttUnsubscribeFailureEvent", data: "{\"exception\" : \(errorToString(error: error)), \"topics\" : {\"\(topic)\" : null}}")
+      case .subscribeAttempt(topics: let topics):
+            return toString(topic: "Event$MqttSubscribeAttemptEvent", data: "{\"topics\" : \(Dictionary<String, Any?>(uniqueKeysWithValues: topics.map{ ($0, nil) }).toJson())}")
+      case .unsubscribeAttempt(topics: let topics):
+          return toString(topic: "Event$MqttUnsubscribeAttemptEvent", data: "{\"topics\" : \(Dictionary<String, Any?>(uniqueKeysWithValues: topics.map{ ($0, nil) }).toJson())}")
+      case .subscribeSuccess(topics: let topics, timeTaken: _):
+            return toString(topic: "Event$MqttSubscribeSuccessEvent", data: "{\"topics\" : \(TopicsToJsonAdapter(topics: topics).convert())}")
+      case .unsubscribeSuccess(topics: let topics, timeTaken: _):
+          return toString(topic: "Event$MqttUnsubscribeSuccessEvent", data: "{\"topics\" : \(Dictionary<String, Any?>(uniqueKeysWithValues: topics.map{ ($0, nil) }).toJson())}")
+        case .subscribeFailure(topics: let topics, timeTaken: _, error: let error):
+          return toString(topic: "Event$MqttSubscribeFailureEvent", data: "{\"exception\" : \(errorToString(error: error)), \"topics\" : \(TopicsToJsonAdapter(topics: topics).convert())}")
+        case .unsubscribeFailure(topics: let topics, timeTaken: _, error: let error):
+          return toString(topic: "Event$MqttUnsubscribeFailureEvent", data: "{\"exception\" : \(errorToString(error: error)), \"topics\" : \(Dictionary<String, Any?>(uniqueKeysWithValues: topics.map{ ($0, nil) }).toJson())}")
       case .ping(url: let url):
           return toString(topic: "Event$MqttPingInitiatedEvent", data: "{\"serverUri\" : \"\(url)\"}")
       case .pongReceived(timeTaken: let timeTaken):
@@ -122,5 +122,21 @@ extension CourierEvent{
       case .connectionUnavailable:
           return toString(topic: "Event$ConnectionUnavailable", data: "{}")
       }
+    }
+}
+
+
+extension Dictionary {
+
+    func toJson() -> String {
+        guard let data = try? JSONSerialization.data(withJSONObject: self)
+        else {
+            return ""
+        }
+        if let string = String(data: data, encoding: .utf8) {
+            return string
+        } else {
+            return ""
+        }
     }
 }
