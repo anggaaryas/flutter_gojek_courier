@@ -101,7 +101,11 @@ class MethodChannelGojekCourier extends GojekCourierPlatform {
 
       if(msg is List){
         msg = msg.map((e) => e as int);
-        msg = String.fromCharCodes(msg);
+        try{
+          msg = String.fromCharCodes(msg);
+        } catch(e){
+          msg = msg.toString();
+        }
       }
 
       if (type == "debug") {
