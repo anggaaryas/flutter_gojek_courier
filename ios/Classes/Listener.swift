@@ -88,15 +88,15 @@ extension CourierEvent{
       case .subscribeAttempt(topics: let topics):
             return toString(topic: "Event$MqttSubscribeAttemptEvent", data: "{\"topics\" : \(Dictionary<String, Any?>(uniqueKeysWithValues: topics.map{ ($0, nil) }).toJson())}")
       case .unsubscribeAttempt(topics: let topics):
-          return toString(topic: "Event$MqttUnsubscribeAttemptEvent", data: "{\"topics\" : \(Dictionary<String, Any?>(uniqueKeysWithValues: topics.map{ ($0, nil) }).toJson())}")
+            return toString(topic: "Event$MqttUnsubscribeAttemptEvent", data: "{\"topics\" : \(topics.description)}")
       case .subscribeSuccess(topics: let topics, timeTaken: _):
             return toString(topic: "Event$MqttSubscribeSuccessEvent", data: "{\"topics\" : \(TopicsToJsonAdapter(topics: topics).convert())}")
       case .unsubscribeSuccess(topics: let topics, timeTaken: _):
-          return toString(topic: "Event$MqttUnsubscribeSuccessEvent", data: "{\"topics\" : \(Dictionary<String, Any?>(uniqueKeysWithValues: topics.map{ ($0, nil) }).toJson())}")
+            return toString(topic: "Event$MqttUnsubscribeSuccessEvent", data: "{\"topics\" : \(topics.description)}")
         case .subscribeFailure(topics: let topics, timeTaken: _, error: let error):
           return toString(topic: "Event$MqttSubscribeFailureEvent", data: "{\"exception\" : \(errorToString(error: error)), \"topics\" : \(TopicsToJsonAdapter(topics: topics).convert())}")
         case .unsubscribeFailure(topics: let topics, timeTaken: _, error: let error):
-          return toString(topic: "Event$MqttUnsubscribeFailureEvent", data: "{\"exception\" : \(errorToString(error: error)), \"topics\" : \(Dictionary<String, Any?>(uniqueKeysWithValues: topics.map{ ($0, nil) }).toJson())}")
+            return toString(topic: "Event$MqttUnsubscribeFailureEvent", data: "{\"exception\" : \(errorToString(error: error)), \"topics\" : \(topics.description)}")
       case .ping(url: let url):
           return toString(topic: "Event$MqttPingInitiatedEvent", data: "{\"serverUri\" : \"\(url)\"}")
       case .pongReceived(timeTaken: let timeTaken):
@@ -108,11 +108,11 @@ extension CourierEvent{
       case .messageReceiveFailure(topic: let topic, error: let error, sizeBytes: let sizeBytes):
           return toString(topic: "Event$MqttMessageReceiveErrorEvent", data: "{\"topic\" : \"\(topic)\", \"sizeBytes\" : \(sizeBytes), \"exception\" : \(errorToString(error: error))}")
       case .messageSend(topic: let topic, qos: let qos, sizeBytes: let sizeBytes):
-          return toString(topic: "Event$MqttMessageSendEvent", data: "{\"topic\" : \"\(topic)\", \"qos\" : \"\(qos)\", \"sizeBytes\" : \(sizeBytes)}")
+            return toString(topic: "Event$MqttMessageSendEvent", data: "{\"topic\" : \"\(topic)\", \"qos\" : \(qos.rawValue), \"sizeBytes\" : \(sizeBytes)}")
       case .messageSendSuccess(topic: let topic, qos: let qos, sizeBytes: let sizeBytes):
-          return toString(topic: "Event$MqttMessageSendSuccessEvent", data: "{\"topic\" : \"\(topic)\", \"qos\" : \"\(qos)\", \"sizeBytes\" : \(sizeBytes)}")
+            return toString(topic: "Event$MqttMessageSendSuccessEvent", data: "{\"topic\" : \"\(topic)\", \"qos\" : \(qos.rawValue), \"sizeBytes\" : \(sizeBytes)}")
       case .messageSendFailure(topic: let topic, qos: let qos, error: let error, sizeBytes: let sizeBytes):
-          return toString(topic: "Event$MqttMessageSendFailureEvent", data: "{\"topic\" : \"\(topic)\", \"qos\" : \"\(qos)\", \"sizeBytes\" : \(sizeBytes), \"exception\" : \(errorToString(error: error))}")
+            return toString(topic: "Event$MqttMessageSendFailureEvent", data: "{\"topic\" : \"\(topic)\", \"qos\" : \(qos.rawValue), \"sizeBytes\" : \(sizeBytes), \"exception\" : \(errorToString(error: error))}")
       case .appForeground:
           return toString(topic: "Event$AppForegroundEvent", data: "{}")
       case .appBackground:

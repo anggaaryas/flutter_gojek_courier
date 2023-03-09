@@ -153,6 +153,7 @@ class _SimpleChatScreenState extends State<SimpleChatScreen> {
                           setState(() {});
                         }),
                         eventHandler: EventHandler(onEvent: (event) {
+                          print("${event.toString().replaceAll('Instance of ', '')}  : ${event.toJson()}");
                           if (event is MqttConnectSuccessEvent) {
                             print(isConnect);
                             print('===');

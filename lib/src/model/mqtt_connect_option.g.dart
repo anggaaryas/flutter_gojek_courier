@@ -16,7 +16,7 @@ MqttConnectOption _$MqttConnectOptionFromJson(Map<String, dynamic> json) =>
       version: $enumDecodeNullable(_$MqttVersionEnumMap, json['version']) ??
           MqttVersion.VERSION_3_1_1,
       isCleanSession: json['isCleanSession'] as bool,
-      readTimeoutSecs: json['readTimeoutSecs'] as int? ?? -1,
+      readTimeoutSecs: json['readTimeoutSecs'] as int? ?? 30,
       userPropertiesMap:
           (json['userPropertiesMap'] as Map<String, dynamic>?)?.map(
                 (k, e) => MapEntry(k, e as String),

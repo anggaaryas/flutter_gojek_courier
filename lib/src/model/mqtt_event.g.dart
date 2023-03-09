@@ -329,9 +329,9 @@ Map<String, dynamic> _$ConnectPacketSendEventToJson(
 MqttSubscribeAttemptEvent _$MqttSubscribeAttemptEventFromJson(
         Map<String, dynamic> json) =>
     MqttSubscribeAttemptEvent(
-      topics:   (json['topics'] as Map<String, dynamic>?)?.map(
+      topics: (json['topics'] as Map<String, dynamic>?)?.map(
         (k, e) => MapEntry(k, $enumDecodeNullable(qoSEnumMap, e)),
-      ) ,
+      ),
       connectionInfo: json['connectionInfo'] == null
           ? null
           : ConnectionInfo.fromJson(
@@ -354,8 +354,9 @@ const qoSEnumMap = {
 MqttSubscribeSuccessEvent _$MqttSubscribeSuccessEventFromJson(
         Map<String, dynamic> json) =>
     MqttSubscribeSuccessEvent(
-        topics: (json['topics'] as Map<String, dynamic>?)?.map(
-              (k, e) => MapEntry(k, $enumDecodeNullable(qoSEnumMap, e)),),
+      topics: (json['topics'] as Map<String, dynamic>?)?.map(
+        (k, e) => MapEntry(k, $enumDecodeNullable(qoSEnumMap, e)),
+      ),
       timeTakenMillis: json['timeTakenMillis'] as int?,
       connectionInfo: json['connectionInfo'] == null
           ? null
@@ -375,7 +376,7 @@ MqttSubscribeFailureEvent _$MqttSubscribeFailureEventFromJson(
         Map<String, dynamic> json) =>
     MqttSubscribeFailureEvent(
       topics: (json['topics'] as Map<String, dynamic>?)?.map(
-            (k, e) => MapEntry(k, $enumDecodeNullable(qoSEnumMap, e)),
+        (k, e) => MapEntry(k, $enumDecodeNullable(qoSEnumMap, e)),
       ),
       exception: json['exception'] == null
           ? null
@@ -400,9 +401,8 @@ Map<String, dynamic> _$MqttSubscribeFailureEventToJson(
 MqttUnsubscribeAttemptEvent _$MqttUnsubscribeAttemptEventFromJson(
         Map<String, dynamic> json) =>
     MqttUnsubscribeAttemptEvent(
-      topics: (json['topics'] as Map<String, dynamic>?)?.map(
-            (k, e) => MapEntry(k, $enumDecodeNullable(qoSEnumMap, e)),
-      ),
+      topics:
+          (json['topics'] as List<dynamic>?)?.map((e) => e as String).toList(),
       connectionInfo: json['connectionInfo'] == null
           ? null
           : ConnectionInfo.fromJson(
@@ -419,7 +419,8 @@ Map<String, dynamic> _$MqttUnsubscribeAttemptEventToJson(
 MqttUnsubscribeSuccessEvent _$MqttUnsubscribeSuccessEventFromJson(
         Map<String, dynamic> json) =>
     MqttUnsubscribeSuccessEvent(
-      topics: { for (var topic in (json['topics'] as List<dynamic>?)!.map((e) => e as String)) topic : null },
+      topics:
+          (json['topics'] as List<dynamic>?)?.map((e) => e as String).toList(),
       timeTakenMillis: json['timeTakenMillis'] as int?,
       connectionInfo: json['connectionInfo'] == null
           ? null
@@ -438,9 +439,8 @@ Map<String, dynamic> _$MqttUnsubscribeSuccessEventToJson(
 MqttUnsubscribeFailureEvent _$MqttUnsubscribeFailureEventFromJson(
         Map<String, dynamic> json) =>
     MqttUnsubscribeFailureEvent(
-      topics: (json['topics'] as Map<String, dynamic>?)?.map(
-            (k, e) => MapEntry(k, $enumDecodeNullable(qoSEnumMap, e)),
-      ),
+      topics:
+          (json['topics'] as List<dynamic>?)?.map((e) => e as String).toList(),
       exception: json['exception'] == null
           ? null
           : CourierException.fromJson(
@@ -508,7 +508,7 @@ MqttMessageSendEvent _$MqttMessageSendEventFromJson(
         Map<String, dynamic> json) =>
     MqttMessageSendEvent(
       topic: json['topic'] as String?,
-      qos: json['qos'] is int? json['qos'] as int? : normalizeQosIos(json['qos']),
+      qos: json['qos'] as int?,
       sizeBytes: json['sizeBytes'] as int?,
       connectionInfo: json['connectionInfo'] == null
           ? null
@@ -525,23 +525,11 @@ Map<String, dynamic> _$MqttMessageSendEventToJson(
       'sizeBytes': instance.sizeBytes,
     };
 
-int normalizeQosIos(String qos){
-  if(qos == "ZERO") {
-    return 0;
-  } else if(qos == "ONE") {
-    return 1;
-  } else if(qos == "TWO") {
-    return 2;
-  } else {
-    return -1;
-  }
-}
-
 MqttMessageSendSuccessEvent _$MqttMessageSendSuccessEventFromJson(
         Map<String, dynamic> json) =>
     MqttMessageSendSuccessEvent(
       topic: json['topic'] as String?,
-      qos: json['qos'] is int? json['qos'] as int? : normalizeQosIos(json['qos']),
+      qos: json['qos'] as int?,
       sizeBytes: json['sizeBytes'] as int?,
       connectionInfo: json['connectionInfo'] == null
           ? null
@@ -562,7 +550,7 @@ MqttMessageSendFailureEvent _$MqttMessageSendFailureEventFromJson(
         Map<String, dynamic> json) =>
     MqttMessageSendFailureEvent(
       topic: json['topic'] as String?,
-      qos: json['qos'] is int? json['qos'] as int? : normalizeQosIos(json['qos']),
+      qos: json['qos'] as int?,
       sizeBytes: json['sizeBytes'] as int?,
       exception: json['exception'] == null
           ? null

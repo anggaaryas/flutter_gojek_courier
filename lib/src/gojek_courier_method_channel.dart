@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
+import 'dart:developer';
 import 'dart:io';
 import 'dart:typed_data';
 
@@ -79,7 +80,12 @@ class MethodChannelGojekCourier extends GojekCourierPlatform {
 
       await methodChannel.invokeMethod<String>('initialise', courier.toJson());
     } else {
-      throw ('courier already init...!');
+      _courier = courier;
+      if(kDebugMode){
+        log("📕 ===================================================================================");
+        log("📕 == Warning, Courier already init, only listener will be replaced by new courier  ==",);
+        log("📕 ===================================================================================");
+      }
     }
   }
 
