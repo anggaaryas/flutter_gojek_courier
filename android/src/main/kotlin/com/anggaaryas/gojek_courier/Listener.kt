@@ -26,35 +26,35 @@ class Listener(val loggerSink : EventChannel.EventSink?, val eventSink : EventCh
 
     fun getLogger(topic:String) = object : ILogger {
         override fun v(tag: String, msg: String) {
-            sendToFlutter(Type.VERBOSE, tag, msg, loggerSink)
+            sendToFlutter(Type.VERBOSE, tag, msg.toByteArray().contentToString(), loggerSink)
         }
 
         override fun v(tag: String, msg: String, tr: Throwable) {
-            sendToFlutter(Type.VERBOSE, tag, msg, loggerSink)
+            sendToFlutter(Type.VERBOSE, tag, msg.toByteArray().contentToString(), loggerSink)
         }
 
         override fun d(tag: String, msg: String) {
-            sendToFlutter(Type.DEBUG, tag, msg, loggerSink)
+            sendToFlutter(Type.DEBUG, tag, msg.toByteArray().contentToString(), loggerSink)
         }
 
         override fun d(tag: String, msg: String, tr: Throwable) {
-            sendToFlutter(Type.DEBUG, tag, msg, loggerSink)
+            sendToFlutter(Type.DEBUG, tag, msg.toByteArray().contentToString(), loggerSink)
         }
 
         override fun i(tag: String, msg: String) {
-            sendToFlutter(Type.INFO, tag, msg, loggerSink)
+            sendToFlutter(Type.INFO, tag, msg.toByteArray().contentToString(), loggerSink)
         }
 
         override fun i(tag: String, msg: String, tr: Throwable) {
-            sendToFlutter(Type.INFO, tag, msg, loggerSink)
+            sendToFlutter(Type.INFO, tag, msg.toByteArray().contentToString(), loggerSink)
         }
 
         override fun w(tag: String, msg: String) {
-            sendToFlutter(Type.WARNING, tag, msg, loggerSink)
+            sendToFlutter(Type.WARNING, tag, msg.toByteArray().contentToString(), loggerSink)
         }
 
         override fun w(tag: String, msg: String, tr: Throwable) {
-            sendToFlutter(Type.WARNING, tag, msg, loggerSink)
+            sendToFlutter(Type.WARNING, tag, msg.toByteArray().contentToString(), loggerSink)
         }
 
         override fun w(tag: String, tr: Throwable) {
@@ -62,11 +62,11 @@ class Listener(val loggerSink : EventChannel.EventSink?, val eventSink : EventCh
         }
 
         override fun e(tag: String, msg: String) {
-            sendToFlutter(Type.ERROR, tag, msg, loggerSink)
+            sendToFlutter(Type.ERROR, tag, msg.toByteArray().contentToString(), loggerSink)
         }
 
         override fun e(tag: String, msg: String, tr: Throwable) {
-            sendToFlutter(Type.ERROR, tag, msg, loggerSink)
+            sendToFlutter(Type.ERROR, tag, msg.toByteArray().contentToString(), loggerSink)
         }
     }
 
@@ -82,12 +82,12 @@ class Listener(val loggerSink : EventChannel.EventSink?, val eventSink : EventCh
         uiThreadHandler.post {
             if(type != Type.EVENT){
                 sink?.success(
-                    "{\"topic\" : \"$tag\", \"type\" : \"$typeString\", \"data\": \"${
+                    "{\"topic\" : \"$tag\", \"type\" : \"$typeString\", \"data\": ${
                         msg.replace(
                             "\"",
                             ""
                         )
-                    }\"}"
+                    }}"
                 )
             } else {
                 sink?.success(

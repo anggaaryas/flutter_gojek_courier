@@ -99,6 +99,11 @@ class MethodChannelGojekCourier extends GojekCourierPlatform {
       var topic = decode["topic"];
       var msg = decode["data"];
 
+      if(msg is List){
+        msg = msg.map((e) => e as int);
+        msg = String.fromCharCodes(msg);
+      }
+
       if (type == "debug") {
         _courier?.configuration.logger?.d(topic, msg);
       } else if (type == "info") {
