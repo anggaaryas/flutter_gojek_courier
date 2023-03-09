@@ -16,7 +16,6 @@ import com.gojek.courier.streamadapter.rxjava2.RxJava2StreamAdapterFactory
 import com.gojek.mqtt.client.MqttClient
 import com.gojek.mqtt.client.listener.MessageListener
 import com.gojek.mqtt.client.model.MqttMessage
-import timber.log.Timber
 import io.flutter.plugin.common.EventChannel
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
@@ -116,24 +115,18 @@ class GojekCourierCore(val receiveSink: EventChannel.EventSink, val logger: List
                 uiThreadHandler.post{
                     receiveSink.success("{\"topic\" : \"${mqttMessage.topic}\", \"data\": ${(mqttMessage.message as Message.Bytes).value.contentToString()}}")
                 }
-
-                Timber.tag("Courier-Log").d((mqttMessage.message as Message.Bytes).value.contentToString())
-
             }
         })
     }
 
     @Deprecated("Use Global Listen")
     fun listen(topic:String){
-        Timber.tag("Courier-Log").d("coba listen $topic...")
         if(!streamList.containsKey(topic)){
             streamList.put(
                 topic, courierService.receive(topic).subscribe{
                     uiThreadHandler.post{
                         receiveSink.success("{\"topic\" : \"$topic\", \"data\": ${it.contentToString()}}")
                     }
-
-                    Timber.tag("Courier-Log").d("${it.contentToString()}")
                 }
             )
         }

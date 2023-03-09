@@ -61,7 +61,7 @@ class _SimpleChatScreenState extends State<SimpleChatScreen> {
   }
 
   Future<void> subscribeTopic(String topic) async {
-    await gojekCourierPlugin.subscribe("chat/testroom/$topic", QoS.TWO);
+    await gojekCourierPlugin.subscribe("chat/testroom/+", QoS.TWO);
 
     listen();
   }
@@ -74,12 +74,17 @@ class _SimpleChatScreenState extends State<SimpleChatScreen> {
   }
   void listen() {
     msgSubscription = gojekCourierPlugin.receiveDataStream.listen((event) {
+      print("==========");
+      print(event);
+      print("==========");
       var decode = (jsonDecode(event)["data"] as List<dynamic>).map((e) {
         return e as int;
       }).toList();
-      var msgString =  Utf8Decoder().convert(decode);
+      // var msgString =  Utf8Decoder().convert(decode);
+      var msgString = String.fromCharCodes(decode);
+      print(msgString);
       var msg = jsonDecode(msgString);
-      chatList.add("${msg["from"]}   :   ${msg['msg']}");
+      chatList.add("(${jsonDecode(event)["topic"]}) ${msg["from"]}   :   ${msg['msg']}");
       setState(() {});
 
     });
@@ -236,17 +241,26 @@ class _SimpleChatScreenState extends State<SimpleChatScreen> {
                   isConnect
                       ? ElevatedButton(
                       onPressed: () async {
-                        await gojekCourierPlugin.unsubscribe("chat/testroom/$topic");
+                        await gojekCourierPlugin.unsubscribe("chat/testroom/+");
 
                       },
                       child: const Text("Disconnect"))
                       : Container(),
                   true
-                      ? ElevatedButton(
-                      onPressed: () {
-                        sendByte(topic, message.text);
-                      },
-                      child: const Text("Send"))
+                      ? Row(
+                    children: [
+                      ElevatedButton(
+                          onPressed: () {
+                            send(topic, message.text);
+                          },
+                          child: const Text("Send")),
+                      ElevatedButton(
+                          onPressed: () {
+                            sendByte(topic, message.text);
+                          },
+                          child: const Text("Send using byte"))
+                    ],
+                  )
                       : Container(),
                 ],
               ),

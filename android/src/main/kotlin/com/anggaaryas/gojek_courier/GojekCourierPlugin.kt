@@ -63,8 +63,6 @@ class GojekCourierPlugin : FlutterPlugin, MethodCallHandler, ActivityAware {
     }
 
     override fun onMethodCall(@NonNull call: MethodCall, @NonNull result: MethodChannel.Result) {
-        Timber.tag("Courier-stream").d("call ${call.method}...")
-
 
         when (call.method) {
             "getPlatformVersion" -> {
