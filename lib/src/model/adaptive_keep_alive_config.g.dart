@@ -30,11 +30,11 @@ Map<String, dynamic> _$AdaptiveKeepAliveConfigToJson(
       'upperBoundMinutes': instance.upperBoundMinutes,
       'stepMinutes': instance.stepMinutes,
       'optimalKeepAliveResetLimit': instance.optimalKeepAliveResetLimit,
-      'pingSender': instance.pingSender.toJson(),
       'activityCheckIntervalSeconds': instance.activityCheckIntervalSeconds,
       'inactivityTimeoutSeconds': instance.inactivityTimeoutSeconds,
       'policyResetTimeSeconds': instance.policyResetTimeSeconds,
       'incomingMessagesTTLSecs': instance.incomingMessagesTTLSecs,
       'incomingMessagesCleanupIntervalSecs':
           instance.incomingMessagesCleanupIntervalSecs,
+      'pingSender': instance.pingSender,
     };

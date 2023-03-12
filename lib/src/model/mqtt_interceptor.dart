@@ -1,8 +1,11 @@
 import 'dart:typed_data';
 
-class MqttInterceptor{
-  Function(Uint8List mqttWireMessageBytes)? onMqttWireMessageSent;
-  Function(Uint8List mqttWireMessageBytes)? onMqttWireMessageReceived;
+class MqttInterceptor {
+  const MqttInterceptor({
+    this.onMqttWireMessageSent,
+    this.onMqttWireMessageReceived,
+  });
 
-  MqttInterceptor({this.onMqttWireMessageSent, this.onMqttWireMessageReceived});
+  final Function(Uint8List mqttWireMessageBytes)? onMqttWireMessageSent;
+  final Function(Uint8List mqttWireMessageBytes)? onMqttWireMessageReceived;
 }
