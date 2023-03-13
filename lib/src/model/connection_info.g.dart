@@ -21,9 +21,9 @@ Map<String, dynamic> _$ConnectionInfoToJson(ConnectionInfo instance) =>
     <String, dynamic>{
       'clientId': instance.clientId,
       'username': instance.username,
-      'keepaliveSeconds': instance.keepaliveSeconds,
-      'connectTimeout': instance.connectTimeout,
+      'scheme': instance.scheme,
       'host': instance.host,
       'port': instance.port,
-      'scheme': instance.scheme,
+      'keepaliveSeconds': instance.keepaliveSeconds,
+      'connectTimeout': instance.connectTimeout,
     };

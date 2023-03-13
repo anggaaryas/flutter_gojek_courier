@@ -1,8 +1,5 @@
-import 'dart:io';
-
 import '../../gojek_courier.dart';
 import 'courier_exception.dart';
-import 'mqtt_connect_option.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'mqtt_event.g.dart';
@@ -23,11 +20,12 @@ class MqttConnectAttemptEvent extends MqttEvent {
 
   MqttConnectAttemptEvent(
       {this.isOptimalKeepAlive,
-        this.activeNetInfo,
-        this.serverUri,
-        super.connectionInfo});
+      this.activeNetInfo,
+      this.serverUri,
+      super.connectionInfo});
 
-  factory MqttConnectAttemptEvent.fromJson(Map<String, dynamic> json) => _$MqttConnectAttemptEventFromJson(json);
+  factory MqttConnectAttemptEvent.fromJson(Map<String, dynamic> json) =>
+      _$MqttConnectAttemptEventFromJson(json);
 
   @override
   Map<String, dynamic> toJson() => _$MqttConnectAttemptEventToJson(this);
@@ -39,11 +37,10 @@ class MqttConnectDiscardedEvent extends MqttEvent {
   final ActiveNetInfo? activeNetworkInfo;
 
   MqttConnectDiscardedEvent(
-      {this.reason,
-        this.activeNetworkInfo,
-        super.connectionInfo});
+      {this.reason, this.activeNetworkInfo, super.connectionInfo});
 
-  factory MqttConnectDiscardedEvent.fromJson(Map<String, dynamic> json) => _$MqttConnectDiscardedEventFromJson(json);
+  factory MqttConnectDiscardedEvent.fromJson(Map<String, dynamic> json) =>
+      _$MqttConnectDiscardedEventFromJson(json);
 
   @override
   Map<String, dynamic> toJson() => _$MqttConnectDiscardedEventToJson(this);
@@ -56,12 +53,13 @@ class MqttConnectSuccessEvent extends MqttEvent {
   final int? timeTakenMillis;
 
   MqttConnectSuccessEvent(
-      { this.activeNetInfo,
-        this.serverUri,
-        this.timeTakenMillis,
-        super.connectionInfo});
+      {this.activeNetInfo,
+      this.serverUri,
+      this.timeTakenMillis,
+      super.connectionInfo});
 
-  factory MqttConnectSuccessEvent.fromJson(Map<String, dynamic> json) => _$MqttConnectSuccessEventFromJson(json);
+  factory MqttConnectSuccessEvent.fromJson(Map<String, dynamic> json) =>
+      _$MqttConnectSuccessEventFromJson(json);
 
   @override
   Map<String, dynamic> toJson() => _$MqttConnectSuccessEventToJson(this);
@@ -76,12 +74,13 @@ class MqttConnectFailureEvent extends MqttEvent {
 
   MqttConnectFailureEvent(
       {this.exception,
-        this.activeNetInfo,
-        this.serverUri,
-        this.timeTakenMillis,
-        super.connectionInfo});
+      this.activeNetInfo,
+      this.serverUri,
+      this.timeTakenMillis,
+      super.connectionInfo});
 
-  factory MqttConnectFailureEvent.fromJson(Map<String, dynamic> json) => _$MqttConnectFailureEventFromJson(json);
+  factory MqttConnectFailureEvent.fromJson(Map<String, dynamic> json) =>
+      _$MqttConnectFailureEventFromJson(json);
 
   @override
   Map<String, dynamic> toJson() => _$MqttConnectFailureEventToJson(this);
@@ -97,13 +96,14 @@ class MqttConnectionLostEvent extends MqttEvent {
 
   MqttConnectionLostEvent(
       {this.exception,
-        this.activeNetInfo,
-        this.serverUri,
-        this.nextRetryTimeSecs,
-        this.sessionTimeMillis,
-        super.connectionInfo});
+      this.activeNetInfo,
+      this.serverUri,
+      this.nextRetryTimeSecs,
+      this.sessionTimeMillis,
+      super.connectionInfo});
 
-  factory MqttConnectionLostEvent.fromJson(Map<String, dynamic> json) => _$MqttConnectionLostEventFromJson(json);
+  factory MqttConnectionLostEvent.fromJson(Map<String, dynamic> json) =>
+      _$MqttConnectionLostEventFromJson(json);
 
   @override
   Map<String, dynamic> toJson() => _$MqttConnectionLostEventToJson(this);
@@ -116,12 +116,10 @@ class SocketConnectAttemptEvent extends MqttEvent {
   final int? timeout;
 
   SocketConnectAttemptEvent(
-      {this.port,
-        this.host,
-        this.timeout,
-        super.connectionInfo});
+      {this.port, this.host, this.timeout, super.connectionInfo});
 
-  factory SocketConnectAttemptEvent.fromJson(Map<String, dynamic> json) => _$SocketConnectAttemptEventFromJson(json);
+  factory SocketConnectAttemptEvent.fromJson(Map<String, dynamic> json) =>
+      _$SocketConnectAttemptEventFromJson(json);
 
   @override
   Map<String, dynamic> toJson() => _$SocketConnectAttemptEventToJson(this);
@@ -136,12 +134,13 @@ class SocketConnectSuccessEvent extends MqttEvent {
 
   SocketConnectSuccessEvent(
       {this.port,
-        this.host,
-        this.timeout,
-        this.timeTakenMillis,
-        super.connectionInfo});
+      this.host,
+      this.timeout,
+      this.timeTakenMillis,
+      super.connectionInfo});
 
-  factory SocketConnectSuccessEvent.fromJson(Map<String, dynamic> json) => _$SocketConnectSuccessEventFromJson(json);
+  factory SocketConnectSuccessEvent.fromJson(Map<String, dynamic> json) =>
+      _$SocketConnectSuccessEventFromJson(json);
 
   @override
   Map<String, dynamic> toJson() => _$SocketConnectSuccessEventToJson(this);
@@ -157,13 +156,14 @@ class SocketConnectFailureEvent extends MqttEvent {
 
   SocketConnectFailureEvent(
       {this.port,
-        this.host,
-        this.timeout,
-        this.timeTakenMillis,
-        this.exception,
-        super.connectionInfo});
+      this.host,
+      this.timeout,
+      this.timeTakenMillis,
+      this.exception,
+      super.connectionInfo});
 
-  factory SocketConnectFailureEvent.fromJson(Map<String, dynamic> json) => _$SocketConnectFailureEventFromJson(json);
+  factory SocketConnectFailureEvent.fromJson(Map<String, dynamic> json) =>
+      _$SocketConnectFailureEventFromJson(json);
 
   @override
   Map<String, dynamic> toJson() => _$SocketConnectFailureEventToJson(this);
@@ -176,12 +176,10 @@ class SSLSocketAttemptEvent extends MqttEvent {
   final int? timeout;
 
   SSLSocketAttemptEvent(
-      {this.port,
-        this.host,
-        this.timeout,
-        super.connectionInfo});
+      {this.port, this.host, this.timeout, super.connectionInfo});
 
-  factory SSLSocketAttemptEvent.fromJson(Map<String, dynamic> json) => _$SSLSocketAttemptEventFromJson(json);
+  factory SSLSocketAttemptEvent.fromJson(Map<String, dynamic> json) =>
+      _$SSLSocketAttemptEventFromJson(json);
 
   @override
   Map<String, dynamic> toJson() => _$SSLSocketAttemptEventToJson(this);
@@ -196,12 +194,13 @@ class SSLSocketSuccessEvent extends MqttEvent {
 
   SSLSocketSuccessEvent(
       {this.port,
-        this.host,
-        this.timeout,
-        this.timeTakenMillis,
-        super.connectionInfo});
+      this.host,
+      this.timeout,
+      this.timeTakenMillis,
+      super.connectionInfo});
 
-  factory SSLSocketSuccessEvent.fromJson(Map<String, dynamic> json) => _$SSLSocketSuccessEventFromJson(json);
+  factory SSLSocketSuccessEvent.fromJson(Map<String, dynamic> json) =>
+      _$SSLSocketSuccessEventFromJson(json);
 
   @override
   Map<String, dynamic> toJson() => _$SSLSocketSuccessEventToJson(this);
@@ -217,13 +216,14 @@ class SSLSocketFailureEvent extends MqttEvent {
 
   SSLSocketFailureEvent(
       {this.port,
-        this.host,
-        this.timeout,
-        this.exception,
-        this.timeTakenMillis,
-        super.connectionInfo});
+      this.host,
+      this.timeout,
+      this.exception,
+      this.timeTakenMillis,
+      super.connectionInfo});
 
-  factory SSLSocketFailureEvent.fromJson(Map<String, dynamic> json) => _$SSLSocketFailureEventFromJson(json);
+  factory SSLSocketFailureEvent.fromJson(Map<String, dynamic> json) =>
+      _$SSLSocketFailureEventFromJson(json);
 
   @override
   Map<String, dynamic> toJson() => _$SSLSocketFailureEventToJson(this);
@@ -238,12 +238,13 @@ class SSLHandshakeSuccessEvent extends MqttEvent {
 
   SSLHandshakeSuccessEvent(
       {this.port,
-        this.host,
-        this.timeout,
-        this.timeTakenMillis,
-        super.connectionInfo});
+      this.host,
+      this.timeout,
+      this.timeTakenMillis,
+      super.connectionInfo});
 
-  factory SSLHandshakeSuccessEvent.fromJson(Map<String, dynamic> json) => _$SSLHandshakeSuccessEventFromJson(json);
+  factory SSLHandshakeSuccessEvent.fromJson(Map<String, dynamic> json) =>
+      _$SSLHandshakeSuccessEventFromJson(json);
 
   @override
   Map<String, dynamic> toJson() => _$SSLHandshakeSuccessEventToJson(this);
@@ -253,7 +254,8 @@ class SSLHandshakeSuccessEvent extends MqttEvent {
 class ConnectPacketSendEvent extends MqttEvent {
   ConnectPacketSendEvent({super.connectionInfo});
 
-  factory ConnectPacketSendEvent.fromJson(Map<String, dynamic> json) => _$ConnectPacketSendEventFromJson(json);
+  factory ConnectPacketSendEvent.fromJson(Map<String, dynamic> json) =>
+      _$ConnectPacketSendEventFromJson(json);
 
   @override
   Map<String, dynamic> toJson() => _$ConnectPacketSendEventToJson(this);
@@ -278,7 +280,8 @@ class MqttSubscribeAttemptEvent extends MqttEvent {
 
   MqttSubscribeAttemptEvent({this.topics, super.connectionInfo});
 
-  factory MqttSubscribeAttemptEvent.fromJson(Map<String, dynamic> json) => _$MqttSubscribeAttemptEventFromJson(json);
+  factory MqttSubscribeAttemptEvent.fromJson(Map<String, dynamic> json) =>
+      _$MqttSubscribeAttemptEventFromJson(json);
 
   @override
   Map<String, dynamic> toJson() => _$MqttSubscribeAttemptEventToJson(this);
@@ -290,11 +293,10 @@ class MqttSubscribeSuccessEvent extends MqttEvent {
   final int? timeTakenMillis;
 
   MqttSubscribeSuccessEvent(
-      {this.topics,
-        this.timeTakenMillis,
-        super.connectionInfo});
+      {this.topics, this.timeTakenMillis, super.connectionInfo});
 
-  factory MqttSubscribeSuccessEvent.fromJson(Map<String, dynamic> json) => _$MqttSubscribeSuccessEventFromJson(json);
+  factory MqttSubscribeSuccessEvent.fromJson(Map<String, dynamic> json) =>
+      _$MqttSubscribeSuccessEventFromJson(json);
 
   @override
   Map<String, dynamic> toJson() => _$MqttSubscribeSuccessEventToJson(this);
@@ -308,11 +310,12 @@ class MqttSubscribeFailureEvent extends MqttEvent {
 
   MqttSubscribeFailureEvent(
       {this.topics,
-        this.exception,
-        this.timeTakenMillis,
-        super.connectionInfo});
+      this.exception,
+      this.timeTakenMillis,
+      super.connectionInfo});
 
-  factory MqttSubscribeFailureEvent.fromJson(Map<String, dynamic> json) => _$MqttSubscribeFailureEventFromJson(json);
+  factory MqttSubscribeFailureEvent.fromJson(Map<String, dynamic> json) =>
+      _$MqttSubscribeFailureEventFromJson(json);
 
   @override
   Map<String, dynamic> toJson() => _$MqttSubscribeFailureEventToJson(this);
@@ -324,7 +327,8 @@ class MqttUnsubscribeAttemptEvent extends MqttEvent {
 
   MqttUnsubscribeAttemptEvent({this.topics, super.connectionInfo});
 
-  factory MqttUnsubscribeAttemptEvent.fromJson(Map<String, dynamic> json) => _$MqttUnsubscribeAttemptEventFromJson(json);
+  factory MqttUnsubscribeAttemptEvent.fromJson(Map<String, dynamic> json) =>
+      _$MqttUnsubscribeAttemptEventFromJson(json);
 
   @override
   Map<String, dynamic> toJson() => _$MqttUnsubscribeAttemptEventToJson(this);
@@ -336,11 +340,10 @@ class MqttUnsubscribeSuccessEvent extends MqttEvent {
   final int? timeTakenMillis;
 
   MqttUnsubscribeSuccessEvent(
-      {this.topics,
-        this.timeTakenMillis,
-        super.connectionInfo});
+      {this.topics, this.timeTakenMillis, super.connectionInfo});
 
-  factory MqttUnsubscribeSuccessEvent.fromJson(Map<String, dynamic> json) => _$MqttUnsubscribeSuccessEventFromJson(json);
+  factory MqttUnsubscribeSuccessEvent.fromJson(Map<String, dynamic> json) =>
+      _$MqttUnsubscribeSuccessEventFromJson(json);
 
   @override
   Map<String, dynamic> toJson() => _$MqttUnsubscribeSuccessEventToJson(this);
@@ -354,11 +357,12 @@ class MqttUnsubscribeFailureEvent extends MqttEvent {
 
   MqttUnsubscribeFailureEvent(
       {this.topics,
-        this.exception,
-        this.timeTakenMillis,
-        super.connectionInfo});
+      this.exception,
+      this.timeTakenMillis,
+      super.connectionInfo});
 
-  factory MqttUnsubscribeFailureEvent.fromJson(Map<String, dynamic> json) => _$MqttUnsubscribeFailureEventFromJson(json);
+  factory MqttUnsubscribeFailureEvent.fromJson(Map<String, dynamic> json) =>
+      _$MqttUnsubscribeFailureEventFromJson(json);
 
   @override
   Map<String, dynamic> toJson() => _$MqttUnsubscribeFailureEventToJson(this);
@@ -372,7 +376,8 @@ class MqttMessageReceiveEvent extends MqttEvent {
   MqttMessageReceiveEvent(
       {required this.topic, required this.sizeBytes, super.connectionInfo});
 
-  factory MqttMessageReceiveEvent.fromJson(Map<String, dynamic> json) => _$MqttMessageReceiveEventFromJson(json);
+  factory MqttMessageReceiveEvent.fromJson(Map<String, dynamic> json) =>
+      _$MqttMessageReceiveEventFromJson(json);
 
   @override
   Map<String, dynamic> toJson() => _$MqttMessageReceiveEventToJson(this);
@@ -385,12 +390,10 @@ class MqttMessageReceiveErrorEvent extends MqttEvent {
   final CourierException? exception;
 
   MqttMessageReceiveErrorEvent(
-      {this.topic,
-        this.sizeBytes,
-        this.exception,
-        super.connectionInfo});
+      {this.topic, this.sizeBytes, this.exception, super.connectionInfo});
 
-  factory MqttMessageReceiveErrorEvent.fromJson(Map<String, dynamic> json) => _$MqttMessageReceiveErrorEventFromJson(json);
+  factory MqttMessageReceiveErrorEvent.fromJson(Map<String, dynamic> json) =>
+      _$MqttMessageReceiveErrorEventFromJson(json);
 
   @override
   Map<String, dynamic> toJson() => _$MqttMessageReceiveErrorEventToJson(this);
@@ -403,12 +406,10 @@ class MqttMessageSendEvent extends MqttEvent {
   final int? sizeBytes;
 
   MqttMessageSendEvent(
-      {this.topic,
-        this.qos,
-        this.sizeBytes,
-        super.connectionInfo});
+      {this.topic, this.qos, this.sizeBytes, super.connectionInfo});
 
-  factory MqttMessageSendEvent.fromJson(Map<String, dynamic> json) => _$MqttMessageSendEventFromJson(json);
+  factory MqttMessageSendEvent.fromJson(Map<String, dynamic> json) =>
+      _$MqttMessageSendEventFromJson(json);
 
   @override
   Map<String, dynamic> toJson() => _$MqttMessageSendEventToJson(this);
@@ -421,12 +422,10 @@ class MqttMessageSendSuccessEvent extends MqttEvent {
   final int? sizeBytes;
 
   MqttMessageSendSuccessEvent(
-      {this.topic,
-        this.qos,
-        this.sizeBytes,
-        super.connectionInfo});
+      {this.topic, this.qos, this.sizeBytes, super.connectionInfo});
 
-  factory MqttMessageSendSuccessEvent.fromJson(Map<String, dynamic> json) => _$MqttMessageSendSuccessEventFromJson(json);
+  factory MqttMessageSendSuccessEvent.fromJson(Map<String, dynamic> json) =>
+      _$MqttMessageSendSuccessEventFromJson(json);
 
   @override
   Map<String, dynamic> toJson() => _$MqttMessageSendSuccessEventToJson(this);
@@ -441,12 +440,13 @@ class MqttMessageSendFailureEvent extends MqttEvent {
 
   MqttMessageSendFailureEvent(
       {this.topic,
-        this.qos,
-        this.sizeBytes,
-        this.exception,
-        super.connectionInfo});
+      this.qos,
+      this.sizeBytes,
+      this.exception,
+      super.connectionInfo});
 
-  factory MqttMessageSendFailureEvent.fromJson(Map<String, dynamic> json) => _$MqttMessageSendFailureEventFromJson(json);
+  factory MqttMessageSendFailureEvent.fromJson(Map<String, dynamic> json) =>
+      _$MqttMessageSendFailureEventFromJson(json);
 
   @override
   Map<String, dynamic> toJson() => _$MqttMessageSendFailureEventToJson(this);
@@ -460,11 +460,12 @@ class MqttPingInitiatedEvent extends MqttEvent {
 
   MqttPingInitiatedEvent(
       {this.serverUri,
-        this.keepAliveSecs,
-        this.isAdaptive,
-        super.connectionInfo});
+      this.keepAliveSecs,
+      this.isAdaptive,
+      super.connectionInfo});
 
-  factory MqttPingInitiatedEvent.fromJson(Map<String, dynamic> json) => _$MqttPingInitiatedEventFromJson(json);
+  factory MqttPingInitiatedEvent.fromJson(Map<String, dynamic> json) =>
+      _$MqttPingInitiatedEventFromJson(json);
 
   @override
   Map<String, dynamic> toJson() => _$MqttPingInitiatedEventToJson(this);
@@ -478,11 +479,12 @@ class MqttPingScheduledEvent extends MqttEvent {
 
   MqttPingScheduledEvent(
       {this.nextPingTimeSecs,
-        this.keepAliveSecs,
-        this.isAdaptive,
-        super.connectionInfo});
+      this.keepAliveSecs,
+      this.isAdaptive,
+      super.connectionInfo});
 
-  factory MqttPingScheduledEvent.fromJson(Map<String, dynamic> json) => _$MqttPingScheduledEventFromJson(json);
+  factory MqttPingScheduledEvent.fromJson(Map<String, dynamic> json) =>
+      _$MqttPingScheduledEventFromJson(json);
 
   @override
   Map<String, dynamic> toJson() => _$MqttPingScheduledEventToJson(this);
@@ -496,11 +498,12 @@ class MqttPingCancelledEvent extends MqttEvent {
 
   MqttPingCancelledEvent(
       {this.serverUri,
-        this.keepAliveSecs,
-        this.isAdaptive,
-        super.connectionInfo});
+      this.keepAliveSecs,
+      this.isAdaptive,
+      super.connectionInfo});
 
-  factory MqttPingCancelledEvent.fromJson(Map<String, dynamic> json) => _$MqttPingCancelledEventFromJson(json);
+  factory MqttPingCancelledEvent.fromJson(Map<String, dynamic> json) =>
+      _$MqttPingCancelledEventFromJson(json);
 
   @override
   Map<String, dynamic> toJson() => _$MqttPingCancelledEventToJson(this);
@@ -515,12 +518,13 @@ class MqttPingSuccessEvent extends MqttEvent {
 
   MqttPingSuccessEvent(
       {this.serverUri,
-        this.timeTakenMillis,
-        this.keepAliveSecs,
-        this.isAdaptive,
-        super.connectionInfo});
+      this.timeTakenMillis,
+      this.keepAliveSecs,
+      this.isAdaptive,
+      super.connectionInfo});
 
-  factory MqttPingSuccessEvent.fromJson(Map<String, dynamic> json) => _$MqttPingSuccessEventFromJson(json);
+  factory MqttPingSuccessEvent.fromJson(Map<String, dynamic> json) =>
+      _$MqttPingSuccessEventFromJson(json);
 
   @override
   Map<String, dynamic> toJson() => _$MqttPingSuccessEventToJson(this);
@@ -536,13 +540,14 @@ class MqttPingFailureEvent extends MqttEvent {
 
   MqttPingFailureEvent(
       {this.serverUri,
-        this.timeTakenMillis,
-        this.keepAliveSecs,
-        this.exception,
-        this.isAdaptive,
-        super.connectionInfo});
+      this.timeTakenMillis,
+      this.keepAliveSecs,
+      this.exception,
+      this.isAdaptive,
+      super.connectionInfo});
 
-  factory MqttPingFailureEvent.fromJson(Map<String, dynamic> json) => _$MqttPingFailureEventFromJson(json);
+  factory MqttPingFailureEvent.fromJson(Map<String, dynamic> json) =>
+      _$MqttPingFailureEventFromJson(json);
 
   @override
   Map<String, dynamic> toJson() => _$MqttPingFailureEventToJson(this);
@@ -554,11 +559,10 @@ class MqttPingExceptionEvent extends MqttEvent {
   final bool? isAdaptive;
 
   MqttPingExceptionEvent(
-      {this.exception,
-        this.isAdaptive,
-        super.connectionInfo});
+      {this.exception, this.isAdaptive, super.connectionInfo});
 
-  factory MqttPingExceptionEvent.fromJson(Map<String, dynamic> json) => _$MqttPingExceptionEventFromJson(json);
+  factory MqttPingExceptionEvent.fromJson(Map<String, dynamic> json) =>
+      _$MqttPingExceptionEventFromJson(json);
 
   @override
   Map<String, dynamic> toJson() => _$MqttPingExceptionEventToJson(this);
@@ -568,13 +572,14 @@ class MqttPingExceptionEvent extends MqttEvent {
 class BackgroundAlarmPingLimitReached extends MqttEvent {
   final bool? isAdaptive;
 
-  BackgroundAlarmPingLimitReached(
-      {this.isAdaptive, super.connectionInfo});
+  BackgroundAlarmPingLimitReached({this.isAdaptive, super.connectionInfo});
 
-  factory BackgroundAlarmPingLimitReached.fromJson(Map<String, dynamic> json) => _$BackgroundAlarmPingLimitReachedFromJson(json);
+  factory BackgroundAlarmPingLimitReached.fromJson(Map<String, dynamic> json) =>
+      _$BackgroundAlarmPingLimitReachedFromJson(json);
 
   @override
-  Map<String, dynamic> toJson() => _$BackgroundAlarmPingLimitReachedToJson(this);
+  Map<String, dynamic> toJson() =>
+      _$BackgroundAlarmPingLimitReachedToJson(this);
 }
 
 @JsonSerializable()
@@ -585,11 +590,12 @@ class OptimalKeepAliveFoundEvent extends MqttEvent {
 
   OptimalKeepAliveFoundEvent(
       {this.timeMinutes,
-        this.probeCount,
-        this.convergenceTime,
-        super.connectionInfo});
+      this.probeCount,
+      this.convergenceTime,
+      super.connectionInfo});
 
-  factory OptimalKeepAliveFoundEvent.fromJson(Map<String, dynamic> json) => _$OptimalKeepAliveFoundEventFromJson(json);
+  factory OptimalKeepAliveFoundEvent.fromJson(Map<String, dynamic> json) =>
+      _$OptimalKeepAliveFoundEventFromJson(json);
 
   @override
   Map<String, dynamic> toJson() => _$OptimalKeepAliveFoundEventToJson(this);
@@ -597,9 +603,10 @@ class OptimalKeepAliveFoundEvent extends MqttEvent {
 
 @JsonSerializable()
 class MqttReconnectEvent extends MqttEvent {
-  MqttReconnectEvent({ super.connectionInfo});
+  MqttReconnectEvent({super.connectionInfo});
 
-  factory MqttReconnectEvent.fromJson(Map<String, dynamic> json) => _$MqttReconnectEventFromJson(json);
+  factory MqttReconnectEvent.fromJson(Map<String, dynamic> json) =>
+      _$MqttReconnectEventFromJson(json);
 
   @override
   Map<String, dynamic> toJson() => _$MqttReconnectEventToJson(this);
@@ -607,9 +614,10 @@ class MqttReconnectEvent extends MqttEvent {
 
 @JsonSerializable()
 class MqttDisconnectEvent extends MqttEvent {
-  MqttDisconnectEvent({ super.connectionInfo});
+  MqttDisconnectEvent({super.connectionInfo});
 
-  factory MqttDisconnectEvent.fromJson(Map<String, dynamic> json) => _$MqttDisconnectEventFromJson(json);
+  factory MqttDisconnectEvent.fromJson(Map<String, dynamic> json) =>
+      _$MqttDisconnectEventFromJson(json);
 
   @override
   Map<String, dynamic> toJson() => _$MqttDisconnectEventToJson(this);
@@ -617,9 +625,10 @@ class MqttDisconnectEvent extends MqttEvent {
 
 @JsonSerializable()
 class MqttDisconnectStartEvent extends MqttEvent {
-  MqttDisconnectStartEvent({ super.connectionInfo});
+  MqttDisconnectStartEvent({super.connectionInfo});
 
-  factory MqttDisconnectStartEvent.fromJson(Map<String, dynamic> json) => _$MqttDisconnectStartEventFromJson(json);
+  factory MqttDisconnectStartEvent.fromJson(Map<String, dynamic> json) =>
+      _$MqttDisconnectStartEventFromJson(json);
 
   @override
   Map<String, dynamic> toJson() => _$MqttDisconnectStartEventToJson(this);
@@ -627,9 +636,10 @@ class MqttDisconnectStartEvent extends MqttEvent {
 
 @JsonSerializable()
 class MqttDisconnectCompleteEvent extends MqttEvent {
-  MqttDisconnectCompleteEvent({ super.connectionInfo});
+  MqttDisconnectCompleteEvent({super.connectionInfo});
 
-  factory MqttDisconnectCompleteEvent.fromJson(Map<String, dynamic> json) => _$MqttDisconnectCompleteEventFromJson(json);
+  factory MqttDisconnectCompleteEvent.fromJson(Map<String, dynamic> json) =>
+      _$MqttDisconnectCompleteEventFromJson(json);
 
   @override
   Map<String, dynamic> toJson() => _$MqttDisconnectCompleteEventToJson(this);
@@ -639,9 +649,10 @@ class MqttDisconnectCompleteEvent extends MqttEvent {
 class OfflineMessageDiscardedEvent extends MqttEvent {
   final int? messageId;
 
-  OfflineMessageDiscardedEvent({ this.messageId, super.connectionInfo});
+  OfflineMessageDiscardedEvent({this.messageId, super.connectionInfo});
 
-  factory OfflineMessageDiscardedEvent.fromJson(Map<String, dynamic> json) => _$OfflineMessageDiscardedEventFromJson(json);
+  factory OfflineMessageDiscardedEvent.fromJson(Map<String, dynamic> json) =>
+      _$OfflineMessageDiscardedEventFromJson(json);
 
   @override
   Map<String, dynamic> toJson() => _$OfflineMessageDiscardedEventToJson(this);
@@ -649,9 +660,10 @@ class OfflineMessageDiscardedEvent extends MqttEvent {
 
 @JsonSerializable()
 class InboundInactivityEvent extends MqttEvent {
-  InboundInactivityEvent({ super.connectionInfo});
+  InboundInactivityEvent({super.connectionInfo});
 
-  factory InboundInactivityEvent.fromJson(Map<String, dynamic> json) => _$InboundInactivityEventFromJson(json);
+  factory InboundInactivityEvent.fromJson(Map<String, dynamic> json) =>
+      _$InboundInactivityEventFromJson(json);
 
   @override
   Map<String, dynamic> toJson() => _$InboundInactivityEventToJson(this);
@@ -678,9 +690,10 @@ class HandlerThreadNotAliveEvent extends MqttEvent {
   final ThreadState? state;
 
   HandlerThreadNotAliveEvent(
-      { this.isInterrupted,  this.state, super.connectionInfo});
+      {this.isInterrupted, this.state, super.connectionInfo});
 
-  factory HandlerThreadNotAliveEvent.fromJson(Map<String, dynamic> json) => _$HandlerThreadNotAliveEventFromJson(json);
+  factory HandlerThreadNotAliveEvent.fromJson(Map<String, dynamic> json) =>
+      _$HandlerThreadNotAliveEventFromJson(json);
 
   @override
   Map<String, dynamic> toJson() => _$HandlerThreadNotAliveEventToJson(this);
@@ -692,11 +705,10 @@ class AuthenticatorAttemptEvent extends MqttEvent {
   final MqttConnectOption? connectOptions;
 
   AuthenticatorAttemptEvent(
-      { this.forceRefresh,
-        this.connectOptions,
-        super.connectionInfo});
+      {this.forceRefresh, this.connectOptions, super.connectionInfo});
 
-  factory AuthenticatorAttemptEvent.fromJson(Map<String, dynamic> json) => _$AuthenticatorAttemptEventFromJson(json);
+  factory AuthenticatorAttemptEvent.fromJson(Map<String, dynamic> json) =>
+      _$AuthenticatorAttemptEventFromJson(json);
 
   @override
   Map<String, dynamic> toJson() => _$AuthenticatorAttemptEventToJson(this);
@@ -709,12 +721,13 @@ class AuthenticatorSuccessEvent extends MqttEvent {
   final int? timeTakenMillis;
 
   AuthenticatorSuccessEvent(
-      { this.forceRefresh,
-        this.connectOptions,
-        this.timeTakenMillis,
-        super.connectionInfo});
+      {this.forceRefresh,
+      this.connectOptions,
+      this.timeTakenMillis,
+      super.connectionInfo});
 
-  factory AuthenticatorSuccessEvent.fromJson(Map<String, dynamic> json) => _$AuthenticatorSuccessEventFromJson(json);
+  factory AuthenticatorSuccessEvent.fromJson(Map<String, dynamic> json) =>
+      _$AuthenticatorSuccessEventFromJson(json);
 
   @override
   Map<String, dynamic> toJson() => _$AuthenticatorSuccessEventToJson(this);
@@ -728,13 +741,14 @@ class AuthenticatorErrorEvent extends MqttEvent {
   final int? timeTakenMillis;
 
   AuthenticatorErrorEvent(
-      { this.exception,
-        this.nextRetryTimeSecs,
-        this.activeNetworkInfo,
-        this.timeTakenMillis,
-        super.connectionInfo});
+      {this.exception,
+      this.nextRetryTimeSecs,
+      this.activeNetworkInfo,
+      this.timeTakenMillis,
+      super.connectionInfo});
 
-  factory AuthenticatorErrorEvent.fromJson(Map<String, dynamic> json) => _$AuthenticatorErrorEventFromJson(json);
+  factory AuthenticatorErrorEvent.fromJson(Map<String, dynamic> json) =>
+      _$AuthenticatorErrorEventFromJson(json);
 
   @override
   Map<String, dynamic> toJson() => _$AuthenticatorErrorEventToJson(this);
@@ -742,31 +756,26 @@ class AuthenticatorErrorEvent extends MqttEvent {
 
 // IOS Only
 @JsonSerializable()
-class CourierDisconnectEvent extends MqttEvent{
+class CourierDisconnectEvent extends MqttEvent {
   final bool? clearState;
 
   CourierDisconnectEvent({this.clearState});
 
-  factory CourierDisconnectEvent.fromJson(Map<String, dynamic> json) => _$CourierDisconnectEventFromJson(json);
+  factory CourierDisconnectEvent.fromJson(Map<String, dynamic> json) =>
+      _$CourierDisconnectEventFromJson(json);
 
   @override
   Map<String, dynamic> toJson() => _$CourierDisconnectEventToJson(this);
 }
 
 // IOS Only
-class ConnectionAvailableEvent extends MqttEvent{
+class ConnectionAvailableEvent extends MqttEvent {
   @override
-  Map<String, dynamic> toJson() => {
-    "Name" : "ConnectionAvailableEvent"
-  };
-
+  Map<String, dynamic> toJson() => {"Name": "ConnectionAvailableEvent"};
 }
 
 // IOS Only
 class ConnectionUnavailableEvent extends MqttEvent {
   @override
-  Map<String, dynamic> toJson() => {
-    "Name" : "ConnectionUnavailableEvent"
-  };
-
+  Map<String, dynamic> toJson() => {"Name": "ConnectionUnavailableEvent"};
 }

@@ -1,5 +1,7 @@
-class AuthFailureHandler{
-  Function()? handleAuthFailure;
+class AuthFailureHandler {
+  const AuthFailureHandler({
+    this.handleAuthFailure,
+  });
 
-  AuthFailureHandler({this.handleAuthFailure});
+  final Function()? handleAuthFailure;
 }
