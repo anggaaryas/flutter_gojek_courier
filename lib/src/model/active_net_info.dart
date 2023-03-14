@@ -4,7 +4,7 @@ part 'active_net_info.g.dart';
 
 @JsonSerializable()
 class ActiveNetInfo {
-  ActiveNetInfo({
+  const ActiveNetInfo({
     required this.connected,
     required this.validated,
     required this.networkType,

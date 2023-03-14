@@ -1,6 +1,7 @@
+import 'package:json_annotation/json_annotation.dart';
+
 import '../../gojek_courier.dart';
 import 'courier_exception.dart';
-import 'package:json_annotation/json_annotation.dart';
 
 part 'mqtt_event.g.dart';
 

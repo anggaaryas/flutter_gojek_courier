@@ -1,15 +1,18 @@
-import 'package:gojek_courier/src/model/courier_configuration.dart';
+import 'courier_configuration.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'courier.g.dart';
 
 @JsonSerializable()
-class Courier{
+class Courier {
+  const Courier({
+    required this.configuration,
+  });
+
   final CourierConfiguration configuration;
 
-  Courier({required this.configuration});
-
-  factory Courier.fromJson(Map<String, dynamic> json) => _$CourierFromJson(json);
+  factory Courier.fromJson(Map<String, dynamic> json) =>
+      _$CourierFromJson(json);
 
   Map<String, dynamic> toJson() => _$CourierToJson(this);
 }

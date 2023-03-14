@@ -1,8 +1,8 @@
 import 'dart:typed_data';
 
-import 'package:gojek_courier/src/model/courier.dart';
-import 'package:gojek_courier/src/model/mqtt_connect_option.dart';
-import 'package:gojek_courier/src/model/mqtt_event.dart';
+import 'model/courier.dart';
+import 'model/mqtt_connect_option.dart';
+import 'model/mqtt_event.dart';
 import 'package:plugin_platform_interface/plugin_platform_interface.dart';
 
 import 'gojek_courier_method_channel.dart';

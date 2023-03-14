@@ -1,6 +1,7 @@
-import 'package:gojek_courier/src/model/logger.dart';
-import 'package:gojek_courier/src/model/mqtt_client.dart';
 import 'package:json_annotation/json_annotation.dart';
+
+import 'logger.dart';
+import 'mqtt_client.dart';
 
 part 'courier_configuration.g.dart';
 
