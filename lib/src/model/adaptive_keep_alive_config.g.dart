@@ -36,5 +36,5 @@ Map<String, dynamic> _$AdaptiveKeepAliveConfigToJson(
       'incomingMessagesTTLSecs': instance.incomingMessagesTTLSecs,
       'incomingMessagesCleanupIntervalSecs':
           instance.incomingMessagesCleanupIntervalSecs,
-      'pingSender': instance.pingSender,
+      'pingSender': instance.pingSender.toJson(),
     };
