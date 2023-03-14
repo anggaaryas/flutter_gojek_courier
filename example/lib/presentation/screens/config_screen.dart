@@ -252,6 +252,9 @@ class _ConfigScreenState extends State<ConfigScreen> {
       if (_portTextCtl.text.isEmpty) {
         _portTextCtl.text = _defaultPort;
       }
+      if (_schemeTextCtl.text.isEmpty) {
+        _schemeTextCtl.text = _defaultScheme;
+      }
       if (_clientIdTextCtl.text.isEmpty) {
         _clientIdTextCtl.text = '${Random.secure().nextInt(100000)}';
       }
