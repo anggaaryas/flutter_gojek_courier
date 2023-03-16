@@ -106,8 +106,16 @@ class MqttModule {
 
   Future<bool> disconnect() async {
     try {
+      var completer = Completer<bool>();
+      listener() {
+        if(!isConnected.value){
+          completer.complete(true);
+        }
+      }
       await _courier.disconnect();
-      isConnected.value = false;
+      isConnected.addListener(listener);
+      await completer.future;
+      isConnected.removeListener(listener);
       return true;
     } catch (e) {
       log('Error disconnect mqtt $e');
