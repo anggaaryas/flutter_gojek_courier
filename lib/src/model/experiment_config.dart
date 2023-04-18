@@ -7,11 +7,11 @@ part 'experiment_config.g.dart';
 class ExperimentConfig {
   const ExperimentConfig({
     required this.isPersistentSubscriptionStoreEnabled,
-    required this.adaptiveKeepAliveConfig,
+    this.adaptiveKeepAliveConfig,
   });
 
   final bool isPersistentSubscriptionStoreEnabled;
-  final AdaptiveKeepAliveConfig adaptiveKeepAliveConfig;
+  final AdaptiveKeepAliveConfig? adaptiveKeepAliveConfig;
 
   factory ExperimentConfig.fromJson(Map<String, dynamic> json) =>
       _$ExperimentConfigFromJson(json);

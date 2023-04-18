@@ -18,5 +18,5 @@ Map<String, dynamic> _$ExperimentConfigToJson(ExperimentConfig instance) =>
     <String, dynamic>{
       'isPersistentSubscriptionStoreEnabled':
           instance.isPersistentSubscriptionStoreEnabled,
-      'adaptiveKeepAliveConfig': instance.adaptiveKeepAliveConfig.toJson(),
+      'adaptiveKeepAliveConfig': instance.adaptiveKeepAliveConfig?.toJson(),
     };

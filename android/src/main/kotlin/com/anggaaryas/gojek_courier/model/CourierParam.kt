@@ -160,6 +160,12 @@ class ExperimentConfigParam(value: Map<String, Any?>): Param<ExperimentConfigs>(
     var isPersistentSubscriptionStoreEnabled: Boolean? = null
     var adaptiveKeepAliveConfig: AdaptiveKeepAliveConfigParam? = null
 
+    internal val DEFAULT_ACTIVITY_CHECK_INTERVAL_SECS = 62
+
+    internal val DEFAULT_INACTIVITY_TIMEOUT_SECS = 60
+
+    internal val DEFAULT_POLICY_RESET_TIME_SECS = 300
+
     init {
         value.getValue("isPersistentSubscriptionStoreEnabled")?.let {
             isPersistentSubscriptionStoreEnabled = it as Boolean
@@ -171,7 +177,11 @@ class ExperimentConfigParam(value: Map<String, Any?>): Param<ExperimentConfigs>(
 
     override fun build(context: Context, logger: Listener): ExperimentConfigs? {
         return ExperimentConfigs(
-            subscriptionStore = if(isPersistentSubscriptionStoreEnabled == true)  SubscriptionStore.PERSISTABLE else SubscriptionStore.IN_MEMORY
+            subscriptionStore = if(isPersistentSubscriptionStoreEnabled == true)  SubscriptionStore.PERSISTABLE else SubscriptionStore.IN_MEMORY,
+             adaptiveKeepAliveConfig = adaptiveKeepAliveConfig?.build(context, logger),
+         activityCheckIntervalSeconds = DEFAULT_ACTIVITY_CHECK_INTERVAL_SECS,
+         inactivityTimeoutSeconds = DEFAULT_INACTIVITY_TIMEOUT_SECS,
+         policyResetTimeSeconds = DEFAULT_POLICY_RESET_TIME_SECS,
         )
     }
 }

@@ -48,10 +48,14 @@ class MqttModule {
           client: MqttClient(
             configuration: MqttConfiguration(
                 useInterceptor: true,
+                experimentConfig: const ExperimentConfig(
+                  isPersistentSubscriptionStoreEnabled: false,
+                ),
                 logger: _logger,
                 eventHandler: EventHandler(
                   onEvent: (event) {
                     mqttEventLog.sink.add(event);
+                    log('[EVENT]   $event');
 
                     switch (event.runtimeType) {
                       case MqttConnectSuccessEvent:
@@ -141,6 +145,15 @@ class MqttModule {
     if (subscribedTopics.contains(topic)) {
       try {
         await _courier.unsubscribe(topic);
+        var completer = Completer<bool>();
+
+        var listener = mqttEventLog.stream.listen((event){
+          if(event is MqttUnsubscribeSuccessEvent){
+            completer.complete(true);
+          }
+        });
+        await completer.future;
+        await listener.cancel();
         subscribedTopics.remove(topic);
         return true;
       } catch (e) {
