@@ -51,7 +51,7 @@ class GojekCourierCore(val receiveSink: EventChannel.EventSink, val logger: List
     }
 
     fun disconnect(){
-        mqttClient.disconnect()
+        mqttClient.disconnect(true)
         for ((key, value) in streamList) {
             value.dispose()
         }
