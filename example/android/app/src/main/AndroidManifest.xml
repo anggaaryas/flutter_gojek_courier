@@ -1,5 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.anggaaryas.gojek_courier_example">
+
+    <uses-permission android:name="android.permission.INTERNET"/>
    <application
         android:label="gojek_courier_example"
         android:name="${applicationName}"

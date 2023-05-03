@@ -134,9 +134,16 @@ class MethodChannelGojekCourier extends GojekCourierPlatform {
       if (Platform.isIOS) {
         event = (event as String).replaceAll('\\', '\\\\');
       }
+
       var json = jsonDecode(event);
       final topic = (json["topic"] as String).split("\$")[1];
       final data = json["data"];
+
+      print("\n========");
+      print(event);
+      print(topic);
+      print(json["data"]);
+      print("========\n");
 
       if (data["connectionInfo"] is String) {
         data["connectionInfo"] = null;

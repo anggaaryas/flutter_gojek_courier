@@ -90,6 +90,8 @@ class Listener(val loggerSink : EventChannel.EventSink?, val eventSink : EventCh
                     }}"
                 )
             } else {
+                println("KIRIM EVENT KE FLUTTER...")
+                println(msg)
                 sink?.success(
                     "{\"topic\" : \"$tag\", \"type\" : \"$typeString\", \"data\": $msg}"
                 )
@@ -104,16 +106,21 @@ class Listener(val loggerSink : EventChannel.EventSink?, val eventSink : EventCh
         }
 
         override fun onEvent(mqttEvent: MqttEvent) {
-            val tag = mqttEvent.javaClass.name
+            println("NATIVE EVENT LOG : $mqttEvent");
+            try{
+                val tag = mqttEvent.javaClass.name
 
-            val json = gson.toJson(mqttEvent)
+                val json = gson.toJson(mqttEvent)
 
-            val jsonElement = JsonParser.parseString(json)
-            val jsonObject = jsonElement.getAsJsonObject()
-            jsonObject.addProperty("connectionInfo", gson.toJson(mqttEvent.connectionInfo))
-            val json2: String = jsonObject.toString()
+                val jsonElement = JsonParser.parseString(json)
+                val jsonObject = jsonElement.getAsJsonObject()
+                jsonObject.addProperty("connectionInfo", gson.toJson(mqttEvent.connectionInfo))
+                val json2: String = jsonObject.toString()
 
-            sendToFlutter(Type.EVENT, tag, json2 , eventSink)
+                sendToFlutter(Type.EVENT, tag, json2 , eventSink)
+            } catch (e: Exception){
+                println("NATIVE EVENT ERROR: $e");
+            }
         }
     }
 

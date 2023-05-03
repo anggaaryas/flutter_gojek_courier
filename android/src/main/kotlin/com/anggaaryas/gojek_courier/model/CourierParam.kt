@@ -123,7 +123,7 @@ class MqttConfigurationParam(value: Map<String, Any?>): Param<MqttV3Configuratio
     override fun build(context: Context, logger: Listener): MqttV3Configuration {
         return MqttV3Configuration(
             logger = logger.getLogger("Courier"),
-            eventHandler = logger.eventHandler,
+//            eventHandler = logger.eventHandler,
             authFailureHandler = logger.authFailureHandler, // redundant di on event?
             connectTimeoutPolicy = connectTimeoutPolicy?.build(context, logger) ?: ConnectTimeoutPolicy(ConnectTimeoutConfig()),
             authenticator = object : Authenticator {

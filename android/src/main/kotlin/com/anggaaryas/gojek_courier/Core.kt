@@ -31,18 +31,24 @@ class GojekCourierCore(val receiveSink: EventChannel.EventSink, val logger: List
     private val uiThreadHandler: Handler = Handler(Looper.getMainLooper())
 
     fun init(param : CourierParam){
-        param.courierConfiguration?.client?.build(context, logger)?.let {
-            mqttClient = it
+        try{
+            param.courierConfiguration?.client?.build(context, logger)?.let {
+                mqttClient = it
+                mqttClient.addEventHandler(logger.eventHandler)
 
-            val courier = Courier(
-                configuration = Courier.Configuration(
-                    client = it,
-                    streamAdapterFactories = listOf(RxJava2StreamAdapterFactory()),
-                    messageAdapterFactories = listOf(ByteMessageAdapterFactory())
+                val courier = Courier(
+                    configuration = Courier.Configuration(
+                        client = it,
+                        streamAdapterFactories = listOf(RxJava2StreamAdapterFactory()),
+                        messageAdapterFactories = listOf(ByteMessageAdapterFactory())
+                    )
                 )
-            )
-            courierService = courier.create()
-            globalListen()
+                courierService = courier.create()
+                globalListen()
+            }
+        } catch (e: Exception){
+            print("courir init err: ");
+            print(e);
         }
     }
 

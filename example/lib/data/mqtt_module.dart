@@ -24,19 +24,19 @@ class MqttModule {
 
   final ILogger _logger = Logger(
     onDebug: (String tag, String msg, [String tr = '']) {
-      log('[DEBUG]   --$tag   $msg');
+      print('[DEBUG]   --$tag   $msg');
     },
     onError: (String tag, String msg, [String tr = '']) {
-      log('[ERROR]   --$tag   $msg');
+      print('[ERROR]   --$tag   $msg');
     },
     onInfo: (String tag, String msg, [String tr = '']) {
-      log('[INFO]   --$tag   $msg');
+      print('[INFO]   --$tag   $msg');
     },
     onVerbose: (String tag, String msg, [String tr = '']) {
-      log('[VERBOSE]   --$tag   $msg');
+      print('[VERBOSE]   --$tag   $msg');
     },
     onWarning: (String tag, {String msg = '', String tr = ''}) {
-      log('[WARNING]   --$tag   $msg');
+      print('[WARNING]   --$tag   $msg');
     },
   );
 
@@ -51,11 +51,11 @@ class MqttModule {
                 experimentConfig: const ExperimentConfig(
                   isPersistentSubscriptionStoreEnabled: false,
                 ),
-                logger: _logger,
+                // logger: _logger,
                 eventHandler: EventHandler(
                   onEvent: (event) {
                     mqttEventLog.sink.add(event);
-                    log('[EVENT]   $event');
+                    print('[EVENT]   $event');
 
                     switch (event.runtimeType) {
                       case MqttConnectSuccessEvent:
