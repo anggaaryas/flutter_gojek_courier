@@ -131,9 +131,6 @@ class MethodChannelGojekCourier extends GojekCourierPlatform {
 
   void streamEvent() {
     _eventStreamSubscription = eventStream.listen((event) {
-      if (Platform.isIOS) {
-        event = (event as String).replaceAll('\\', '\\\\');
-      }
 
       var json = jsonDecode(event);
       final topic = (json["topic"] as String).split("\$")[1];
