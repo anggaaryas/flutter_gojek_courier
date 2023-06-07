@@ -46,12 +46,12 @@ func sendToFlutter(type: ResponseType, tag: String, msg: String, sink: FlutterEv
 extension CourierEvent{
     
     private func toString(topic: String, data: String) -> String {
-        return "{\"type\" : \"event\" , \"topic\": \"\(topic)\", \"data\": \(data)}"
+        return "{\"type\" : \"event\" , \"topic\": \"\(topic)\", \"data\": \(data.replacingOccurrences(of: "\"", with: ""))}"
     }
     
     private func errorToString(error: Error?) -> String{
         if let error = error {
-            return "{\"reasonCode\" : \((error as NSError).code), \"message\" : \"\((error as NSError).description)\"}"
+            return "{\"reasonCode\" : \((error as NSError).code), \"message\" : \"\((error as NSError).description.replacingOccurrences(of: "\"", with: ""))\"}"
         } else {
             return "{\"reasonCode\" : -1, \"message\" : \"\\-\"}"
         }
