@@ -1,24 +1,29 @@
 PODS:
-  - CourierCore (0.0.16)
-  - CourierMQTT (0.0.16):
-    - CourierCore (= 0.0.16)
-    - MQTTClientGJ (= 0.0.16)
+  - CourierCore (0.0.17)
+  - CourierMQTT (0.0.17):
+    - CourierCore (= 0.0.17)
+    - MQTTClientGJ (= 0.0.17)
     - ReachabilitySwift (= 5.0.0)
-  - CourierProtobuf (0.0.16):
-    - CourierCore (= 0.0.16)
-    - CourierMQTT (= 0.0.16)
+  - CourierMQTTChuck (0.0.17):
+    - CourierCore (= 0.0.17)
+    - CourierMQTT (= 0.0.17)
+    - MQTTClientGJ (= 0.0.17)
+  - CourierProtobuf (0.0.17):
+    - CourierCore (= 0.0.17)
+    - CourierMQTT (= 0.0.17)
     - SwiftProtobuf
   - Flutter (1.0.0)
   - gojek_courier (0.0.2):
-    - CourierCore (= 0.0.16)
-    - CourierMQTT (= 0.0.16)
-    - CourierProtobuf (= 0.0.16)
+    - CourierCore (= 0.0.17)
+    - CourierMQTT (= 0.0.17)
+    - CourierMQTTChuck
+    - CourierProtobuf (= 0.0.17)
     - Flutter
     - ReachabilitySwift (= 5.0.0)
     - SwiftProtobuf
-  - MQTTClientGJ (0.0.16)
+  - MQTTClientGJ (0.0.17)
   - ReachabilitySwift (5.0.0)
-  - SwiftProtobuf (1.21.0)
+  - SwiftProtobuf (1.22.0)
 
 DEPENDENCIES:
   - Flutter (from `Flutter`)
@@ -28,6 +33,7 @@ SPEC REPOS:
   trunk:
     - CourierCore
     - CourierMQTT
+    - CourierMQTTChuck
     - CourierProtobuf
     - MQTTClientGJ
     - ReachabilitySwift
@@ -40,14 +46,15 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/gojek_courier/ios"
 
 SPEC CHECKSUMS:
-  CourierCore: de5f25611e77113c9136f9d2dc9ce10c3545445a
-  CourierMQTT: 27a5adca5d7ed967873891201ff59d2649ef1384
-  CourierProtobuf: 30af993b0be613a61638cc1370b56fabef2b2cda
+  CourierCore: 5561c7ff8fdd9b722bedf06a290be2f7e9242f80
+  CourierMQTT: 40ca2bde67a0a5c9c222c3e972861b34611907b8
+  CourierMQTTChuck: 970cd9893626cea84b0ebbd2db55533d356c7258
+  CourierProtobuf: 8203a41e484665a8b186dd642debe827f14032f2
   Flutter: f04841e97a9d0b0a8025694d0796dd46242b2854
-  gojek_courier: 37e33c6edec4f843c6cee00141ae0cdd9983b217
-  MQTTClientGJ: db6faf26565fbf1fa6d7f3b1ab26afc6efbba08b
+  gojek_courier: 9e052de1d834abed30d8071020b7ab297e8dbb44
+  MQTTClientGJ: 2da01c1669f12cab46e2ddb0eb26e8b4cf54fe9c
   ReachabilitySwift: 985039c6f7b23a1da463388634119492ff86c825
-  SwiftProtobuf: afced68785854575756db965e9da52bbf3dc45e7
+  SwiftProtobuf: 40bd808372cb8706108f22d28f8ab4a6b9bc6989
 
 PODFILE CHECKSUM: ef19549a9bc3046e7bb7d2fab4d021637c0c58a3
 

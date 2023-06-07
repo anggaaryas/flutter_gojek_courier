@@ -68,3 +68,31 @@ class ReceiveDataHandler : NSObject, FlutterStreamHandler{
         return nil
     }
 }
+
+@available(iOS 13.0, *)
+class LoggerHandler : NSObject, FlutterStreamHandler {
+
+    
+    private let library: GojekCourierCore
+    private var sink: FlutterEventSink?
+    
+    init(library: GojekCourierCore) {
+        self.library  = library
+    }
+    
+    func addEventaListener(){
+        library.setLoggerSink(sink: sink!)
+    }
+ 
+    
+    func onListen(withArguments arguments: Any?, eventSink events: @escaping FlutterEventSink) -> FlutterError? {
+        sink = events
+        return nil
+    }
+    
+    func onCancel(withArguments arguments: Any?) -> FlutterError? {
+        sink = nil
+        return nil
+    }
+  
+}

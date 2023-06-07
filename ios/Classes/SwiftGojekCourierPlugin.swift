@@ -6,23 +6,29 @@ public class SwiftGojekCourierPlugin: NSObject, FlutterPlugin {
     
     let eventChannelName = "event_channel"
     let receiveDataChannelName = "receive_data_channel"
+    let loggerChannelName = "logger_channel"
     
     var eventStreamHandler : EventStreamHandler?
     var receiveDataHandler: ReceiveDataHandler?
+    var loggerHandler: LoggerHandler?
     
     let eventChannel : FlutterEventChannel?
     let receiveDataChannel : FlutterEventChannel?
+    let loggerChannel : FlutterEventChannel?
     
     var core = GojekCourierCore()
     
     init(registrar : FlutterPluginRegistrar) {
         eventChannel =  FlutterEventChannel(name: eventChannelName, binaryMessenger: registrar.messenger())
         receiveDataChannel =  FlutterEventChannel(name: receiveDataChannelName, binaryMessenger: registrar.messenger())
+        loggerChannel = FlutterEventChannel(name: loggerChannelName, binaryMessenger: registrar.messenger())
         
         eventStreamHandler = EventStreamHandler(library: core)
         eventChannel!.setStreamHandler(eventStreamHandler)
         receiveDataHandler = ReceiveDataHandler(library: core)
         receiveDataChannel?.setStreamHandler(receiveDataHandler)
+        loggerHandler = LoggerHandler(library: core)
+        loggerChannel?.setStreamHandler(loggerHandler)
     }
     
     public static func register(with registrar: FlutterPluginRegistrar) {
@@ -44,6 +50,7 @@ public class SwiftGojekCourierPlugin: NSObject, FlutterPlugin {
             let connectParam = MqttConnectOptionParam(value: param ?? [:])
             core.initCourier(param: connectParam)
             eventStreamHandler!.addEventaListener()
+            loggerHandler!.addEventaListener()
             core.connect()
             
             

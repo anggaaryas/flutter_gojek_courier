@@ -32,7 +32,7 @@ class MethodChannelGojekCourier extends GojekCourierPlatform {
   final authFailChannel = const EventChannel('auth_fail_channel');
 
   MethodChannelGojekCourier() {
-    if (Platform.isAndroid) streamLogger();
+    streamLogger();
 
     streamEvent();
 
@@ -139,11 +139,11 @@ class MethodChannelGojekCourier extends GojekCourierPlatform {
       final topic = (json["topic"] as String).split("\$")[1];
       final data = json["data"];
 
-      print("\n========");
-      print(event);
-      print(topic);
-      print(json["data"]);
-      print("========\n");
+      // print("\n========");
+      // print(event);
+      // print(topic);
+      // print(json["data"]);
+      // print("========\n");
 
       if (data["connectionInfo"] is String) {
         data["connectionInfo"] = null;
@@ -427,7 +427,6 @@ class MethodChannelGojekCourier extends GojekCourierPlatform {
 
   @override
   Future<void> subscribe(String topic, [QoS qoS = QoS.ZERO]) async {
-    print('asw ${qoS.name}');
     await methodChannel.invokeMethod<String>(
       'subscribe',
       {
