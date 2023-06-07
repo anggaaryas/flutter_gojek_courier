@@ -53,7 +53,7 @@ extension CourierEvent{
         if let error = error {
             return "{\"reasonCode\" : \((error as NSError).code), \"message\" : \"\((error as NSError).description.replacingOccurrences(of: "\"", with: ""))\"}"
         } else {
-            return "{\"reasonCode\" : -1, \"message\" : \"\\-\"}"
+            return "{\"reasonCode\" : -1, \"message\" : \"-\"}"
         }
     }
     

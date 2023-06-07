@@ -20,6 +20,8 @@ class MethodChannelGojekCourier extends GojekCourierPlatform {
   Courier? _courier;
   MqttConnectOption? _mqttConnectOption;
 
+  bool _isCallConnect = false;
+
   @visibleForTesting
   final methodChannel = const MethodChannel('gojek_courier');
 
@@ -60,7 +62,23 @@ class MethodChannelGojekCourier extends GojekCourierPlatform {
 
   @override
   Future<void> connect({required MqttConnectOption option}) async {
+    if(_isCallConnect){
+      if (kDebugMode) {
+        print("📕 ===================================================================");
+        print(
+              "📕 == Warning, You have called connect method before,               ==",
+        );
+        print(
+              "📕 == Consider to call disconnect first to prevent connection leak  ==",
+        );
+        print("📕 ===================================================================");
+      }
+
+      throw(Exception("Please call disconnect first, before call connect again"));
+    }
+
     await methodChannel.invokeMethod<String>('connect', option.toJson());
+    _isCallConnect = true;
   }
 
   @override
@@ -441,6 +459,7 @@ class MethodChannelGojekCourier extends GojekCourierPlatform {
   @override
   Future<void> disconnect() async {
     await methodChannel.invokeMethod<String>('disconnect');
+    _isCallConnect = false;
   }
 
   @override

@@ -59,7 +59,6 @@ class GojekCourierCore: MQTTChuckLoggerDelegate{
     }
     
     func addEventListener(eventSink : @escaping FlutterEventSink){
-        print("set event sink...!")
         self.eventSink = eventSink
         courierClient!.addEventHandler(self)
     }
@@ -107,12 +106,10 @@ class GojekCourierCore: MQTTChuckLoggerDelegate{
     }
     
     func setMessageSink(sink: @escaping FlutterEventSink){
-        print("set message sink...!")
         messageSink = sink
     }
     
     func setLoggerSink(sink: @escaping FlutterEventSink){
-        print("set log sink...!")
         loggerSink = sink
         logger.delegate = self
     }
