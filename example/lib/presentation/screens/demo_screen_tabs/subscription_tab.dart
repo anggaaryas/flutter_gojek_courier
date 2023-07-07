@@ -109,11 +109,19 @@ class _SubscriptionTabState extends State<SubscriptionTab> {
       );
       return;
     }
-    
-    var isSubscribeSuccess = await _mqttModule.subscribe(
-      _topicTextCtl.text,
-      QoS.ONE,
-    );
+
+    var r = await Future.wait([
+      _mqttModule.subscribe(
+        _topicTextCtl.text,
+        QoS.ONE,
+      ),
+      _mqttModule.subscribe(
+        "a/${_topicTextCtl.text}",
+        QoS.ONE,
+      )
+    ]);
+
+    var isSubscribeSuccess = r[0];
 
     if (isSubscribeSuccess) {
       setState(() {});

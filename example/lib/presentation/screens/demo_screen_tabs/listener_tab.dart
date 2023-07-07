@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:gojek_courier/gojek_courier.dart';
 import 'package:gojek_courier_example/data/mqtt_module.dart';
@@ -140,9 +141,9 @@ class _ListenerTabState extends State<ListenerTab>
 
       return;
     }
-    var isPublishSuccess = await _mqttModule.publishString(
+    var isPublishSuccess = await _mqttModule.publishByte(
       topic: _topic,
-      message: _messageTextCtl.text,
+      message: Uint8List.fromList(_messageTextCtl.text.codeUnits),
       qos: _publishQoS,
     );
 

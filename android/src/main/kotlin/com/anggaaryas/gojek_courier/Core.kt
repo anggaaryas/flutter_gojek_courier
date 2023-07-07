@@ -4,29 +4,24 @@ package com.anggaaryas.gojek_courier
 import android.content.Context
 import android.os.Handler
 import android.os.Looper
-import com.anggaaryas.gojek_courier.model.ByteMessageAdapter
 import com.anggaaryas.gojek_courier.model.ByteMessageAdapterFactory
 import com.anggaaryas.gojek_courier.model.CourierParam
 import com.anggaaryas.gojek_courier.model.MqttConnectOptionParam
 import com.gojek.courier.Courier
 import com.gojek.courier.Message
 import com.gojek.courier.QoS
-import com.gojek.courier.messageadapter.gson.GsonMessageAdapterFactory
 import com.gojek.courier.streamadapter.rxjava2.RxJava2StreamAdapterFactory
 import com.gojek.mqtt.client.MqttClient
 import com.gojek.mqtt.client.listener.MessageListener
 import com.gojek.mqtt.client.model.MqttMessage
 import io.flutter.plugin.common.EventChannel
-import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
-import java.util.*
 
-class GojekCourierCore(val receiveSink: EventChannel.EventSink, val logger: Listener, val context: Context) {
+class GojekCourierCore(val receiveSink: EventChannel.EventSink, private val logger: Listener, private val context: Context) {
 
     private lateinit var mqttClient: MqttClient
     private lateinit var courierService: MessageService
-    private var disposable = CompositeDisposable()
-    private var streamList = mutableMapOf<String, Disposable>();
+    private var streamList = mutableMapOf<String, Disposable>()
 
     private val uiThreadHandler: Handler = Handler(Looper.getMainLooper())
 
@@ -47,8 +42,8 @@ class GojekCourierCore(val receiveSink: EventChannel.EventSink, val logger: List
                 globalListen()
             }
         } catch (e: Exception){
-            print("courir init err: ");
-            print(e);
+            print("courir init err: ")
+            print(e)
         }
     }
 
@@ -70,6 +65,7 @@ class GojekCourierCore(val receiveSink: EventChannel.EventSink, val logger: List
             QoS.ZERO -> courierService.subscribeQosZero(topic = topic)
             QoS.ONE -> courierService.subscribeQosOne(topic = topic)
             QoS.TWO -> courierService.subscribeQosTwo(topic = topic)
+            else -> {}
         }
 
     }
@@ -95,6 +91,7 @@ class GojekCourierCore(val receiveSink: EventChannel.EventSink, val logger: List
                 topic = topic,
                 message = message
             )
+            else -> {}
         }
     }
 
@@ -112,10 +109,11 @@ class GojekCourierCore(val receiveSink: EventChannel.EventSink, val logger: List
                 topic = topic,
                 message = message
             )
+            else -> {}
         }
     }
 
-    fun globalListen(){
+    private fun globalListen(){
         mqttClient.addGlobalMessageListener( object : MessageListener {
             override fun onMessageReceived(mqttMessage: MqttMessage) {
                 uiThreadHandler.post{

@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:developer';
+import 'dart:typed_data';
 
 import 'package:flutter/material.dart' as material;
 import 'package:gojek_courier/gojek_courier.dart';
@@ -16,6 +17,8 @@ class MqttModule {
   final List<String> subscribedTopics = [];
   final material.ValueNotifier<bool> isConnected =
       material.ValueNotifier<bool>(false);
+
+  bool _firstTryConnect = false;
 
   StreamController<MqttEvent> mqttEventLog = StreamController.broadcast();
   Stream<dynamic> get receiveDataStream => _courier.receiveDataStream.map(
@@ -55,13 +58,17 @@ class MqttModule {
                 eventHandler: EventHandler(
                   onEvent: (event) {
                     mqttEventLog.sink.add(event);
-                    print('[EVENT]   $event');
+                    print('[EVENT]   $event   ${event.toJson()}');
 
                     switch (event.runtimeType) {
                       case MqttConnectSuccessEvent:
                         isConnected.value = true;
                         break;
                       case MqttDisconnectCompleteEvent:
+                        isConnected.value = false;
+                        break;
+                      case MqttConnectionLostEvent:
+                        print("conn lost");
                         isConnected.value = false;
                         break;
                       default:
@@ -101,6 +108,7 @@ class MqttModule {
         ),
       );
       isConnected.value = true;
+      _firstTryConnect = true;
       return true;
     } catch (e) {
       log('Error connect mqtt $e');
@@ -109,22 +117,25 @@ class MqttModule {
   }
 
   Future<bool> disconnect() async {
-    try {
-      var completer = Completer<bool>();
-      listener() {
-        if(!isConnected.value){
-          completer.complete(true);
-        }
+    if(_firstTryConnect){
+      try {
+        var completer = Completer<bool>();
+        var t = mqttEventLog.stream.listen((event) {
+          if(event is MqttDisconnectCompleteEvent || event is MqttConnectionLostEvent){
+            completer.complete(true);
+          }
+        });
+        _courier.disconnect();
+        await completer.future;
+        t.cancel();
+        return true;
+      } catch (e) {
+        log('Error disconnect mqtt $e');
+        return false;
       }
-      await _courier.disconnect();
-      isConnected.addListener(listener);
-      await completer.future;
-      isConnected.removeListener(listener);
-      return true;
-    } catch (e) {
-      log('Error disconnect mqtt $e');
-      return false;
     }
+
+    return true;
   }
 
   Future<bool> subscribe(String topic, QoS qos) async {
@@ -137,6 +148,43 @@ class MqttModule {
         log('Error publish string $e');
         return false;
       }
+    }
+    return true;
+  }
+
+  Future<bool> subscribeAll(List<String> topics, QoS qos) async {
+    var temp = <String>[];
+    for(var topic in topics){
+      if (!subscribedTopics.contains(topic)) {
+        temp.add(topic);
+      }
+    }
+    try {
+      for(var topic in temp){
+        _courier.subscribe(topic, qos);
+      }
+
+      var completer = Completer<bool>();
+      var listener = mqttEventLog.stream.listen((event){
+        if(event is MqttUnsubscribeSuccessEvent && event.topics?.length == temp.length){
+          var i = 0;
+          for(var t in event.topics!){
+            if(temp.contains(t)) i++;
+          }
+          if(i == temp.length) {
+            completer.complete(true);
+            temp.forEach((element) {subscribedTopics.add(element);});
+          }
+        }
+      });
+      await completer.future;
+      await listener.cancel();
+
+
+      return true;
+    } catch (e) {
+      log('Error publish string $e');
+      return false;
     }
     return true;
   }
@@ -178,9 +226,23 @@ class MqttModule {
     }
   }
 
+  Future<bool> publishByte({
+    required String topic,
+    required Uint8List message,
+    required QoS qos,
+  }) async {
+    try {
+      await _courier.sendUint8List(topic, message, qos);
+      return true;
+    } catch (e) {
+      log('Error publish string $e');
+      return false;
+    }
+  }
+
   Future<void> dispose() async {
     _courier.disconnect();
-    mqttEventLog.close();
+    // mqttEventLog.close();
 
     return;
   }

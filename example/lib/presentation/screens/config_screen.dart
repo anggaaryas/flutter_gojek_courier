@@ -198,7 +198,19 @@ class _ConfigScreenState extends State<ConfigScreen> {
                     crossFadeState: isConnected
                         ? CrossFadeState.showSecond
                         : CrossFadeState.showFirst,
-                    firstChild: const SizedBox(width: double.infinity),
+                    firstChild: SizedBox(
+                      width: double.infinity,
+                      child: CupertinoButton(
+                        onPressed: _disconnect,
+                        color: CupertinoColors.systemRed,
+                        child: const Text(
+                          'Force Disconnect',
+                          style: TextStyle(
+                            color: CupertinoColors.white,
+                          ),
+                        ),
+                      ),
+                    ),
                     secondChild: SizedBox(
                       width: double.infinity,
                       child: CupertinoButton(

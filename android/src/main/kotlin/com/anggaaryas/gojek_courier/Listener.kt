@@ -90,8 +90,6 @@ class Listener(val loggerSink : EventChannel.EventSink?, val eventSink : EventCh
                     }}"
                 )
             } else {
-                println("KIRIM EVENT KE FLUTTER...")
-                println(msg)
                 sink?.success(
                     "{\"topic\" : \"$tag\", \"type\" : \"$typeString\", \"data\": $msg}"
                 )
@@ -106,7 +104,6 @@ class Listener(val loggerSink : EventChannel.EventSink?, val eventSink : EventCh
         }
 
         override fun onEvent(mqttEvent: MqttEvent) {
-            println("NATIVE EVENT LOG : $mqttEvent");
             try{
                 val tag = mqttEvent.javaClass.name
 

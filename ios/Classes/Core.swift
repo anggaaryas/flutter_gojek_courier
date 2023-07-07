@@ -140,7 +140,7 @@ class GojekCourierCore: MQTTChuckLoggerDelegate{
         case let .success(message):
             let msg = [UInt8] (message)
             
-            messageSink!("{\"topic\" : \"\(topic)\", \"data\": \(msg)}")
+            messageSink?("{\"topic\" : \"\(topic)\", \"data\": \(msg)}")
         case let .failure(error):
             print(error.localizedDescription)
         }
