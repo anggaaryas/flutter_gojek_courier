@@ -22,6 +22,7 @@ class MqttClientConfigAdapter{
             authService: ConnectionServiceProvider(
                 ipAddress: connectOption.serverUri!.host!,
                 port: connectOption.serverUri!.port!,
+                scheme: connectOption.serverUri!.scheme,
                 clientId: connectOption.clientId!,
                 username: connectOption.username,
                 password: connectOption.password,

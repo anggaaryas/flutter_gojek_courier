@@ -12,6 +12,7 @@ class ConnectionServiceProvider: IConnectionServiceProvider {
     
     let ipAddress: String
     let port: Int
+    let scheme: String?
     
     let clientId: String
     let username: String?
@@ -24,6 +25,7 @@ class ConnectionServiceProvider: IConnectionServiceProvider {
     
     init(ipAddress: String,
         port: Int,
+         scheme: String?,
         clientId: String,
         username: String? = nil,
         password: String? = nil,
@@ -36,6 +38,7 @@ class ConnectionServiceProvider: IConnectionServiceProvider {
         self.password = password
         self.isCleanSession = isCleanSession
         self.pingInterval = pingInterval
+        self.scheme = scheme
     }
     
     func getConnectOptions(completion: @escaping (Result<ConnectOptions, AuthError>) -> Void) {
@@ -46,7 +49,8 @@ class ConnectionServiceProvider: IConnectionServiceProvider {
             clientId: clientId,
             username: username ?? "",
             password: password ?? "",
-            isCleanSession: isCleanSession
+            isCleanSession: isCleanSession,
+            scheme: scheme
         )))
     }
 }
