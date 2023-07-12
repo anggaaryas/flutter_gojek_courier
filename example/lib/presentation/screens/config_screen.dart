@@ -2,8 +2,9 @@ import 'dart:math';
 import 'dart:ui';
 
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:gojek_courier_example/data/mqtt_module.dart';
+import 'package:gojek_courier_example/network/mqtt_module.dart';
 import 'package:gojek_courier_example/presentation/screens/demo_screen.dart';
 import 'package:gojek_courier_example/presentation/widgets/base_screen.dart';
 import 'package:gojek_courier_example/presentation/widgets/snackbar.dart';
@@ -17,7 +18,8 @@ class ConfigScreen extends StatefulWidget {
   State<ConfigScreen> createState() => _ConfigScreenState();
 }
 
-class _ConfigScreenState extends State<ConfigScreen> {
+class _ConfigScreenState extends State<ConfigScreen>
+    with WidgetsBindingObserver {
   final _mqttModule = MqttModule.instance;
 
   static const String _defaultHost = 'broker.mqttdashboard.com';
@@ -33,17 +35,31 @@ class _ConfigScreenState extends State<ConfigScreen> {
   final TextEditingController _usernameTextCtl = TextEditingController();
   final TextEditingController _passwordTextCtl = TextEditingController();
 
+  final ScrollController _scrollController = ScrollController();
+
   bool _isCleanSession = true;
+  double _bottomInset = 0;
+  final _footerHeight = 180;
+
 
   @override
   void initState() {
     super.initState();
 
     _mqttModule.initialize();
+
+    WidgetsBinding.instance.addObserver(this);
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      _scrollController.addListener(() {
+        print(_scrollController.offset);
+      });
+    });
   }
 
   @override
   void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+
     _hostTextCtl.dispose();
     _portTextCtl.dispose();
     _pingTextCtl.dispose();
@@ -54,15 +70,33 @@ class _ConfigScreenState extends State<ConfigScreen> {
     _mqttModule.disconnect();
     _mqttModule.dispose();
 
+    _scrollController.dispose();
+
     super.dispose();
+  }
+
+  @override
+  void didChangeMetrics() {
+    super.didChangeMetrics();
+    setState(() {
+      _bottomInset = WidgetsBinding.instance.window.viewInsets.bottom;
+    });
+
+    // Future.delayed(Duration.zero, () {
+    //   if (_bottomInset != 0) {
+    //     _scrollController.animateTo(_scrollController.offset + _footerHeight, duration: const Duration(milliseconds: 250), curve: Curves.easeOut);
+    //   }
+    // });
   }
 
   @override
   Widget build(BuildContext context) {
     return CupertinoPageScaffold(
-      resizeToAvoidBottomInset: false,
+      resizeToAvoidBottomInset: true,
       child: BaseScreen(
         body: CustomScrollView(
+          keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
+          controller: _scrollController,
           slivers: <Widget>[
             const CupertinoSliverNavigationBar(
               largeTitle: Text(
@@ -124,7 +158,7 @@ class _ConfigScreenState extends State<ConfigScreen> {
                       onPressed: () {
                         setState(() {
                           _clientIdTextCtl.text =
-                              '${Random.secure().nextInt(100000)}';
+                          '${Random.secure().nextInt(100000)}';
                         });
                       },
                     ),
@@ -191,42 +225,14 @@ class _ConfigScreenState extends State<ConfigScreen> {
           child: ValueListenableBuilder<bool>(
             valueListenable: _mqttModule.isConnected,
             builder: (_, isConnected, __) {
-              return Column(
-                children: [
-                  AnimatedCrossFade(
-                    duration: const Duration(milliseconds: 200),
-                    crossFadeState: isConnected
-                        ? CrossFadeState.showSecond
-                        : CrossFadeState.showFirst,
-                    firstChild: SizedBox(
-                      width: double.infinity,
-                      child: CupertinoButton(
-                        onPressed: _disconnect,
-                        color: CupertinoColors.systemRed,
-                        child: const Text(
-                          'Force Disconnect',
-                          style: TextStyle(
-                            color: CupertinoColors.white,
-                          ),
-                        ),
-                      ),
-                    ),
-                    secondChild: SizedBox(
-                      width: double.infinity,
-                      child: CupertinoButton(
-                        onPressed: _disconnect,
-                        color: CupertinoColors.systemRed,
-                        child: const Text(
-                          'Disconnect',
-                          style: TextStyle(
-                            color: CupertinoColors.white,
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                  const SizedBox(height: 12),
-                  SizedBox(
+              return Padding(
+                padding: const EdgeInsets.only(bottom: 12),
+                child: AnimatedCrossFade(
+                  duration: const Duration(milliseconds: 200),
+                  crossFadeState: isConnected
+                      ? CrossFadeState.showSecond
+                      : CrossFadeState.showFirst,
+                  firstChild: SizedBox(
                     width: double.infinity,
                     child: CupertinoButton.filled(
                       onPressed: _connect,
@@ -238,7 +244,20 @@ class _ConfigScreenState extends State<ConfigScreen> {
                       ),
                     ),
                   ),
-                ],
+                  secondChild: SizedBox(
+                    width: double.infinity,
+                    child: CupertinoButton(
+                      onPressed: _disconnect,
+                      color: CupertinoColors.systemRed,
+                      child: const Text(
+                        'Disconnect',
+                        style: TextStyle(
+                          color: CupertinoColors.white,
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
               );
             },
           ),

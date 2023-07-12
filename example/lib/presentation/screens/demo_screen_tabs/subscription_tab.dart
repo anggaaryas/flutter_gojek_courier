@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:gojek_courier/gojek_courier.dart';
-import 'package:gojek_courier_example/data/mqtt_module.dart';
+import 'package:gojek_courier_example/network/mqtt_module.dart';
 import 'package:gojek_courier_example/presentation/widgets/base_screen.dart';
 
 import '../../widgets/snackbar.dart';
@@ -42,7 +42,9 @@ class _SubscriptionTabState extends State<SubscriptionTab> {
 
   @override
   Widget build(BuildContext context) {
-    return BaseScreen(
+    return CupertinoPageScaffold(
+      resizeToAvoidBottomInset: true,
+      child: BaseScreen(
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16),
         child: Column(
@@ -60,15 +62,15 @@ class _SubscriptionTabState extends State<SubscriptionTab> {
               child: _subscriptions.isEmpty
                   ? const _EmptyTopic()
                   : ListView.builder(
-                      itemCount: _subscriptions.length,
-                      padding: const EdgeInsets.only(bottom: 60),
-                      itemBuilder: (context, index) => _SubsListTile(
-                        isFirst: index == 0,
-                        isLast: index == _subscriptions.length - 1,
-                        title: _subscriptions[index],
-                        onUnsub: () => _unsubscribe(_subscriptions[index]),
-                      ),
-                    ),
+                itemCount: _subscriptions.length,
+                padding: const EdgeInsets.only(bottom: 60),
+                itemBuilder: (context, index) => _SubsListTile(
+                  isFirst: index == 0,
+                  isLast: index == _subscriptions.length - 1,
+                  title: _subscriptions[index],
+                  onUnsub: () => _unsubscribe(_subscriptions[index]),
+                ),
+              ),
             ),
           ],
         ),
@@ -95,7 +97,7 @@ class _SubscriptionTabState extends State<SubscriptionTab> {
           ),
         ),
       ),
-    );
+    ),);
   }
 
   void _subscribe() async {
@@ -115,10 +117,6 @@ class _SubscriptionTabState extends State<SubscriptionTab> {
         _topicTextCtl.text,
         QoS.ONE,
       ),
-      _mqttModule.subscribe(
-        "a/${_topicTextCtl.text}",
-        QoS.ONE,
-      )
     ]);
 
     var isSubscribeSuccess = r[0];

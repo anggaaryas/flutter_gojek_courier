@@ -28,13 +28,16 @@ class TopicsToJsonAdapter{
     
     func convertQosToString(qos: QoS) -> String {
         switch qos{
-            
         case .zero:
             return "ZERO"
         case .one:
             return "ONE"
         case .two:
             return "TWO"
+        case .oneWithoutPersistenceAndNoRetry:
+            return "" // Currently not supported
+        case .oneWithoutPersistenceAndRetry:
+            return "" // Currently not supported
         }
     }
     

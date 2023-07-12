@@ -4,7 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:gojek_courier/gojek_courier.dart';
 
-import '../../../data/mqtt_module.dart';
+import '../../../network/mqtt_module.dart';
 
 class _Log {
   final MqttEvent event;
@@ -57,7 +57,9 @@ class _LogTabState extends State<LogTab> with AutomaticKeepAliveClientMixin {
   @override
   Widget build(BuildContext context) {
     super.build(context);
-    return ListView.builder(
+    return CupertinoPageScaffold(
+        resizeToAvoidBottomInset: true,
+        child: ListView.builder(
       controller: _scrollCtl,
       padding: const EdgeInsets.all(16).copyWith(bottom: 32),
       itemCount: _logs.length,
@@ -87,7 +89,7 @@ class _LogTabState extends State<LogTab> with AutomaticKeepAliveClientMixin {
             ),
         ],
       ),
-    );
+    ));
   }
 
   void _eventListener(event) {

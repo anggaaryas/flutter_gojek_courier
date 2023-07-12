@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:gojek_courier_example/data/mqtt_module.dart';
+import 'package:gojek_courier_example/network/mqtt_module.dart';
 import 'package:gojek_courier_example/presentation/screens/demo_screen_tabs/log_tab.dart';
 
 import '../widgets/demo_screen_nav_bar.dart';
@@ -32,7 +32,7 @@ class _DemoScreenState extends State<DemoScreen>
   @override
   Widget build(BuildContext context) {
     return CupertinoPageScaffold(
-      resizeToAvoidBottomInset: false,
+      resizeToAvoidBottomInset: true,
       navigationBar: CupertinoNavigationBar(
         middle: const Text('Demo Page'),
         trailing: ValueListenableBuilder<bool>(

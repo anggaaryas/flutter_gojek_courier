@@ -4,7 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:gojek_courier/gojek_courier.dart';
-import 'package:gojek_courier_example/data/mqtt_module.dart';
+import 'package:gojek_courier_example/network/mqtt_module.dart';
 import 'package:gojek_courier_example/presentation/widgets/base_screen.dart';
 import 'package:gojek_courier_example/presentation/widgets/publish_options.dart';
 import 'package:gojek_courier_example/presentation/widgets/snackbar.dart';
@@ -66,7 +66,9 @@ class _ListenerTabState extends State<ListenerTab>
   @override
   Widget build(BuildContext context) {
     super.build(context);
-    return BaseScreen(
+    return CupertinoPageScaffold(
+        resizeToAvoidBottomInset: true,
+        child: BaseScreen(
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16),
         child: ListView.builder(
@@ -115,7 +117,7 @@ class _ListenerTabState extends State<ListenerTab>
           ],
         ),
       ),
-    );
+    ));
   }
 
   void _listenMqtt() {
@@ -141,9 +143,9 @@ class _ListenerTabState extends State<ListenerTab>
 
       return;
     }
-    var isPublishSuccess = await _mqttModule.publishByte(
+    var isPublishSuccess = await _mqttModule.publishString(
       topic: _topic,
-      message: Uint8List.fromList(_messageTextCtl.text.codeUnits),
+      message: _messageTextCtl.text,
       qos: _publishQoS,
     );
 

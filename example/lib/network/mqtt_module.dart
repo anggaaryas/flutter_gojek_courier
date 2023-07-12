@@ -122,6 +122,7 @@ class MqttModule {
         var completer = Completer<bool>();
         var t = mqttEventLog.stream.listen((event) {
           if(event is MqttDisconnectCompleteEvent || event is MqttConnectionLostEvent){
+            subscribedTopics.clear();
             completer.complete(true);
           }
         });
