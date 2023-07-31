@@ -18,6 +18,7 @@ export 'package:gojek_courier/src/model/server_uri.dart';
 export 'package:gojek_courier/src/model/work_manager_ping_sender_config.dart';
 export 'package:gojek_courier/src/model/mqtt_connect_option.dart';
 export 'package:gojek_courier/src/model/keep_alive.dart';
+export 'package:gojek_courier/src/model/courier_exception.dart';
 
 
 import 'dart:async';
