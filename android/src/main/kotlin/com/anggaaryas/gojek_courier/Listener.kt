@@ -2,13 +2,17 @@ package com.anggaaryas.gojek_courier
 
 import android.os.Handler
 import android.os.Looper
+import android.util.Log
 import com.gojek.courier.logging.ILogger
 import com.gojek.mqtt.event.EventHandler
 import com.gojek.mqtt.event.MqttEvent
 import com.gojek.mqtt.exception.handler.v3.AuthFailureHandler
 import com.google.gson.GsonBuilder
+import com.google.gson.JsonElement
+import com.google.gson.JsonObject
 import com.google.gson.JsonParser
 import io.flutter.plugin.common.EventChannel
+import timber.log.Timber
 
 
 class Listener(val loggerSink : EventChannel.EventSink?, val eventSink : EventChannel.EventSink?, val authErrorSink : EventChannel.EventSink?){
@@ -104,17 +108,31 @@ class Listener(val loggerSink : EventChannel.EventSink?, val eventSink : EventCh
         }
 
         override fun onEvent(mqttEvent: MqttEvent) {
-            try{
+            try {
                 val tag = mqttEvent.javaClass.name
 
                 val json = gson.toJson(mqttEvent)
 
                 val jsonElement = JsonParser.parseString(json)
                 val jsonObject = jsonElement.getAsJsonObject()
-                jsonObject.addProperty("connectionInfo", gson.toJson(mqttEvent.connectionInfo))
+                val conInfo = mqttEvent.connectionInfo
+                if (conInfo != null) {
+                    jsonObject.add(
+                        "connectionInfo",
+                        JsonObject()
+                    )
+                    val conInfoJsonObj = jsonObject.getAsJsonObject("connectionInfo")
+                    conInfoJsonObj.addProperty("clientId", conInfo.clientId)
+                    conInfoJsonObj.addProperty("username", conInfo.username)
+                    conInfoJsonObj.addProperty("keepaliveSeconds", conInfo.keepaliveSeconds)
+                    conInfoJsonObj.addProperty("connectTimeout", conInfo.connectTimeout)
+                    conInfoJsonObj.addProperty("host", conInfo.host)
+                    conInfoJsonObj.addProperty("port", conInfo.port)
+                    conInfoJsonObj.addProperty("scheme", conInfo.scheme)
+                }
                 val json2: String = jsonObject.toString()
 
-                sendToFlutter(Type.EVENT, tag, json2 , eventSink)
+                sendToFlutter(Type.EVENT, tag, json2, eventSink)
             } catch (e: Exception){
                 println("NATIVE EVENT ERROR: $e");
             }

@@ -65,7 +65,7 @@ extension CourierEvent{
         case .connectionServiceAuthSuccess(timeTaken: _):
           return toString(topic: "Event$AuthenticatorSuccessEvent", data: "{}")
         case .connectionServiceAuthFailure(timeTaken: _, error: let error):
-          return toString(topic: "Event$AuthenticatorErrorEvent", data: "\"exception\" : \(errorToString(error: error))")
+          return toString(topic: "Event$AuthenticatorErrorEvent", data: "{\"exception\" : \(errorToString(error: error)), \"connectionInfo\" : {}}")
       case .connectedPacketSent:
           return toString(topic: "Event$ConnectPacketSendEvent", data: "{}")
       case .courierDisconnect(clearState: let clearState):
