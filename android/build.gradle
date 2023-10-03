@@ -51,7 +51,7 @@ dependencies {
 
     implementation "com.gojek.courier:courier:$courier_version"
     implementation "com.gojek.courier:mqtt-client:$courier_version"
-    implementation "com.gojek.courier:chuck-mqtt:$courier_version"
+
     implementation "com.gojek.courier:workmanager-pingsender:$courier_version"
     implementation "com.gojek.courier:courier-stream-adapter-rxjava2:$courier_version"
     implementation "com.gojek.courier:courier-message-adapter-gson:$courier_version"

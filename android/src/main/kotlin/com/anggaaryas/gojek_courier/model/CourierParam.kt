@@ -3,9 +3,7 @@ package com.anggaaryas.gojek_courier.model
 import android.content.Context
 import com.anggaaryas.gojek_courier.DefaultConstants
 import com.anggaaryas.gojek_courier.Listener
-import com.gojek.chuckmqtt.external.MqttChuckConfig
-import com.gojek.chuckmqtt.external.MqttChuckInterceptor
-import com.gojek.chuckmqtt.external.Period
+
 import com.gojek.courier.Courier
 import com.gojek.courier.streamadapter.rxjava2.RxJava2StreamAdapterFactory
 import com.gojek.mqtt.auth.Authenticator
@@ -134,12 +132,7 @@ class MqttConfigurationParam(value: Map<String, Any?>): Param<MqttV3Configuratio
                     return connectOptions
                 }
             },
-            mqttInterceptorList = if (useInterceptor) listOf(
-                MqttChuckInterceptor(
-                    context,
-                    MqttChuckConfig(retentionPeriod = Period.ONE_HOUR)
-                )
-            ) else emptyList(),
+            mqttInterceptorList = emptyList(),
             persistenceOptions = PersistenceOptions.PahoPersistenceOptions(100, false),
             experimentConfigs = experimentConfig?.build(context, logger) ?: ExperimentConfigs(),
             unsubscriptionRetryPolicy = unsubscriptionRetryPolicy?.build(context, logger) ?: SubscriptionRetryPolicy(SubscriptionRetryConfig()),
