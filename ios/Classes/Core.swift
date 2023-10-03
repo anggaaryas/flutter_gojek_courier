@@ -8,10 +8,9 @@
 import Foundation
 import CourierCore
 import CourierMQTT
-import CourierMQTTChuck
 
 @available(iOS 13.0, *)
-class GojekCourierCore: MQTTChuckLoggerDelegate{
+class GojekCourierCore{
     
     var courierClient: CourierClient?
     private var streamList = Dictionary<String, AnyCancellable>()
@@ -22,17 +21,6 @@ class GojekCourierCore: MQTTChuckLoggerDelegate{
     var messageSink : FlutterEventSink?
     var loggerSink : FlutterEventSink?
     
-    var logger = MQTTChuckLogger()
-    
-    func mqttChuckLoggerDidUpdateLogs(_ logs: [MQTTChuckLog]) {
-        guard let log = logs.last else {
-            return
-        }
-        
-        let logString = "\(log.timestamp)  \(log.commandType)  \( log.qos)  \( log.messageId)  \(log.sending)  \(log.received)"
-        
-        loggerSink!( "{\"topic\" : \"Log\", \"type\" : \"debug\", \"data\": \"\(logString)\"}")
-    }
     
     func initCourierParam(courierParam: CourierParam){
         
@@ -111,7 +99,6 @@ class GojekCourierCore: MQTTChuckLoggerDelegate{
     
     func setLoggerSink(sink: @escaping FlutterEventSink){
         loggerSink = sink
-        logger.delegate = self
     }
     
     

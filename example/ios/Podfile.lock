@@ -4,10 +4,6 @@ PODS:
     - CourierCore (= 0.0.19)
     - MQTTClientGJ (= 0.0.19)
     - ReachabilitySwift (= 5.0.0)
-  - CourierMQTTChuck (0.0.19):
-    - CourierCore (= 0.0.19)
-    - CourierMQTT (= 0.0.19)
-    - MQTTClientGJ (= 0.0.19)
   - CourierProtobuf (0.0.19):
     - CourierCore (= 0.0.19)
     - CourierMQTT (= 0.0.19)
@@ -16,14 +12,13 @@ PODS:
   - gojek_courier (0.0.2):
     - CourierCore (= 0.0.19)
     - CourierMQTT (= 0.0.19)
-    - CourierMQTTChuck
     - CourierProtobuf (= 0.0.19)
     - Flutter
     - ReachabilitySwift (= 5.0.0)
     - SwiftProtobuf
   - MQTTClientGJ (0.0.19)
   - ReachabilitySwift (5.0.0)
-  - SwiftProtobuf (1.22.0)
+  - SwiftProtobuf (1.24.0)
 
 DEPENDENCIES:
   - Flutter (from `Flutter`)
@@ -33,7 +28,6 @@ SPEC REPOS:
   trunk:
     - CourierCore
     - CourierMQTT
-    - CourierMQTTChuck
     - CourierProtobuf
     - MQTTClientGJ
     - ReachabilitySwift
@@ -48,13 +42,12 @@ EXTERNAL SOURCES:
 SPEC CHECKSUMS:
   CourierCore: bdaf367323ba99e3b369ad4b9c449a2acb235fbe
   CourierMQTT: bcfb8a4c51d8b144d36bd5c17f1750ce81af8a1b
-  CourierMQTTChuck: 945a4daf14fb6a421d8afdcdf4d854fd3f69fa1b
   CourierProtobuf: d7659d6ca00b84ef7349efd2617731fad5399add
   Flutter: f04841e97a9d0b0a8025694d0796dd46242b2854
-  gojek_courier: 68a8dca6b687af31788e2652509785e994b66999
+  gojek_courier: 8f96b186f59d33ef6503a9909d20c08d4ed0c46c
   MQTTClientGJ: a3840bdac554c11913a8bd65ea09657651786742
   ReachabilitySwift: 985039c6f7b23a1da463388634119492ff86c825
-  SwiftProtobuf: 40bd808372cb8706108f22d28f8ab4a6b9bc6989
+  SwiftProtobuf: bcfd2bc231cf9ae552cdc7c4e877bd3b41fe57b1
 
 PODFILE CHECKSUM: ef19549a9bc3046e7bb7d2fab4d021637c0c58a3
 

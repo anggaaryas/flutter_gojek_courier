@@ -24,7 +24,7 @@ A new Flutter plugin project.
   s.dependency 'CourierCore', '0.0.19'
   s.dependency 'CourierMQTT', '0.0.19'
   s.dependency 'CourierProtobuf', '0.0.19'
-  s.dependency 'CourierMQTTChuck'
+  
   s.dependency 'ReachabilitySwift', '5.0.0'
   s.dependency 'SwiftProtobuf'
   
